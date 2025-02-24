@@ -62,7 +62,6 @@ export default function Footer() {
       <div className="footer-bottom">
         <p>2024 @ CLCA</p>
         <div className="social-icons">
-          {/* Replace "#" with your social media links */}
           <a href="#">
             <FacebookOutlined />
           </a>
