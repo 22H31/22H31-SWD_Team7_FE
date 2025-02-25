@@ -77,7 +77,7 @@ export default function Login({chirldren}) {
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Ghi nhớ mật khẩu</Checkbox>
                 </Form.Item>
-                <a href="" style={{ color: "#C0437F" }}>
+                <a onClick={() => navigate(`/forgotpassword`)} style={{ color: "#C0437F" }}>
                   Quên mật khẩu ?
                 </a>
               </Flex>
