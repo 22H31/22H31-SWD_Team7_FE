@@ -1,0 +1,140 @@
+.banner-container {
+  width: 1400px;
+  height: 486px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    90deg,
+    var(--Color-4, #ffffffff) 0%,
+    #ffd9d9 100%
+  );
+  margin-top: 80px;
+}
+
+.blog-slide {
+  margin-top: 80px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(
+    90deg,
+    var(--Color-4, #ffffffff) 0%,
+    #ffd9d9 100%
+  );
+
+  overflow: hidden;
+}
+
+.blog-image {
+  width: 627.509px;
+  height: 361px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+}
+
+.blog-content {
+  width: 60%;
+  padding: 20px;
+  word-wrap: break-word;
+
+}
+
+.blog-date {
+  width: 159.259px;
+  height: 22.165px;
+  flex-shrink: 0;
+  color: var(--Color-3, #847a7a);
+
+  /* body 2 */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+.blog-title {
+  overflow: hidden;
+  max-width: 500px;
+  width: 500px;
+  height: 54px;
+  flex-shrink: 0;
+  color: var(--en-t, #44353f);
+
+  /* h2 */
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 60px; /* 166.667% */
+}
+
+.blog-subtitle {
+  overflow: hidden;
+  max-width: 600px;
+  width: 625.511px;
+  height: 28px;
+  flex-shrink: 0;
+  color: var(--en-t, #44353f);
+
+  /* h3 */
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.blog-description {
+  width: 545.881px;
+  height: 112px;
+  flex-shrink: 0;
+  color: var(--en-t, #44353F);
+
+/* body */
+font-family: Inter;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 28px; /* 155.556% */
+}
+
+.blog-button {
+  display: flex;
+  width: 167.55px;
+  height: 44px;
+  padding: 12px 48px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 8px;
+  background: var(--mu-nhn, #C0437F);
+  border: none;
+  color: white;
+}
+
+.blog-button:hover {
+  background: #b71c72 ;
+}
+
+/* Pagination (dấu chấm) nằm dưới banner */
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.swiper-pagination-bullet {
+  background: #d63384;
+  opacity: 0.7;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background: #d63384;
+  opacity: 1;
+}

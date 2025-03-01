@@ -1,0 +1,47 @@
+.custom-header {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding-bottom: 40px;
+  min-height: 93px; 
+}
+
+.header-container {
+  display: flex;
+  max-width: 1440px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.logo img {
+  height: 80px;
+  flex-shrink: 0;
+  margin-left: 73px;
+  cursor: pointer;
+}
+
+.find {
+  width: 673px;
+  height: 53.3px;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  margin-right: 73px;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

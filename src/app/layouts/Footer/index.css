@@ -1,0 +1,85 @@
+/* Xóa margin & padding mặc định của trình duyệt */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Chặn cuộn ngang */
+}
+/* Footer không bị tràn ngang */
+.custom-footer {
+  background: #ffd1d1;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10; 
+}
+
+/* Chứa nội dung bên trong, giữ layout gọn gàng */
+.footer-container {
+  max-width: 1400px;
+  height: 180px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+/* Định dạng từng cột */
+.footer-column {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+  color: var(--en-t, #44353f);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.footer-column h3 {
+  color: var(--Color-3, #847a7a);
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 5px;
+}
+/* Căn chỉnh form đăng ký email */
+.subscribe {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.email-input {
+  width: 244px;
+  height: 30px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.subscribe-button {
+  cursor: pointer;
+}
+
+.subscribe-button:hover {
+  background-color: #a03266;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  padding: 0px 0;
+}
+
+.footer-bottom hr {
+  border: 0;
+  height: 1px;
+  background: black;
+  margin-bottom: 10px;
+}

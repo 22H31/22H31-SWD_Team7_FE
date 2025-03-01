@@ -1,0 +1,9 @@
+.profile-container .component-cv .button-delete {
+  display: none;
+}
+.profile-container .component-cv:hover .button-delete {
+  display: block;
+}
+.profile-container .component-cv .ant-popover-inner:hover .button-delete {
+  display: block;
+}

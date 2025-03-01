@@ -1,0 +1,109 @@
+/* Container chính */
+.healthcare-container {
+    max-width: 1400px;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  /* Tiêu đề chính */
+  .healthcare-title {
+    color: #44353F;
+    font-family: Inter;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 60px; /* 166.667% */
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* Grid layout cho các bài viết */
+  .healthcare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  /* Card hiển thị từng bài viết */
+  .healthcare-card {
+    background: white;
+    overflow: hidden;
+    text-align: left;
+  }
+  
+  /* Ảnh bài viết */
+  .healthcare-image-container {
+    width: 100%;
+    height: 251px;
+    overflow: hidden;
+  }
+  
+  .healthcare-image {
+    width: 100%;
+    height: 251px;
+    object-fit: cover;
+
+  }
+  
+  /* Nội dung bài viết */
+  .healthcare-content {
+    padding: 10px;
+  }
+  
+  /* Tiêu đề bài viết */
+  .healthcare-post-title {
+    width: 413px;
+    color: var(--en-t, #44353F);
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+  }
+  
+  /* Mô tả ngắn */
+  .healthcare-description {
+    color: #474646;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    width: 413px;
+    margin-bottom: 10px;
+  }
+  
+  /* Phần footer chứa ngày đăng và lượt xem */
+  .healthcare-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #888;
+    
+  }
+  
+  /* Nút Xem thêm */
+  .healthcare-more {
+    margin-top: 20px;
+  }
+  
+  .healthcare-button {
+    border-radius: 8px;
+    background: var(--mu-nhn, #C0437F);
+    display: inline-flex;
+    height: 44px;
+    padding: 12px 48px;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    color: white;
+  }
+  
+  .healthcare-button:hover {
+    background: #a8326a;
+  }
+  
