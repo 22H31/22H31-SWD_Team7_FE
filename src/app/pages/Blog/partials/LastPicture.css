@@ -1,0 +1,31 @@
+.last-picture {
+    width: 100%;
+    max-width: 1400px;
+    text-align: center;
+    margin: 0 auto; /* Căn giữa */
+    padding: 20px 0;
+  }
+  
+  .quote {
+    font-size: 22px;
+    font-weight: bold;
+    color: #b02a6c;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    margin-top: 40px;
+  }
+  
+  .image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Căn giữa ảnh */
+  }
+  
+  .image-container img {
+    width: 100%;  /* Đảm bảo ảnh luôn full kích thước */
+    max-width: 1400px; /* Giới hạn tối đa 1400px */
+    height: auto;
+    margin-bottom: 40px;
+    object-fit: cover; /* Đảm bảo ảnh hiển thị đẹp */
+  }
+  

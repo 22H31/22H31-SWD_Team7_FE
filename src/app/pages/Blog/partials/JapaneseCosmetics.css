@@ -1,0 +1,98 @@
+.japanese-cosmetics {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right, #fff, #fdf2f8);
+  width: 100%;
+  max-width: 1400px;
+  height: 500px;
+  border-top: solid 1px #F9AFC6;
+  border-bottom: solid 1px #F9AFC6;
+}
+
+.cosmetics-content {
+  width: 60%;
+  padding-right: 20px;
+}
+
+.cosmetics-title {
+  width: 589px;
+  color: var(--en-t, #44353f);
+  font-family: Inter;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.cosmetics-subtitle {
+  width: 616px;
+  color: var(--Color-3, #847a7a);
+  font-family: Inter;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+
+.cosmetics-description {
+  width: 735px;
+  color: var(--en-t, #44353f);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+
+.cosmetics-brands {
+  list-style: none;
+  padding: 0;
+}
+
+.cosmetics-brands li {
+  color: var(--Color-3, #847a7a);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  width: 143.73px;
+  margin-bottom: 10px;
+}
+
+.cosmetics-button {
+  display: flex;
+  width: 196px;
+  height: 44px;
+  padding: 12px 48px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 8px;
+  background: var(--mu-nhn, #C0437F);
+  border: none;
+  color:#ffffff;
+}
+
+.cosmetics-button:hover {
+  background-color: #c2185b !important;
+}
+
+.cosmetics-image {
+  width: 40%;
+  text-align: left;
+}
+
+.cosmetics-image img {
+  max-width: 100%;
+  height: auto;
+  width: 522px;
+  height: 372px;
+  flex-shrink: 0;
+}

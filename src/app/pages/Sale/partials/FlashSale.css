@@ -1,0 +1,133 @@
+.flashsale {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #ffecec;
+  width: 1400px;
+}
+
+.flashsale h2 {
+  text-align: center;
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.countdown {
+    text-align: center; /* Căn giữa chữ theo chiều ngang */
+    font-size: 18px;
+    color: #686565;
+    font-weight: bold;
+    margin-bottom: 20px;
+    width: 612px;
+    height: 73px; /* Sửa lại thành số nguyên */
+    flex-shrink: 0;
+    border-radius: 24px;
+    background: #FFC3C3;
+  
+    /* Căn giữa nội dung theo cả hai chiều */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto; /* Căn giữa theo chiều ngang */
+  }
+  
+.slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+}
+
+.arrow {
+  background-color: #ffecec;
+  border: 1px solid #ddd;
+  border-radius: 30%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+}
+
+.arrow:hover {
+  background-color: #ffecec;
+}
+
+.product-list {
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+}
+
+.product {
+  background-color: #ffecec;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  margin: 0 2px;
+  flex: 0 0 calc(25% - 16px);
+}
+
+.product img {
+  width: 306px;
+  height: 312px;
+  flex-shrink: 0;
+  border-radius: var(--Corner-Extra-large, 28px);
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+}
+
+.product h3 {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.product .price {
+  font-size: 18px;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.product del {
+  font-size: 14px;
+  color: #999;
+  margin-left: 10px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.star {
+  color: #ffcc00;
+  margin: 0 2px;
+}
+
+.reviews {
+  font-size: 14px;
+  color: #666;
+  margin-left: 5px;
+}
+
+.buy {
+  width: 200px;
+  height: 36px;
+  margin-top: 10px;
+  background: #c0437f;
+  color: white; /* Thêm màu chữ để dễ đọc */
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.buy:hover {
+  background: #a83266 !important; /* Hiệu ứng đổi màu khi hover */
+}
