@@ -1,14 +1,14 @@
 /* NAVBAR (MENU) */
 .custom-menu {
   width: 100%;
-  height: 60px; /* Giữ chiều cao hợp lý */
+  height: 60px; 
   display: flex;
   justify-content: center;
   align-items: center;
   background: #ffcccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed; /* Cố định ở trên cùng */
-  top: 93px; /* Điều chỉnh theo chiều cao của header */
+  position: fixed;
+  top: 93px; 
   left: 0;
   z-index: 1000;
 }
@@ -44,7 +44,7 @@
 
 /* Loại bỏ đường gạch dưới hoặc border */
 .custom-menu .ant-menu-item::after {
-  display: none !important; /* Ẩn hiệu ứng mặc định của Ant Design */
+  display: none !important;
 }
 
   .custom-menu .ant-menu {

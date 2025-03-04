@@ -1,6 +1,6 @@
-import React from "react";
+// import React from "react";
 import { Menu } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 
 const NavigationComponent = () => {
@@ -22,7 +22,7 @@ const NavigationComponent = () => {
       <Menu.Item key="/blog" onClick={() => navigate("/blog")}>
         BLOG
       </Menu.Item>
-      <Menu.Item key="/support" onClick={() => navigate("/support")}>
+      <Menu.Item key="/customerSupport" onClick={() => navigate("/customerSupport")}>
         HỖ TRỢ KHÁCH HÀNG
       </Menu.Item>
     </Menu>
