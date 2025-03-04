@@ -1,10 +1,10 @@
-import React from "react";
+// import React from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./BannerBlog.css";
-
+import { useNavigate } from "react-router";
 const blogPosts = [
   {
     id: 1,
@@ -28,6 +28,7 @@ const blogPosts = [
 ];
 
 export default function BannerBlog() {
+  const navigate = useNavigate(); 
   return (
     <div className="banner-container">
       <Swiper
@@ -46,7 +47,7 @@ export default function BannerBlog() {
                 <h2 className="blog-title">{post.title}</h2>
                 <h3 className="blog-subtitle">{post.subtitle}</h3>
                 <p className="blog-description">{post.description}</p>
-                <button className="blog-button">Xem thêm</button>
+                <button className="blog-button" key="/blogDetail" onClick={() => navigate("/blogDetail")}>  Xem thêm</button>
               </div>
             </div>
           </SwiperSlide>

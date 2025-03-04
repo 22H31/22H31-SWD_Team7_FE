@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   GlobalOutlined,
@@ -34,7 +34,7 @@ const HeaderComponent = () => {
     <Header style={{ padding: 0 }} className="custom-header">
       <div className="header-container">
         {/* Logo - Thêm sự kiện onClick để điều hướng về trang chủ */}
-        <div className="logo" onClick={() => navigate("/")} >
+        <div className="logo" onClick={() => navigate("/")}>
           <img src={logo} alt="Logo" className="logo-image" />
         </div>
 
@@ -68,9 +68,12 @@ const HeaderComponent = () => {
               <GlobalOutlined />
               <span>TP. HCM</span>
             </div>
-            <UserOutlined onClick={handleUserClick} style={{ cursor: "pointer" }} />
+            <UserOutlined
+              onClick={handleUserClick}
+              style={{ cursor: "pointer" }}
+            />
             <Badge count={0} showZero>
-              <ShoppingCartOutlined />
+              <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
             </Badge>
           </Space>
         </div>

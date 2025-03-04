@@ -1,5 +1,5 @@
 /* Container chính */
-.healthcare-container {
+.relatedblogs-container {
     max-width: 1400px;
     margin: auto;
     text-align: center;
@@ -7,7 +7,7 @@
   }
   
   /* Tiêu đề chính */
-  .healthcare-title {
+  .relatedblogs-title {
     color: #44353F;
     font-family: Inter;
     font-size: 36px;
@@ -19,27 +19,27 @@
   }
   
   /* Grid layout cho các bài viết */
-  .healthcare-grid {
+  .relatedblogs-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
   
   /* Card hiển thị từng bài viết */
-  .healthcare-card {
+  .relatedblogs-card {
     background: white;
     overflow: hidden;
     text-align: left;
   }
   
   /* Ảnh bài viết */
-  .healthcare-image-container {
+  .relatedblogs-image-container {
     width: 100%;
     height: 251px;
     overflow: hidden;
   }
   
-  .healthcare-image {
+  .relatedblogs-image {
     width: 100%;
     height: 251px;
     object-fit: cover;
@@ -48,13 +48,13 @@
   
   /* Nội dung bài viết */
   .healthcare-content {
+    margin-top: 10px;
     padding: 10px;
-    margin: 10px;
     gap: 10px;
   }
   
   /* Tiêu đề bài viết */
-  .healthcare-post-title {
+  .relatedblogs-post-title {
     width: 413px;
     color: var(--en-t, #44353F);
     font-family: Inter;
@@ -66,7 +66,7 @@
   }
   
   /* Mô tả ngắn */
-  .healthcare-description {
+  .relatedblogs-description {
     color: #474646;
     font-family: Inter;
     font-size: 20px;
@@ -78,20 +78,19 @@
   }
   
   /* Phần footer chứa ngày đăng và lượt xem */
-  .healthcare-footer {
+  .relatedblogs-footer {
     display: flex;
     justify-content: space-between;
     font-size: 16px;
-    color: #888;
-    
+    color: #888;  
   }
   
   /* Nút Xem thêm */
-  .healthcare-more {
+  .relatedblogs-more {
     margin-top: 20px;
   }
   
-  .healthcare-button {
+  .relatedblogs-button {
     border-radius: 8px;
     background: var(--mu-nhn, #C0437F);
     display: inline-flex;
@@ -105,7 +104,7 @@
     color: white;
   }
   
-  .healthcare-button:hover {
+  .relatedblogs-button:hover {
     background: #a8326a;
   }
   
