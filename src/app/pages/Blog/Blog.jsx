@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
 // Import component banner
 import Banner from "./partials/BannerBlog";

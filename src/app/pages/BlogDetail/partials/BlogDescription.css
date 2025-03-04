@@ -1,0 +1,96 @@
+/* Header của Blog */
+.blog-description .blog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.blog-description .blog-path,
+.blog-description .author-info {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Hình ảnh */
+.blog-description .main-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.blog-description .image-container {
+  width: 100%;
+  text-align: center;
+}
+
+/* Nội dung */
+.blog-description .content-item {
+  display: flex;
+  flex-direction: column;
+  text-align: justify;
+  margin-top: 15px;
+}
+
+.blog-description .blog-text {
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Khu vực chia sẻ */
+.blog-description .share {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #b02a6c;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Sidebar */
+.blog-description .sidebar {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.blog-description .sidebar .ant-card-head {
+  background: #b02a6c;
+  color: white;
+  text-align: center;
+}
+
+.blog-description .sidebar .ant-list-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.blog-description .sidebar .ant-list-item a {
+  color: #b02a6c;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.blog-description .sidebar .ant-list-item a:hover {
+  text-decoration: underline;
+}
+
+/* Xóa padding, margin, border mặc định */
+.blog-description .ant-card,
+.blog-description .ant-list,
+.blog-description .ant-typography {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.blog-description .ant-card-body {
+  padding: 0 !important;
+  border-radius: 0 !important;
+}

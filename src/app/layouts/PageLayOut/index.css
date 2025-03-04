@@ -52,7 +52,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Định dạng nội dung tránh bị header che mất */
+
 .page-content {
   margin-top: 94px; /* Đẩy nội dung xuống dưới header + nav */
 }
