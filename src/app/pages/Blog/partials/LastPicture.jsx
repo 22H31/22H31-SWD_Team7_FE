@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import "./LastPicture.css";
 
 
@@ -10,7 +10,7 @@ const LastPicture = () => {
         VÀ KHI BẠN KHỎE MẠNH, BẠN SẼ ĐẸP”
       </h2>
       <div className="image-container">
-        <img src="/public/BlogLastPicture.png" alt="DHC Beauty" />
+        <img src="/BlogLastPicture.png" alt="DHC Beauty" />
       </div>
     </div>
   );

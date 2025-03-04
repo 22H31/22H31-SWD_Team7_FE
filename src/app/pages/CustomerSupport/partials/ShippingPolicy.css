@@ -1,0 +1,53 @@
+/* ShippingPolicy.css */
+.shipping-policy-container {
+  margin: 40px auto;
+  text-align: center;
+  background: #fff;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shipping-title {
+  margin-bottom: 20px;
+  color: var(--en-t, #44353f);
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 60px; 
+}
+
+.shipping-table {
+height: 250px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffe6e6;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  background: #ffb3b3;
+  padding: 12px;
+
+
+color: var(--en-t, #44353F);
+font-family: Inter;
+font-size: 24px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  border-top: 1px solid #ffcccc;
+}
+
+.row-item {
+  color: #4a4a4a;
+}

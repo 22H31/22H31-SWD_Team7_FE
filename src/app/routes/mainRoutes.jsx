@@ -10,6 +10,7 @@ import PageNotFound from "../../app/layouts/PageNotFound/PageNotFound";
 import Blog from "../../app/pages/Blog/Blog";
 import BlogDetail from "../pages/BlogDetail";
 import Cart from "../pages/cart";
+import CustomerSupport from "../pages/CustomerSupport";
 
 export default function MainRoutes() {
   return (
@@ -23,6 +24,7 @@ export default function MainRoutes() {
       <Route path="/blog" element ={<Blog />} />
       <Route path="/blogDetail" element={<BlogDetail />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/customerSupport" element={<CustomerSupport/>} />
       
       {/* Uncomment to handle unknown routes */}
       <Route path="*" element={<PageNotFound />} />

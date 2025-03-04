@@ -1,14 +1,14 @@
 // import React from "react";
-import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
+import CartLayOut from "../../layouts/CartLayout/CartLayout";
 import "./cart.css";
 
 
 export default function Cart() {
   return (
-    <PageLayOut>
+    <CartLayOut>
       <div className="cart-page">
 
       </div>
-    </PageLayOut>
+    </CartLayOut>
   );
 }

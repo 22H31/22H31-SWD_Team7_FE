@@ -1,4 +1,4 @@
-// import React from "react";
+import React from "react";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
@@ -95,6 +95,6 @@ export default function Register() {
           </div>
         </Form>
       </div>
-    </PageLayOut>
+     </PageLayOut>
   );
 }
