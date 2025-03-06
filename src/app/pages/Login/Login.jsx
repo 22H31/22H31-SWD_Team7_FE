@@ -80,7 +80,7 @@ export default function Login({ chirldren }) {
                   <Checkbox>Ghi nhớ mật khẩu</Checkbox>
                 </Form.Item>
                 <a
-                  onClick={() => navigate(`/forgotpassword`)}
+                  onClick={() => navigate(`/forgotPassword`)}
                   style={{ color: "#C0437F" }}
                 >
                   Quên mật khẩu ?
@@ -121,7 +121,7 @@ export default function Login({ chirldren }) {
               Bạn chưa có tài khoản ?{" "}
               <a
                 style={{ textAlign: "center", color: "#C0437F" }}
-                onClick={() => navigate(`/Register`)}
+                onClick={() => navigate(`/register`)}
               >
                 Đăng ký
               </a>

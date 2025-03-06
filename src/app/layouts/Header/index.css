@@ -62,6 +62,8 @@
 .find {
   width: 673px;
   height: 53.3px;
+  display: flex;
+  align-items: center;
 }
 
 .header-icons {
