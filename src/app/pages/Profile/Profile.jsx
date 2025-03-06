@@ -16,13 +16,12 @@ const Profile = () => {
 
   // Dữ liệu hiển thị theo từng mục menu
   const contentData = {
-    "1": <ProfileInfo />,
-    "2": <ChangePassword />,
-    "3": <Address />,
-    "4": <Orders />,
-    "5": <Favorites />,
+    1: <ProfileInfo />,
+    2: <ChangePassword />,
+    3: <Address />,
+    4: <Orders />,
+    5: <Favorites />,
   };
-
 
   const getProfile = useCallback(async () => {
     try {
@@ -55,22 +54,33 @@ const Profile = () => {
   return (
     <PageLayOut>
       <Layout className="layoutStyle">
-        <Layout>
-          <Sider width="250" className="siderStyle">
-            <h2 style={{ color: "#333", fontSize: "18px",maxHeight:"80px",justifyContent:"center",display:"flex",alignItems:"center" }}>Tài khoản</h2>
-            <Menu
-              onClick={handleMenuClick}
-              mode="vertical"
-              selectedKeys={[selectedKey]}
-              style={{ borderRight: "none" }}
-              items={items}
-            />
-          </Sider>
-          <Content  width="750" className="contentStyle">
-            <h3>{items.find((item) => item.key === selectedKey)?.label}</h3>
+        <Sider width="250"  className="siderStyle">
+          <h2
+            style={{
+              color: "#333",
+              fontSize: "18px",
+              maxHeight: "80px",
+              justifyContent: "center",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Tài khoản
+          </h2>
+          <Menu
+            onClick={handleMenuClick}
+            mode="vertical"
+            selectedKeys={[selectedKey]}
+            items={items}
+          />
+        </Sider>
+          <Content className="contentStyle">
+            <h3 style={{ height: "100px" }}>
+              {" "}
+              {items.find((item) => item.key === selectedKey)?.label}
+            </h3>
             <p>{contentData[selectedKey]}</p>
           </Content>
-        </Layout>
       </Layout>
     </PageLayOut>
   );
