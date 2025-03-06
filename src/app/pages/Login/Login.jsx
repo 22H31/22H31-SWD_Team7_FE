@@ -4,15 +4,17 @@ import { Button, Checkbox, Form, Input, Flex } from "antd";
 import { useNavigate } from "react-router";
 import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
 
-export default function Login({chirldren}) {
+export default function Login({ chirldren }) {
   const navigate = useNavigate();
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
 
   return (
-    <> <PageLayOut>
-      <div className="login-mid" style={{marginTop: "80px"}}>
+    <>
+      {" "}
+      <PageLayOut>
+        <div className="login-mid" style={{ marginTop: "80px" }}>
           <Form
             className="login"
             initialValues={{
@@ -77,7 +79,10 @@ export default function Login({chirldren}) {
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>Ghi nhớ mật khẩu</Checkbox>
                 </Form.Item>
-                <a onClick={() => navigate(`/forgotpassword`)} style={{ color: "#C0437F" }}>
+                <a
+                  onClick={() => navigate(`/forgotpassword`)}
+                  style={{ color: "#C0437F" }}
+                >
                   Quên mật khẩu ?
                 </a>
               </Flex>
@@ -123,8 +128,7 @@ export default function Login({chirldren}) {
             </p>
           </div>
         </div>
-    </PageLayOut>
-        
+      </PageLayOut>
     </>
   );
 }

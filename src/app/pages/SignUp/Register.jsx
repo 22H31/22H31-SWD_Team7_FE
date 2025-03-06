@@ -6,13 +6,14 @@ import { Button, Form, Input } from "antd";
 
 export default function Register() {
   const navigate = useNavigate();
+
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
 
   return (
     <PageLayOut>
-      <div className="register-mid" style={{marginTop: "80px"}}>
+      <div className="register-mid" style={{ marginTop: "80px" }}>
         <Form className="register" onFinish={onFinish}>
           <h1
             style={{
@@ -52,7 +53,19 @@ export default function Register() {
           <Form.Item
             name="confirmPassword"
             dependencies={["password"]}
-            rules={[{ required: true, message: "Vui lòng xác nhận Mật khẩu!" }]}
+            rules={[
+              { required: true, message: "Vui lòng xác nhận Mật khẩu!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("Mật khẩu xác nhận không khớp!")
+                  );
+                },
+              }),
+            ]}
           >
             <Input
               prefix={<LockOutlined />}
@@ -84,17 +97,17 @@ export default function Register() {
             }}
           >
             <p>
-              Bạn đã có tài khoản ? {" "}
+              Bạn đã có tài khoản ?{" "}
               <a
                 style={{ color: "#C0437F" }}
                 onClick={() => navigate(`/Login`)}
               >
-                 Đăng nhập
+                Đăng nhập
               </a>
             </p>
           </div>
         </Form>
       </div>
-     </PageLayOut>
+    </PageLayOut>
   );
 }
