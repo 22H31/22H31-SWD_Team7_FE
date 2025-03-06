@@ -7,3 +7,25 @@
 .profile-container .component-cv .ant-popover-inner:hover .button-delete {
   display: block;
 }
+.layoutStyle {
+  overflow: hidden;
+  width: calc(50% - 8px);
+  max-width:  calc(50% - 8px);
+  margin-top: 30px;
+  background-color: #fff0f3;
+}
+.siderStyle {
+  line-height: 120px;
+  color: #fff;
+  background-color: #fff0f3;
+  margin-right: 20px;
+  border: 2px solid #dde6e3
+}
+
+.contentStyle {
+  text-align: center;
+  min-height: 120px;
+  line-height: 120px;
+  background-color: #fff;
+  border: 2px solid #dde6e3
+}

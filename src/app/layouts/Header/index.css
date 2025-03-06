@@ -12,6 +12,36 @@
   padding-bottom: 40px;
   min-height: 93px; 
 }
+.login-btn, .signup-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hồng pastel nhẹ */
+.login-btn {
+  background-color: #f8a5c2;  /* Hồng pastel nhẹ */
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #f78fb3;  /* Hồng đậm hơn chút khi hover */
+  transform: scale(1.05);
+}
+
+/* Tím lavender pastel */
+.signup-btn {
+  background-color: #d8bfd8;  /* Tím lavender pastel */
+  color: white;
+}
+
+.signup-btn:hover {
+  background-color: #c39bd3;  /* Tím đậm hơn khi hover */
+  transform: scale(1.05);
+}
 
 .header-container {
   display: flex;

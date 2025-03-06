@@ -23,11 +23,11 @@ const HeaderComponent = () => {
 
   // Xử lý khi nhấn vào icon người dùng
   const handleUserClick = () => {
-    if (isAuthenticated) {
-      navigate("/profile"); // Nếu đã đăng nhập → Chuyển đến trang hồ sơ
-    } else {
-      navigate("/login"); // Nếu chưa đăng nhập → Chuyển đến trang đăng ký
-    }
+    // if (isAuthenticated) {
+    navigate("/profile"); // Nếu đã đăng nhập → Chuyển đến trang hồ sơ
+    // } else {
+    //   navigate("/login"); // Nếu chưa đăng nhập → Chuyển đến trang đăng ký
+    // }
   };
 
   return (
@@ -60,23 +60,37 @@ const HeaderComponent = () => {
             onSearch={onSearch}
           />
         </div>
-
-        {/* Icon bên phải */}
-        <div className="header-icons">
-          <Space size="large">
-            <div className="location">
-              <GlobalOutlined />
-              <span>TP. HCM</span>
+        {isAuthenticated ? (
+          <>
+            <div className="header-icons">
+              <Space size="large">
+                <div className="location">
+                  <GlobalOutlined />
+                  <span>TP. HCM</span>
+                </div>
+                <UserOutlined
+                  onClick={handleUserClick}
+                  style={{ cursor: "pointer" }}
+                />
+                <Badge count={0} showZero>
+                  <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
+                </Badge>
+              </Space>
             </div>
-            <UserOutlined
-              onClick={handleUserClick}
-              style={{ cursor: "pointer" }}
-            />
-            <Badge count={0} showZero>
-              <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
-            </Badge>
+          </>
+        ) : (
+          <Space size="middle">
+            <button className="login-btn" onClick={() => navigate("/login")}>
+              Đăng nhập
+            </button>
+            <button
+              className="signup-btn"
+              onClick={() => navigate("/Register")}
+            >
+              Đăng ký
+            </button>
           </Space>
-        </div>
+        )}
       </div>
     </Header>
   );
