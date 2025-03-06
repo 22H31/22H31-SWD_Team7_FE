@@ -100,7 +100,7 @@ export default function Register() {
               Bạn đã có tài khoản ?{" "}
               <a
                 style={{ color: "#C0437F" }}
-                onClick={() => navigate(`/Login`)}
+                onClick={() => navigate(`/login`)}
               >
                 Đăng nhập
               </a>

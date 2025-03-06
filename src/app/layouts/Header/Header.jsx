@@ -9,6 +9,7 @@ import {
 import { Badge, Button, Input, Layout, Space } from "antd";
 import logo from "../../assets/logo.png";
 import "./index.css";
+import NavigationComponent from "../NavigationBar/NavigationBar";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -31,68 +32,71 @@ const HeaderComponent = () => {
   };
 
   return (
-    <Header style={{ padding: 0 }} className="custom-header">
-      <div className="header-container">
-        {/* Logo - Thêm sự kiện onClick để điều hướng về trang chủ */}
-        <div className="logo" onClick={() => navigate("/")}>
-          <img src={logo} alt="Logo" className="logo-image" />
-        </div>
+    <>
+      <Header style={{ padding: 0 }} className="custom-header">
+        <div className="header-container">
+          {/* Logo - Thêm sự kiện onClick để điều hướng về trang chủ */}
+          <div className="logo" onClick={() => navigate("/")}>
+            <img src={logo} alt="Logo" className="logo-image" />
+          </div>
 
-        {/* Thanh tìm kiếm */}
-        <div className="find">
-          <Search
-            className="search-input"
-            placeholder="Bạn cần tìm gì?"
-            enterButton={
-              <Button
-                className="search-button"
-                style={{
-                  background: "#c0437f",
-                  borderColor: "#c0437f",
-                  color: "white",
-                }}
+          {/* Thanh tìm kiếm */}
+          <div className="find">
+            <Search
+              className="search-input"
+              placeholder="Bạn cần tìm gì?"
+              enterButton={
+                <Button
+                  className="search-button"
+                  style={{
+                    background: "#c0437f",
+                    borderColor: "#c0437f",
+                    color: "white",
+                  }}
+                >
+                  <SearchOutlined />
+                  Tìm kiếm
+                </Button>
+              }
+              size="large"
+              onSearch={onSearch}
+            />
+          </div>
+          {isAuthenticated ? (
+            <>
+              <div className="header-icons">
+                <Space size="large">
+                  <div className="location">
+                    <GlobalOutlined />
+                    <span>TP. HCM</span>
+                  </div>
+                  <UserOutlined
+                    onClick={handleUserClick}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <Badge count={0} showZero>
+                    <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
+                  </Badge>
+                </Space>
+              </div>
+            </>
+          ) : (
+            <Space size="middle">
+              <button className="login-btn" onClick={() => navigate("/login")}>
+                Đăng nhập
+              </button>
+              <button
+                className="signup-btn"
+                onClick={() => navigate("/register")}
               >
-                <SearchOutlined />
-                Tìm kiếm
-              </Button>
-            }
-            size="large"
-            onSearch={onSearch}
-          />
+                Đăng ký
+              </button>
+            </Space>
+          )}
         </div>
-        {isAuthenticated ? (
-          <>
-            <div className="header-icons">
-              <Space size="large">
-                <div className="location">
-                  <GlobalOutlined />
-                  <span>TP. HCM</span>
-                </div>
-                <UserOutlined
-                  onClick={handleUserClick}
-                  style={{ cursor: "pointer" }}
-                />
-                <Badge count={0} showZero>
-                  <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
-                </Badge>
-              </Space>
-            </div>
-          </>
-        ) : (
-          <Space size="middle">
-            <button className="login-btn" onClick={() => navigate("/login")}>
-              Đăng nhập
-            </button>
-            <button
-              className="signup-btn"
-              onClick={() => navigate("/Register")}
-            >
-              Đăng ký
-            </button>
-          </Space>
-        )}
-      </div>
-    </Header>
+      </Header>
+      <NavigationComponent />
+    </>
   );
 };
 

@@ -9,7 +9,6 @@ export default function PageLayOut({ children, isContent }) {
     <div className="page-layout">
       <div className="header-nav-wrapper">
         <Header />
-        <NavigationBar />
       </div>
       <main className={`page-content ${isContent ? "with-content" : ""}`}>
         {isContent ? (
@@ -18,7 +17,6 @@ export default function PageLayOut({ children, isContent }) {
           children
         )}
       </main>
-      <Footer />
     </div>
   );
 }
