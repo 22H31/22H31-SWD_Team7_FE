@@ -1,16 +1,30 @@
-import { Button, Form, Input } from "antd";
-import React from "react";
+import { Button, Form, Input, message } from "antd";
+import React, { useState } from "react";
+import { APIGetInformation } from "../../api/api";
 
 export default function ProfileInfo() {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const [information, setInformation] = useState([]);
+
+  const onFinish = () => {
+    APIGetInformation()
+      .then((rs) => {
+        console.log(rs.data);
+        if (rs.status === 200) {
+          setInformation(rs.data); // Cập nhật state đúng cách
+        }
+      })
+      .catch((error) => {
+        console.log("Lỗi:", error);
+        message.error(error.response?.data?.message || "Có lỗi xảy ra");
+      });
   };
+
   return (
     <>
       <div style={{ margin: "10px" }}>
         <Form onFinish={onFinish} layout="vertical">
           <Form.Item label="Email:">
-            <Input placeholder="Email" defaultValue={"chưa có API"} />
+            <Input placeholder="Email" value={information.email || "chưa có API"} />
           </Form.Item>
           <div
             style={{
@@ -22,14 +36,14 @@ export default function ProfileInfo() {
             <Form.Item label="Họ:" style={{ flex: 1 }}>
               <Input
                 placeholder="Họ"
-                defaultValue={"chưa có API"}
+                value={information.name || "chưa có API"}
                 style={{ width: "100%" }}
               />
             </Form.Item>
             <Form.Item label="Tên:" style={{ flex: 1 }}>
               <Input
                 placeholder="Tên"
-                defaultValue={"chưa có API"}
+                value={information.firstName || "chưa có API"}
                 style={{ width: "100%" }}
               />
             </Form.Item>

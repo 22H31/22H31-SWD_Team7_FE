@@ -11,25 +11,22 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onFinish = (user) => {
-    setIsLoading(true);
-    console.log("0");
     APIlogin(user.username, user.password)
-    .then((rs) => {
-      console.log("1");
-      if (rs?.status === 200) {
-        navigate("/");
-        console.log("2");
-      }
-    })
-    .catch((error) => {
-      console.error("Error logging in:", error);
-      setErrorMessage(error.response?.data?.message || "Có lỗi xảy ra!");
-    })
-    .finally(() => {
-      setIsLoading(false);
-    });
-  
+      .then((rs) => {
+        if (rs?.status === 200) {
+          localStorage.setItem("token", rs.data.token); // Lưu token vào localStorage
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Error logging in:", error);
+        setErrorMessage(error.response?.data?.message || "Có lỗi xảy ra!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
+  
 
   return (
     <PageLayOut>

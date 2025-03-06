@@ -1,16 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
+import { APIregis } from "../../api/api";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = (user) => {
+  console.log(user);
+    // const requestData = {
+    //   userName: user.username, // Kiểm tra null/undefined
+    //   name: user.name || "", 
+    //   email: user.email,
+    //   password: user.password,
+    //   phoneNumber: user.phoneNumber || "",
+    // };
+  
+    // console.log("Dữ liệu gửi lên API:", JSON.stringify(requestData, null, 2));
+  
+    APIregis(user)
+      .then((rs) => {
+        console.log("Response từ API:", rs);
+        if (rs.status === 200) {
+          message.success("Kiểm tra email và confirm!")
+          navigate("/login");
+        }
+      })
+      .catch((error) => {
+        console.error("Lỗi đăng ký:", error);
+        console.log(
+          "Chi tiết lỗi:",
+          error.response?.data || "Không có dữ liệu lỗi"
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
-
+  
   return (
     <PageLayOut>
       <div className="register-mid" style={{ marginTop: "80px" }}>
@@ -27,7 +57,7 @@ export default function Register() {
           </h1>
 
           <Form.Item
-            name="username"
+            name="userName"
             rules={[
               { required: true, message: "Vui lòng nhập Tên đăng nhập!" },
             ]}

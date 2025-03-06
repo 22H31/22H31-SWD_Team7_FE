@@ -2,12 +2,33 @@
 import { MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
+import { APIForgotpass } from "../../api/api";
+import { useState } from "react";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onFinish = (user) => {
+    APIForgotpass(user)
+      .then((rs) => {
+        console.log("Response từ API:", rs);
+        if (rs.status === 200) {
+          message.success("Kiểm tra email!")
+          navigate("/login");
+        }
+      })
+      .catch((error) => {
+        console.error("Lỗi đăng ký:", error);
+        console.log(
+          "Chi tiết lỗi:",
+          error.response?.data || "Không có dữ liệu lỗi"
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
