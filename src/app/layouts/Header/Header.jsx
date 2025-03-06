@@ -1,7 +1,8 @@
-// import React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   GlobalOutlined,
+  LoginOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
   UserOutlined,
@@ -15,27 +16,45 @@ const { Header } = Layout;
 const { Search } = Input;
 
 const HeaderComponent = () => {
-  const navigate = useNavigate(); // Hook điều hướng
-  const isAuthenticated = !!localStorage.getItem("token"); // Kiểm tra xem có token không
+  const navigate = useNavigate();
+  
+  // Sử dụng useState để quản lý trạng thái đăng nhập
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
+
+  // Lắng nghe thay đổi của localStorage để cập nhật trạng thái đăng nhập
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem("token"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const onSearch = (value) => {
     console.log("Search:", value);
   };
 
-  // Xử lý khi nhấn vào icon người dùng
   const handleUserClick = () => {
-    // if (isAuthenticated) {
-    navigate("/profile"); // Nếu đã đăng nhập → Chuyển đến trang hồ sơ
-    // } else {
-    //   navigate("/login"); // Nếu chưa đăng nhập → Chuyển đến trang đăng ký
-    // }
+    if (isAuthenticated) {
+      navigate("/profile");
+    } else {
+      navigate("/login");
+    }
   };
-
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Xóa token khỏi localStorage
+    window.location.reload(); // Refresh trang để cập nhật trạng thái đăng nhập
+  };
   return (
     <>
       <Header style={{ padding: 0 }} className="custom-header">
         <div className="header-container">
-          {/* Logo - Thêm sự kiện onClick để điều hướng về trang chủ */}
+          {/* Logo - Điều hướng về trang chủ */}
           <div className="logo" onClick={() => navigate("/")}>
             <img src={logo} alt="Logo" className="logo-image" />
           </div>
@@ -62,24 +81,27 @@ const HeaderComponent = () => {
               onSearch={onSearch}
             />
           </div>
+
+          {/* Kiểm tra trạng thái đăng nhập để hiển thị icon hoặc nút đăng nhập */}
           {isAuthenticated ? (
-            <>
-              <div className="header-icons">
-                <Space size="large">
-                  <div className="location">
-                    <GlobalOutlined />
-                    <span>TP. HCM</span>
-                  </div>
-                  <UserOutlined
-                    onClick={handleUserClick}
-                    style={{ cursor: "pointer" }}
-                  />
-                  <Badge count={0} showZero>
-                    <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
-                  </Badge>
-                </Space>
-              </div>
-            </>
+            <div className="header-icons">
+              <Space size="large">
+                <div className="location">
+                  <GlobalOutlined />
+                  <span>TP. HCM</span>
+                </div>
+                <UserOutlined
+                  onClick={handleUserClick}
+                  style={{ cursor: "pointer" }}
+                />
+                <Badge count={0} showZero>
+                  <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
+                </Badge>
+                <Badge >
+                <LoginOutlined onClick={handleLogout} style={{ cursor: "pointer" }} />
+                </Badge>
+              </Space>
+            </div>
           ) : (
             <Space size="middle">
               <button className="login-btn" onClick={() => navigate("/login")}>
