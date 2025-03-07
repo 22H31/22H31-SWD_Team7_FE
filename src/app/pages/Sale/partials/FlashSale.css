@@ -23,8 +23,6 @@
     flex-shrink: 0;
     border-radius: 24px;
     background: #FFC3C3;
-  
-    /* Căn giữa nội dung theo cả hai chiều */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,26 +32,31 @@
 .slider {
   position: relative;
   display: flex;
-  align-items: center;
-  
+  align-items: center; 
 }
 
 .arrow {
-  background-color: #ffecec;
-  border: 1px solid #ddd;
-  border-radius: 30%;
-  padding: 10px;
+  border: none;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  width: 57px;
+  height: 104px; 
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  font-size: 50px;
+  border-radius: 5px;
+  background: #ffc3c3;
+  fill: #ffc3c3;
+  stroke-width: 4px;
+  color: #c0437f;
 }
 
-.arrow:hover {
+
+/* .arrow:hover {
   background-color: #ffecec;
-}
+} */
 
 .product-list {
   display: flex;
@@ -66,12 +69,14 @@
   border-radius: 8px;
   padding: 10px;
   text-align: center;
-  margin: 0 2px;
+  /* margin: 0 0px; */
   flex: 0 0 calc(25% - 16px);
+
+
 }
 
 .product img {
-  width: 306px;
+  width: 300px;
   height: 312px;
   flex-shrink: 0;
   border-radius: var(--Corner-Extra-large, 28px);
