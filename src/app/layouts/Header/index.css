@@ -55,7 +55,7 @@
 .logo img {
   height: 80px;
   flex-shrink: 0;
-  margin-left: 73px;
+  /* margin-left: 73px; */
   cursor: pointer;
 }
 
@@ -69,7 +69,7 @@
 .header-icons {
   display: flex;
   align-items: center;
-  margin-right: 73px;
+  /* margin-right: 73px; */
 }
 
 .location {
