@@ -17,7 +17,7 @@ const CategoryPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  // **Gọi API lấy danh sách Category và Category Title**
+  // **Lấy danh sách Category và Category Title**
   useEffect(() => {
     fetch(CATEGORY_API)
       .then((res) => res.json())
@@ -26,11 +26,12 @@ const CategoryPage = () => {
           console.error("Dữ liệu API không hợp lệ", data);
           return;
         }
-        // Chỉ lấy categoryName và description
+
+        // Trích xuất thông tin cần thiết
         const extractedCategories = data.flatMap((item) =>
           item.categorys.map((subCategory) => ({
             categoryId: subCategory.categoryId,
-            categoryTitleId: item.categoryTitleId, // Lưu cả categoryTitleId
+            categoryTitleId: item.categoryTitleId, 
             categoryName: subCategory.categoryName,
             description: subCategory.description,
           }))
@@ -82,6 +83,8 @@ const CategoryPage = () => {
       return;
     }
 
+    console.log("Đang cập nhật category:", editId, formData);
+
     try {
       const res = await fetch(`${CATEGORY_API}/${editId}`, {
         method: "PUT",
@@ -89,7 +92,10 @@ const CategoryPage = () => {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error("Lỗi khi cập nhật danh mục");
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Lỗi khi cập nhật danh mục: ${errorText}`);
+      }
 
       setCategories(
         categories.map((item) =>
@@ -99,6 +105,7 @@ const CategoryPage = () => {
       setPopupOpen(false);
     } catch (err) {
       console.error("Lỗi khi cập nhật:", err);
+      alert(`Lỗi khi cập nhật: ${err.message}`);
     }
   };
 
@@ -120,7 +127,7 @@ const CategoryPage = () => {
   // **Mở popup chỉnh sửa**
   const handleEditClick = (category) => {
     setFormData({
-      categoryTitleId: category.categoryTitleId, // Giữ lại categoryTitleId
+      categoryTitleId: category.categoryTitleId, 
       categoryName: category.categoryName,
       description: category.description,
     });
