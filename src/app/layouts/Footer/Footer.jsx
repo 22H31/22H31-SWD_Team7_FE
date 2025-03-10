@@ -1,25 +1,17 @@
-import React from "react";
-import { Layout, Input, Button } from "antd";
 import {
   EnvironmentOutlined,
-  PhoneOutlined,
   MailOutlined,
+  PhoneOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
+import { Button, Input } from "antd";
 import "./index.css";
 
-const { Footer } = Layout;
-const { Search } = Input;
-
-const FooterComponent = () => {
-  const onSearch = (value) => {
-    console.log("Email đăng ký:", value);
-  };
-
+const Footer = () => {
   return (
-    <Footer className="custom-footer">
+    <footer className="custom-footer">
       <div className="footer-container">
-        {/* CÁC CHI NHÁNH */}
+        {/* Cột 1: Chi nhánh */}
         <div className="footer-column">
           <h3>CÁC CHI NHÁNH</h3>
           <p>
@@ -33,7 +25,7 @@ const FooterComponent = () => {
           </p>
         </div>
 
-        {/* Social */}
+        {/* Cột 2: Social */}
         <div className="footer-column">
           <h3>Social</h3>
           <p>Facebook</p>
@@ -41,7 +33,7 @@ const FooterComponent = () => {
           <p>Youtube</p>
         </div>
 
-        {/* Điện thoại & Email */}
+        {/* Cột 3: Liên hệ */}
         <div className="footer-column">
           <h3>
             <PhoneOutlined /> Điện thoại
@@ -50,10 +42,10 @@ const FooterComponent = () => {
           <h3>
             <MailOutlined /> Email
           </h3>
-          <p>Beautylove@shopvn.com</p>
+          <p>beautylove@shopvn.com</p>
         </div>
 
-        {/* Help */}
+        {/* Cột 4: Hỗ trợ */}
         <div className="footer-column">
           <h3>Help</h3>
           <p>Contact us</p>
@@ -61,38 +53,37 @@ const FooterComponent = () => {
           <p>Shipping & Returns</p>
         </div>
 
-        {/* CẬP NHẬT THÔNG TIN KHUYẾN MÃI */}
-        <div className="footer-column">
+        {/* Cột 5: Đăng ký email */}
+        <div className="footer-column subscribe-section">
           <h3>CẬP NHẬT THÔNG TIN KHUYẾN MÃI</h3>
-          <Search
-            className="subscribe-input"
-            placeholder="Email của bạn"
-            enterButton={
-              <Button className="subscribe-button" style={{
-                  background: "#c0437f",
-                  borderColor: "#c0437f",
-                  height:"39px",
-                  border: " 1px solid #ccc",
-                  color: "white",
-                }}
->
-                <SearchOutlined />
-                Đăng ký
-              </Button>
-            }
-            size="large"
-            onSearch={onSearch}
-          />
+          <div className="subscribe">
+            <Input
+              className="email-input"
+              placeholder="Nhập email của bạn"
+              size="middle"
+            />
+            <Button
+              className="subscribe-button"
+              style={{
+                background: "#c0437f",
+                borderColor: "#c0437f",
+                color: "white",
+              }}
+            >
+              <SearchOutlined />
+              Đăng ký
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Copyright */}
       <div className="footer-bottom">
         <hr />
-        <p>© Copyright 2024 Beauty Love</p>
+        <p>© 2024 Beauty Love</p>
       </div>
-    </Footer>
+    </footer>
   );
 };
 
-export default FooterComponent;
+export default Footer;

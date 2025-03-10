@@ -14,6 +14,7 @@ import CustomerSupport from "../pages/CustomerSupport";
 import FooterComponent from "../layouts/Footer/Footer";
 import { useLocation } from "react-router";
 import Checkout from "../pages/Checkout";
+import GeminiChat from "../AI/GeminiChat";
 
 export default function MainRoutes() {
   const location = useLocation();
@@ -37,6 +38,7 @@ export default function MainRoutes() {
         {/* Uncomment to handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <GeminiChat />
       {!hideFooter && <FooterComponent />}
     </>
   );
