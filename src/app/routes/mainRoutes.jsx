@@ -23,6 +23,7 @@ import Brand from "../pages/Admin/brandManage/brandPage";
 import Category from "../pages/Admin/categoryManage/categoryPage";
 import CategoryTitle from "../pages/Admin/categoryManage/categoryTitlePage";
 import BlogManage from "../pages/Admin/blogManage/blogPage";
+import PaymentSuccess from "../pages/PaymentSuccess";
 
 export default function MainRoutes() {
   const location = useLocation();
@@ -43,6 +44,7 @@ export default function MainRoutes() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/customerSupport" element={<CustomerSupport />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/paymentSuccess" element={<PaymentSuccess/>} />
 
         <Route path="/admin" element={<AdminLayout />}>
         <Route path="products" element={<ProductsGrid />} />

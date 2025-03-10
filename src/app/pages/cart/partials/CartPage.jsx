@@ -6,6 +6,7 @@ import {
   import { Button, Card, Input, Table } from "antd";
   import { useState } from "react";
   import "./CartPage.css";
+  import { useNavigate } from "react-router-dom";
   
   const fakeCartData = [
     {
@@ -35,6 +36,7 @@ import {
   ];
   
   const CartPage = () => {
+    const navigate = useNavigate();
     const [cartItems, setCartItems] = useState(fakeCartData);
     const [discountCode, setDiscountCode] = useState("");
   
@@ -140,9 +142,14 @@ import {
               <Button className="apply" type="primary">Áp dụng</Button>
             </div>
           </div>
-          <Button type="primary" block size="large" className="checkout-button">
-            Đặt Hàng
-          </Button>
+          <Button
+      block
+      size="large"
+      className="checkout-button"
+      onClick={() => navigate("/checkout")} // Điều hướng tới trang Checkout
+    >
+      Đặt Hàng
+    </Button>
         </Card>
       </div>
     );
