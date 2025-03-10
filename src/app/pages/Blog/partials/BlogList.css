@@ -22,11 +22,11 @@
   margin-bottom: 10px;
   transition: 0.3s ease-in-out;
   box-shadow: 0px 4px 10px rgba(36, 1, 1, 0.1);
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     var(--Color-4, #ffffffff) 0%,
     #ffd9d9 100%
-  );
+  ); */
 }
 
 .Bloglist-card:hover {
@@ -165,4 +165,13 @@
 }
 .Bloglist-pagination .ant-pagination-item-active a {
   color: white !important;
+}
+.ant-card .ant-card-body {
+  padding: 0px !important;
+}
+
+.ant-row-middle {
+
+align-items: flex-start;
+  padding-right: 20px;
 }
