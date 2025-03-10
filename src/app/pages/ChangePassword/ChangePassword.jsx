@@ -1,9 +1,30 @@
-import { Button, Form, Input } from "antd";
-import React from "react";
+import { Button, Form, Input, message } from "antd";
+import React, { useState } from "react";
+import { APIChangePassword } from "../../api/api";
 
 export default function ChangePassword() {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onFinish = (user) => {
+    setIsLoading(true); // Bật trạng thái loading
+  console.log('1');
+    APIChangePassword(user.oldPassword, user.currentPassword, user.confirmPassword)
+      .then((rs) => {
+        console.log(user);
+        if (rs?.status === 200) {
+          // message.success("Đổi mật khẩu thành công!"); // Thông báo thành công
+          console.log("Mật khẩu đã được thay đổi:", rs.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Lỗi khi đổi mật khẩu:", error);
+        setErrorMessage(error.response?.data?.message || "Có lỗi xảy ra!");
+      })
+      .finally(() => {
+        setIsLoading(false); // Tắt loading
+      });
+   
   };
   return (
     <>
@@ -24,12 +45,12 @@ export default function ChangePassword() {
           >
             <Form.Item
               style={{ flex: 1 }}
-              name="password"
+              name="currentPassword"
               rules={[{ required: true, message: "Vui lòng nhập Mật khẩu!" }]}
             >
               <Input
                 size="large"
-                type="password"
+                // type="password"
                 placeholder="Mật khẩu"
                 style={{ width: "100%" }}
               />
@@ -42,7 +63,7 @@ export default function ChangePassword() {
                 { required: true, message: "Vui lòng xác nhận Mật khẩu!" },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
+                    if (!value || getFieldValue("currentPassword") === value) {
                       return Promise.resolve();
                     }
                     return Promise.reject(
@@ -55,7 +76,7 @@ export default function ChangePassword() {
               <Input
                 size="large"
                 style={{ width: "100%" }}
-                type="password"
+                // type="password"
                 placeholder="Xác nhận Mật khẩu"
               />
             </Form.Item>

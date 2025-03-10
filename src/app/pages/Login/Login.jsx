@@ -9,13 +9,24 @@ export default function Login() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const onFinish = (user) => {
     APIlogin(user.username, user.password)
       .then((rs) => {
         if (rs?.status === 200) {
+          console.log(user,"1");
+          console.log(rs.data.email,"tw");
           localStorage.setItem("token", rs.data.token); // Lưu token vào localStorage
+          localStorage.setItem("user", JSON.stringify(rs.data));
+          // localStorage.setItem("user", JSON.stringify({ email: "test@example.com", firstName: "A", lastName: "B" }));
+          console.log(localStorage.getItem("user"));
+        
+          // const information = JSON.parse(localStorage.getItem("user"));
           navigate("/");
+          // if (user) {
+          
+          //   console.log("Email:", information.email);
+          // }
         }
       })
       .catch((error) => {

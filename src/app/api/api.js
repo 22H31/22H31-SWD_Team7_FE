@@ -19,4 +19,13 @@ user
   });
   export const APIForgotpass = (user) =>
     api.post("account/forgot-password", { email: user.email });
-  export const APIGetInformation = () => api.get("User");
+  export const APIGetInformation = () =>
+    api.get("User", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    export const APIChangePassword = (oldPassword, currentPassword, confirmPassword) =>
+      api.post("account/change-password", {
+        currentPassword: oldPassword,
+        newPassword: currentPassword,
+        newPasswordConfirmation: confirmPassword
+      });
