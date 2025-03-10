@@ -1,0 +1,40 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  @media (width<=640px) {
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+  }
+  
+  .title {
+    color: #000;
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .addMemberBtn {
+    color: #fff;
+    cursor: pointer;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  @media (width<=640px) {
+    .addMemberBtn {
+      width: 100%;
+    }
+  }  

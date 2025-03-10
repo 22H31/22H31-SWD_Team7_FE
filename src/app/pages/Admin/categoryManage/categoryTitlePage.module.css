@@ -1,0 +1,171 @@
+/* Container chính */
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề */
+h1 {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Thanh điều khiển (Search + Button) */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.controls input {
+  width: 70%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: 0.3s ease-in-out;
+}
+
+.controls input:focus {
+  border-color: #17a2b8;
+  outline: none;
+  box-shadow: 0 0 5px rgba(23, 162, 184, 0.5);
+}
+
+/* Nút thêm mới */
+.controls button {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.controls button:hover {
+  background: #138496;
+}
+
+/* Bảng dữ liệu */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 6px;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.table th {
+  background: #f8f9fa;
+  font-weight: bold;
+}
+
+/* Nút Edit & Delete */
+.table button {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.table button:hover {
+  color: red;
+}
+
+/* Popup hiển thị */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 350px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Tiêu đề Popup */
+.popup h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* Nút đóng Popup */
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.closeBtn:hover {
+  color: red;
+}
+
+/* Input trong Popup */
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: 0.3s ease-in-out;
+}
+
+.formGroup input:focus {
+  border-color: #17a2b8;
+  outline: none;
+  box-shadow: 0 0 5px rgba(23, 162, 184, 0.5);
+}
+
+/* Nút Submit trong Popup */
+.submitBtn {
+  width: 100%;
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.submitBtn:hover {
+  background: #138496;
+}
