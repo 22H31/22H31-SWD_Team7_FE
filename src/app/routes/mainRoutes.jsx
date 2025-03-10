@@ -16,6 +16,13 @@ import { useLocation } from "react-router";
 import Checkout from "../pages/Checkout";
 import GeminiChat from "../AI/GeminiChat";
 import AdminLayout from "../layouts/adminLayout/adminLayout";
+import ProductsGrid from "../pages/Admin/productManage/productsGrid";
+import ProductStock from "../pages/Admin/productStock/productStock";
+import TeamManage from "../pages/Admin/teamManage/teamPage";
+import Brand from "../pages/Admin/brandManage/brandPage";
+import Category from "../pages/Admin/categoryManage/categoryPage";
+import CategoryTitle from "../pages/Admin/categoryManage/categoryTitlePage";
+import BlogManage from "../pages/Admin/blogManage/blogPage";
 
 export default function MainRoutes() {
   const location = useLocation();
@@ -38,7 +45,13 @@ export default function MainRoutes() {
         <Route path="/checkout" element={<Checkout />} />
 
         <Route path="/admin" element={<AdminLayout />}>
-       
+        <Route path="products" element={<ProductsGrid />} />
+        <Route path="productStock" element={<ProductStock />} />
+        <Route path="teamPage" element={<TeamManage />} />
+        <Route path="brandPage" element={<Brand />} />
+        <Route path="categoryPage" element={<Category />} />
+        <Route path="categoryTitlePage" element={<CategoryTitle />} />
+        <Route path="blog" element={<BlogManage />} />
         </Route>
 
         {/* Uncomment to handle unknown routes */}
