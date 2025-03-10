@@ -15,6 +15,7 @@ import FooterComponent from "../layouts/Footer/Footer";
 import { useLocation } from "react-router";
 import Checkout from "../pages/Checkout";
 import GeminiChat from "../AI/GeminiChat";
+import AdminLayout from "../layouts/adminLayout/adminLayout";
 
 export default function MainRoutes() {
   const location = useLocation();
@@ -35,6 +36,11 @@ export default function MainRoutes() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/customerSupport" element={<CustomerSupport />} />
         <Route path="/checkout" element={<Checkout />} />
+
+        <Route path="/admin" element={<AdminLayout />}>
+       
+        </Route>
+
         {/* Uncomment to handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
