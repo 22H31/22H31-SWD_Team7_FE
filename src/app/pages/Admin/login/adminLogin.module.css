@@ -1,0 +1,162 @@
+.dashboard {
+    color: #202224;
+    letter-spacing: -0.06px;
+    background-color: #fff;
+    font-family:
+      Nunito Sans,
+      -apple-system,
+      Roboto,
+      Helvetica,
+      sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    overflow: hidden;
+  }
+  
+  .backgroundContainer {
+    background-color: #4880ff;
+    width: 100%;
+  }
+  
+  @media (width<=991px) {
+    .backgroundContainer {
+      max-width: 100%;
+    }
+  }
+  
+  .contentWrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 1070px;
+    padding: 168px 80px;
+    display: flex;
+    position: relative;
+  }
+  
+  @media (width<=991px) {
+    .contentWrapper {
+      max-width: 100%;
+      padding: 100px 20px;
+    }
+  }
+  
+  .backgroundImage {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+  
+  .loginCard {
+    background-color: #fff;
+    border-color: #b9b9b9;
+    border-radius: 24px;
+    flex-direction: column;
+    align-items: stretch;
+    width: 630px;
+    max-width: 100%;
+    margin-bottom: -28px;
+    margin-left: 25px;
+    padding: 111px 57px;
+    display: flex;
+    position: relative;
+  }
+  
+  @media (width<=991px) {
+    .loginCard {
+      margin-bottom: 10px;
+      padding-bottom: 100px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  
+  .loginHeading {
+    letter-spacing: -0.11px;
+    align-self: center;
+    font-size: 32px;
+    font-weight: 700;
+  }
+  
+  .loginDescription {
+    background-blend-mode: normal;
+    align-self: center;
+    margin-top: 15px;
+  }
+  
+  .inputLabel {
+    background-blend-mode: normal;
+    align-self: start;
+    margin-top: 37px;
+    display: block;
+  }
+  
+  .textInput {
+    color: #a6a6a6;
+    white-space: nowrap;
+    background-color: #f1f4f9;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    margin-top: 15px;
+    padding: 16px;
+    width: 100%;
+  }
+  
+  @media (width<=991px) {
+    .textInput {
+      max-width: 100%;
+      white-space: initial;
+      padding-right: 20px;
+    }
+  }
+  
+  .passwordInput {
+    background-color: #f1f4f9;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    height: 56px;
+    margin-top: 15px;
+    padding: 16px;
+    width: 100%;
+  }
+  
+  @media (width<=991px) {
+    .passwordInput {
+      max-width: 100%;
+    }
+  }
+  
+  .signInButton {
+    background-blend-mode: normal;
+    color: #fff;
+    text-align: center;
+    letter-spacing: -0.07px;
+    background-color: #4880ff;
+    border: none;
+    border-radius: 8px;
+    align-self: center;
+    width: 418px;
+    max-width: 100%;
+    margin-top: 104px;
+    margin-bottom: -26px;
+    padding: 15px 70px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  @media (width<=991px) {
+    .signInButton {
+      margin-top: 40px;
+      margin-bottom: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }  

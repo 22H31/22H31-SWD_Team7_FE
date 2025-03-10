@@ -1,0 +1,25 @@
+.pageContainer {
+    background-color: #f5f6fa;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: Inter, sans-serif;
+  }
+  
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  @media (width<=991px) {
+    .content {
+      padding: 15px;
+    }
+  }
+  
+  .teamMemberGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  

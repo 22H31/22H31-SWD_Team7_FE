@@ -1,0 +1,127 @@
+/* Sidebar chính */
+.sidebar {
+    background-color: #fff;
+    flex-direction: column;
+    width: 240px;
+    height: 100vh;
+    font-family: "Nunito Sans", sans-serif;
+    display: flex;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    padding-bottom: 20px;
+}
+
+/* Logo */
+.logo {
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    display: flex;
+}
+
+.logoImage {
+    width: 93px;
+    height: 84px;
+}
+
+/* Danh sách menu */
+.navItems {
+    flex-grow: 1;
+    flex-direction: column;
+    padding: 0 15px;
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+}
+
+/* Mục menu */
+.navItem, .navItemActive {
+    cursor: pointer;
+    color: #000;  /* Chữ màu đen */
+    letter-spacing: 0.3px;
+    border-radius: 6px;
+    align-items: center;
+    margin: 2px 0;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+}
+
+/* Hover và trạng thái active */
+.navItem:hover, .navItemActive {
+    background-color: #e0e0e0;
+    font-weight: bold;
+}
+
+/* Icon */
+.icon {
+    margin-right: 16px;
+    font-size: 22px;
+    color: #000 !important;  /* Đảm bảo icon có màu đen */
+}
+
+/* Thanh phân cách */
+.divider {
+    opacity: 0.6;
+    background-color: #e0e0e0;
+    height: 1px;
+    margin: 15px 0;
+    border: none;
+}
+
+/* Phần tiêu đề trong sidebar */
+.navSection {
+    color: #202224;
+    letter-spacing: 0.257px;
+    opacity: 0.6;
+    margin-top: 10px;
+    padding: 15px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Văn bản trong menu */
+.navText {
+    color: #000;
+    display: inline-block;
+}
+
+/* Khu vực Logout và Settings */
+.bottomNav {
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.logout {
+    padding: 15px 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logoutIcon {
+    margin-right: 16px;
+    font-size: 22px;
+}
+
+/* Xóa gạch chân mặc định của Link */
+.navLink {
+    text-decoration: none; /* Xóa gạch dưới */
+    color: inherit; /* Giữ màu chữ */
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navItemActive {
+    background-color: #e0e0e0;
+    color: #000;
+    font-weight: bold;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+  }
