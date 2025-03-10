@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Card, Input, Button, List, Spin, Space } from "antd";
+import { Card, Input, Button, Spin, Space } from "antd";
 import { MessageOutlined, CloseOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
+import { marked } from "marked";
 
 export default function GeminiChat() {
   const [messages, setMessages] = useState(
@@ -10,23 +11,39 @@ export default function GeminiChat() {
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [started, setStarted] = useState(false); // Kiểm tra đã nhấn "Bắt đầu" chưa
+  const [started, setStarted] = useState(false);
   const messagesEndRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  const apiKey = "AIzaSyAmyTKACXkQYdiKC6Yw3G4AcfuADdFGXM4"; // Thay bằng API Key của bạn
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+  const API_KEY = "AIzaSyACyPpVgICQ8lgV_siqG07DwJ3-hSdr7fE";
+  useEffect(() => {
+    if (isOpen) {
+      setMessages(JSON.parse(localStorage.getItem("chatHistory")) || []);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
-    localStorage.setItem("chatHistory", JSON.stringify(messages));
-
-    if (started) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-      const chatContainer = messagesEndRef.current?.parentElement;
-      if (chatContainer) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
+    if (messages.length > 0) {
+      localStorage.setItem("chatHistory", JSON.stringify(messages));
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, started]);
+  }, [messages]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      timeoutRef.current = setTimeout(() => {
+        setMessages([]);
+        localStorage.removeItem("chatHistory");
+        setStarted(false);
+      }, 10000 * 6 * 5);
+    } else {
+      clearTimeout(timeoutRef.current);
+    }
+    return () => clearTimeout(timeoutRef.current);
+  }, [isOpen]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -34,49 +51,29 @@ export default function GeminiChat() {
     setMessages(newMessages);
     setInput("");
     setLoading(true);
-
     try {
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ contents: [{ parts: [{ text: input }] }] }),
         }
       );
-
       const data = await response.json();
-      const botReply =
+      const botReply = marked(
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        "Xin lỗi, tôi không hiểu.";
-      setMessages([...newMessages, { sender: "Gemini", text: botReply }]);
+          "Xin lỗi, tôi không hiểu."
+      );
+
+      setMessages([...newMessages, { sender: "Beauty Love", text: botReply }]);
     } catch (error) {
       setMessages([
         ...newMessages,
-        { sender: "Gemini", text: "❌ Lỗi: Không thể kết nối đến AI!" },
+        { sender: "Beauty Love", text: "❌ Lỗi: Không thể kết nối đến AI!" },
       ]);
     }
     setLoading(false);
-  };
-
-  const handleOpenChat = () => {
-    setIsOpen(true);
-    setStarted(false);
-
-    // Hủy bỏ timeout nếu mở lại chat
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  const handleCloseChat = () => {
-    setIsOpen(false);
-
-    // Xóa dữ liệu sau 5 phút
-    timeoutRef.current = setTimeout(() => {
-      setMessages([]);
-      localStorage.removeItem("chatHistory");
-    }, 1 * 60 * 1000);
   };
 
   return (
@@ -90,7 +87,7 @@ export default function GeminiChat() {
           <Card
             style={{
               position: "absolute",
-              bottom: 60,
+              bottom: 50,
               right: 0,
               width: 360,
               boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
@@ -105,7 +102,7 @@ export default function GeminiChat() {
             }
             extra={
               <CloseOutlined
-                onClick={handleCloseChat}
+                onClick={() => setIsOpen(false)}
                 style={{ cursor: "pointer", color: "#888" }}
               />
             }
@@ -127,7 +124,7 @@ export default function GeminiChat() {
                     height: 280,
                     overflowY: "auto",
                     borderRadius: "10px",
-                    padding: "8px",
+                    padding: "5px",
                     marginBottom: "10px",
                     display: "flex",
                     flexDirection: "column",
@@ -138,19 +135,26 @@ export default function GeminiChat() {
                       key={index}
                       style={{
                         maxWidth: "75%",
-                        alignSelf: msg.sender === "You" ? "flex-end" : "flex-start",
-                        backgroundColor: msg.sender === "You" ? "#1890ff" : "#f1f1f1",
+                        alignSelf:
+                          msg.sender === "You" ? "flex-end" : "flex-start",
+                        backgroundColor:
+                          msg.sender === "You" ? "#1890ff" : "#f1f1f1",
                         color: msg.sender === "You" ? "#fff" : "#000",
                         padding: "10px",
                         borderRadius: "10px",
                         marginBottom: "5px",
                       }}
                     >
-                      <strong>{msg.sender}:</strong> {msg.text}
+                      <strong>{msg.sender}:</strong>{" "}
+                      {msg.sender === "Beauty Love" ? (
+                        <p dangerouslySetInnerHTML={{ __html: msg.text }} />
+                      ) : (
+                        msg.text
+                      )}
                     </div>
                   ))}
+                  <div ref={messagesEndRef} />
                 </div>
-
                 {loading && (
                   <Spin
                     style={{
@@ -160,12 +164,7 @@ export default function GeminiChat() {
                     }}
                   />
                 )}
-                <div ref={messagesEndRef} />
-                <Space.Compact
-                  style={{
-                    width: "100%",
-                  }}
-                >
+                <Space.Compact style={{ width: "100%" }}>
                   <Input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -190,7 +189,7 @@ export default function GeminiChat() {
         shape="circle"
         icon={<MessageOutlined />}
         size="large"
-        onClick={handleOpenChat}
+        onClick={handleOpen}
         style={{
           position: "absolute",
           bottom: 0,
