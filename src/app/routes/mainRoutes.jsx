@@ -45,13 +45,13 @@ export default function MainRoutes() {
         <Route path="/checkout" element={<Checkout />} />
 
         <Route path="/admin" element={<AdminLayout />}>
-        <Route path="products" element={<ProductsGrid />} />
-        <Route path="productStock" element={<ProductStock />} />
-        <Route path="teamPage" element={<TeamManage />} />
-        <Route path="brandPage" element={<Brand />} />
-        <Route path="categoryPage" element={<Category />} />
-        <Route path="categoryTitlePage" element={<CategoryTitle />} />
-        <Route path="blog" element={<BlogManage />} />
+            <Route path="products" element={<ProductsGrid />} />
+            <Route path="productStock" element={<ProductStock />} />
+            <Route path="teamPage" element={<TeamManage />} />
+            <Route path="brandPage" element={<Brand />} />
+            <Route path="categoryPage" element={<Category />} />
+            <Route path="categoryTitlePage" element={<CategoryTitle />} />
+            <Route path="blog" element={<BlogManage />} />
         </Route>
 
         {/* Uncomment to handle unknown routes */}
