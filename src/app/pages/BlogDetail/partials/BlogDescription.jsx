@@ -1,10 +1,11 @@
-import { Row, Col, Typography, Card, Image, List } from "antd";
-import { EyeOutlined} from "@ant-design/icons";
+import { EyeOutlined } from "@ant-design/icons";
+import { Card, Col, Image, List, Row, Typography } from "antd";
 import {
   FaFacebookF,
   FaInstagram,
-  FaXTwitter,
   FaLinkedinIn,
+  FaXTwitter,
+  FaRegCalendar,
 } from "react-icons/fa6";
 import "./BlogDescription.css";
 
@@ -74,7 +75,7 @@ const blogData = {
 
 const BlogDescription = () => {
   return (
-    <div className="blog-description" style={{backgroundColor:"#fff"}}>
+    <div className="blog-description" style={{ backgroundColor: "#fff" }}>
       <Row gutter={[32, 32]} justify="center">
         <Col xs={24} md={16}>
           <Card bordered={false}>
@@ -106,14 +107,13 @@ const BlogDescription = () => {
                       width="100%"
                       className="blog-image"
                     />
-
                   </div>
                 )}
                 <Text type="secondary">{item.caption}</Text>
 
                 {item.type === "text" && (
                   <div>
-                    {item.title && <Title level={4}>{item.title}</Title>}
+                    {item.title && <Title level={8}>{item.title}</Title>}
                     <Text className="blog-text">{item.value}</Text>
                   </div>
                 )}
@@ -121,7 +121,7 @@ const BlogDescription = () => {
             ))}
 
             <div className="share">
-              <Text strong>Chia sẻ:</Text>
+              <Text className="share-text">share:</Text>
               <FaFacebookF className="share-icon" />
               <FaInstagram className="share-icon" />
               <FaXTwitter className="share-icon" />
@@ -140,8 +140,17 @@ const BlogDescription = () => {
                     <a href={post.link}>{post.title}</a>
                     <Text
                       type="secondary"
-                      style={{ display: "block", fontSize: "12px" }}
+                      style={{ display: "block", fontSize: "14px", lineHeight:"normal" }}
                     >
+                      <span
+                        style={{
+                          fontWeight: "bold",
+                          textDecoration: "underline",
+                          marginRight:"10px",
+                        }}
+                      >
+                       <FaRegCalendar />
+                      </span>{" "}
                       {post.date}
                     </Text>
                   </div>

@@ -1,0 +1,55 @@
+.discount-code-card {
+    /* width: 412px; */
+    height: 158px;
+    border-radius: 10px;
+    background: #FFF;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .discount-code-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4A2F3A;
+    margin-bottom: 8px;
+  }
+  
+  .discount-input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .discount-input {
+    flex: 1;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background: #F7EFF1;
+
+    font-size: 14px;
+    color: #7A3C50;
+  }
+  
+  .apply-button {
+    background: #C03468;
+    color: white;
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    padding: 0 16px;
+    font-size: 14px;
+    /* font-weight: bold; */
+    cursor: pointer;
+  }
+  
+  .apply-button:hover {
+    background: #A82B5A !important;
+  }
+  
+  .ant-btn{
+    margin-top: 0px;
+  }
