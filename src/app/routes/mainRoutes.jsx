@@ -13,6 +13,7 @@ import Cart from "../pages/cart";
 import CustomerSupport from "../pages/CustomerSupport";
 import FooterComponent from "../layouts/Footer/Footer";
 import { useLocation } from "react-router";
+import Checkout from "../pages/Checkout";
 import GeminiChat from "../AI/GeminiChat";
 
 export default function MainRoutes() {
@@ -33,7 +34,7 @@ export default function MainRoutes() {
         <Route path="/blogDetail" element={<BlogDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/customerSupport" element={<CustomerSupport />} />
-
+        <Route path="/checkout" element={<Checkout />} />
         {/* Uncomment to handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>

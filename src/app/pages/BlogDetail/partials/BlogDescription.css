@@ -15,7 +15,7 @@
 /* Hình ảnh */
 .blog-description .main-image {
   width: 100%;
-  max-height: 400px;
+  max-height: 511px;
   object-fit: cover;
   margin-bottom: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -36,15 +36,30 @@
 
 .blog-description .blog-text {
   width: 100%;
-  font-size: 16px;
   line-height: 1.6;
+  color: #474646;
+
+/* body bài viết báo */
+font-family: Inter;
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 28px; /* 140% */
 }
 
 /* Khu vực chia sẻ */
+.blog-description .share-text {
+  color: #5f5f5f;
+  font-family: Inter;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
 .blog-description .share {
   margin-top: 20px;
-  font-size: 16px;
-  color: #b02a6c;
+  font-size: 25px;
+  color: grey;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -53,26 +68,36 @@
 
 /* Sidebar */
 .blog-description .sidebar {
-  background: #fff;
+  background: rgba(255, 195, 195, 0.26);
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* width: 343px; */
+  height: 550px;
+  flex-shrink: 0;
 }
 
 .blog-description .sidebar .ant-card-head {
-  background: #b02a6c;
-  color: white;
-  text-align: center;
+  background: rgba(255, 195, 195, 0.26);
+  color: var(--en-t, #44353f);
+  text-align: left;
 }
 
 .blog-description .sidebar .ant-list-item {
-  padding: 10px 0;
+  margin: 0 20px;
+  padding: 20px 0;
   border-bottom: 1px solid #eee;
+  color: var(--en-t, #44353f);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+  text-transform: uppercase;
 }
 
 .blog-description .sidebar .ant-list-item a {
-  color: #b02a6c;
-  font-weight: bold;
+  color: var(--en-t, #44353f);
   text-decoration: none;
 }
 

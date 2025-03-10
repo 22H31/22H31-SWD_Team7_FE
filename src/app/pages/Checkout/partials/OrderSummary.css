@@ -1,0 +1,8 @@
+.order-summary-card {
+  /* width: 413px; */
+  height: 597px;
+}
+
+.order-summary-detail{
+  display: flex;
+}

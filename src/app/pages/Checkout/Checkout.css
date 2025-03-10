@@ -1,0 +1,64 @@
+/* Checkout Page Styles */
+.checkout-page {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  background-color: gray;
+  margin-top: 120px;
+  width: 100%;
+  max-width: 1440px;
+  background: #FAF6F6;
+}
+
+/* Custom Card Style */
+.custom-card,
+.payment-card,
+.order-summary-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Shipping Info */
+.custom-card h2 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Form Inputs */
+.ant-form-item label {
+  font-weight: bold;
+  color: #555;
+}
+
+.ant-input,
+.ant-select-selector {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Payment Method */
+.payment-card {
+  margin-top: 20px;
+}
+
+/* Cart Item */
+
+.checkout-button-container {
+margin-top: 10px;
+  justify-self: end;
+}
+
+.checkout-button {
+
+  text-align: right;
+  width: 412px;
+height: 62px;
+flex-shrink: 0;
+border-radius: 8px;
+background: var(--mu-nhn, #C0437F);
+
+}

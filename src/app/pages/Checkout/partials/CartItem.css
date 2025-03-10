@@ -1,0 +1,30 @@
+.cart-item-checkout {
+  margin-top: 20px;
+  height: 398px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: #fff;
+  align-items: center;
+}
+
+.cart-item-checkout h2 {
+  text-align: center;
+  flex-shrink: 0;
+  color: var(--mu-nhn, #c0437f);
+  font-family: Inter;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  /* border-bottom: solid 1px pink; */
+  margin: 20px 
+}
+.cart-item-checkout-ul{
+  border-bottom: solid 1px pink;
+  border-top: solid 1px pink;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
