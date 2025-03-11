@@ -14,21 +14,19 @@ function ProductsGrid() {
   const [imageFiles, setImageFiles] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [variants, setVariants] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     productName: "",
     brandId: "",
     categoryId: "",
     describe: {
       summary: "",
-      describeImg1: "",
       suitableUsers: "",
       solutionsForSkinHairConditions: "",
-      describeImg2: "",
       uses: "",
       outstandingAdvantages: "",
       safetyLevel: "",
-      describeImg3: "",
       preserve: "",
     },
     specifications: {
@@ -40,8 +38,10 @@ function ProductsGrid() {
       scent: "",
     },
     useManual: { step1: "", step2: "", step3: "", step4: "" },
-    variants: [{ productId: "", volume: "", skinType: "", price: "", stockQuantity: "", mainIngredients: "", fullIngredients: "" }] // Ensure variants is initialized properly
-  });
+    variants: [{ productId: "", volume: "", skinType: "", price: "", stockQuantity: "", mainIngredients: "", fullIngredients: "" }]
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     fetch(`${API_URL}/products`)
@@ -61,7 +61,7 @@ function ProductsGrid() {
           setCategories(data.flatMap((cat) => cat.categorys));
         }
       })
-      .catch(() => setCategories([]));
+      .catch(() => setCategories([]));   
 
     fetch(`${API_URL}/productVariant`)
       .then((res) => res.json())
@@ -167,28 +167,81 @@ function ProductsGrid() {
     }
   };
 
+  const handleEditClick = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/products/${id}`);
+      if (!res.ok) throw new Error("Lỗi khi lấy thông tin sản phẩm!");
+      const data = await res.json();
+      setSelectedProduct(data);
+      setFormData({
+        productName: data.productName,
+        brandId: data.brandId,
+        categoryId: data.categoryId,
+        describe: data.describe,
+        specifications: data.specifications,
+        useManual: data.useManual,
+        variants: data.variants,
+      });
+      setProductId(id);
+      setIsEditing(true);
+      setStep(1);
+      setPopupOpen(true);
+    } catch (err) {
+      console.error("Lỗi khi lấy thông tin sản phẩm:", err);
+      alert("Lỗi khi lấy thông tin sản phẩm!");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
+
+    try {
+      const res = await fetch(`${API_URL}/products/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Lỗi khi xóa sản phẩm!");
+      alert("Sản phẩm đã được xóa thành công!");
+      setProducts(products.filter((product) => product.productId !== id));
+    } catch (err) {
+      console.error("Lỗi khi xóa sản phẩm:", err);
+      alert("Lỗi khi xóa sản phẩm!");
+    }
+  };
+
+  const handleAddClick = () => {
+    setFormData(initialFormData);
+    setIsEditing(false);
+    setPopupOpen(true);
+    setStep(1);
+  };
+
   return (
     <section className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.sectionTitle}>Products</h2>
-        <button className={styles.addButton} onClick={() => {
-          setPopupOpen(true);
-          setStep(1);
-        }}>
+        <button className={styles.addButton} onClick={handleAddClick}>
           ➕ Add New Product
         </button>
       </div>
 
       <div className={styles.productsGrid}>
         {products.map((product) => (
-          <ProductCard key={product.productId} name={product.productName} price={product.variants?.[0]?.price || "N/A"} image={product.productAvatar} />
+          <ProductCard
+            key={product.productId}
+            name={product.productName}
+            price={product.variants?.[0]?.price || "N/A"}
+            image={product.productAvatar}
+            onEdit={() => handleEditClick(product.productId)}
+            onDelete={() => handleDelete(product.productId)}
+          />
         ))}
       </div>
 
       {isPopupOpen && (
         <div className={styles.overlay}>
           <div className={styles.popup}>
-            <h2>Thêm Sản Phẩm Mới</h2>
+            <h2>{isEditing ? "Chỉnh sửa sản phẩm" : "Thêm Sản Phẩm Mới"}</h2>
             <button className={styles.closeBtn} onClick={() => setPopupOpen(false)}>✖</button>
 
             {step === 1 && (
@@ -216,14 +269,11 @@ function ProductsGrid() {
                   </select>
 
                   <textarea name="describe.summary" onChange={handleChange} placeholder="Summary" value={formData.describe.summary}></textarea>
-                  <input type="text" name="describe.describeImg1" onChange={handleChange} placeholder="Describe Image 1" value={formData.describe.describeImg1} />
                   <input type="text" name="describe.suitableUsers" onChange={handleChange} placeholder="Suitable Users" value={formData.describe.suitableUsers} />
                   <input type="text" name="describe.solutionsForSkinHairConditions" onChange={handleChange} placeholder="Solutions for Skin/Hair Conditions" value={formData.describe.solutionsForSkinHairConditions} />
-                  <input type="text" name="describe.describeImg2" onChange={handleChange} placeholder="Describe Image 2" value={formData.describe.describeImg2} />
                   <input type="text" name="describe.uses" onChange={handleChange} placeholder="Uses" value={formData.describe.uses} />
                   <input type="text" name="describe.outstandingAdvantages" onChange={handleChange} placeholder="Outstanding Advantages" value={formData.describe.outstandingAdvantages} />
                   <input type="text" name="describe.safetyLevel" onChange={handleChange} placeholder="Safety Level" value={formData.describe.safetyLevel} />
-                  <input type="text" name="describe.describeImg3" onChange={handleChange} placeholder="Describe Image 3" value={formData.describe.describeImg3} />
                   <input type="text" name="describe.preserve" onChange={handleChange} placeholder="Preserve" value={formData.describe.preserve} />
                 </fieldset>
 

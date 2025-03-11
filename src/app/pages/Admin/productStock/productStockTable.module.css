@@ -1,0 +1,58 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table th, .table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #6c757d; /* Màu xám đậm */
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Màu xám nhạt */
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e9ecef; /* Màu xám nhạt hơn khi hover */
+  }
+  
+  .table td {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .table td img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .table thead th:first-child {
+    border-top-left-radius: 8px;
+  }
+  
+  .table thead th:last-child {
+    border-top-right-radius: 8px;
+  }
+  
+  .table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+  }
+  
+  .table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+  }

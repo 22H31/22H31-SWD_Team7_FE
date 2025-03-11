@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import styles from "./blogPage.module.css";
 
@@ -10,6 +9,7 @@ function BlogPage() {
   const [step, setStep] = useState(1);
   const [blogId, setBlogId] = useState(null);
   const [imageFiles, setImageFiles] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ title: "", subTitle: "", content1: "", content2: "" });
 
   useEffect(() => {
@@ -88,19 +88,30 @@ function BlogPage() {
     }
   };
 
-  const handleEditBlog = (blog) => {
-    setFormData({
-      title: blog.title,
-      subTitle: blog.subtitle,
-      content1: blog.content1,
-      content2: blog.content2,
-    });
-    setBlogId(blog.blogId); // Sử dụng đúng trường blogId từ dữ liệu blog
-    setPopupOpen(true);
-    setStep(1);
+  const handleEditBlog = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/${id}`);
+      if (!res.ok) throw new Error("Lỗi khi lấy thông tin blog!");
+      const data = await res.json();
+      setFormData({
+        title: data.title,
+        subTitle: data.subTitle,
+        content1: data.content1,
+        content2: data.content2,
+      });
+      setBlogId(id);
+      setIsEditing(true);
+      setStep(1);
+      setPopupOpen(true);
+    } catch (err) {
+      console.error("Lỗi khi lấy thông tin blog:", err);
+      alert("Lỗi khi lấy thông tin blog!");
+    }
   };
 
   const handleDeleteBlog = async (id) => {
+    if (!window.confirm("Bạn có chắc muốn xóa blog này?")) return;
+
     try {
       const res = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
@@ -111,26 +122,15 @@ function BlogPage() {
       setBlogs(blogs.filter((blog) => blog.blogId !== id));
     } catch (err) {
       console.error("Lỗi khi xóa blog:", err);
-      alert("Xóa blog thất bại!");
+      alert("Lỗi khi xóa blog!");
     }
   };
 
-  const handleUpdateBlog = async () => {
-    try {
-      const res = await fetch(`${API_URL}/${blogId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) throw new Error("Lỗi khi cập nhật blog!");
-      alert("Blog đã được cập nhật thành công!");
-      setPopupOpen(false);
-      setBlogs(blogs.map((blog) => (blog.blogId === blogId ? { ...blog, ...formData } : blog)));
-    } catch (err) {
-      console.error("Lỗi khi cập nhật blog:", err);
-      alert("Cập nhật blog thất bại!");
-    }
+  const handleAddClick = () => {
+    setFormData({ title: "", subTitle: "", content1: "", content2: "" });
+    setIsEditing(false);
+    setPopupOpen(true);
+    setStep(1);
   };
 
   return (
@@ -138,12 +138,7 @@ function BlogPage() {
       <div className={styles.header}>
         <h1>Blog Management</h1>
         <input type="text" placeholder="Search blogs..." className={styles.searchInput} />
-        <button className={styles.addButton} onClick={() => {
-          setPopupOpen(true);
-          setStep(1);
-          setFormData({ title: "", subTitle: "", content1: "", content2: "" });
-          setBlogId(null);
-        }}>
+        <button className={styles.addButton} onClick={handleAddClick}>
           ➕ Add New Blog
         </button>
       </div>
@@ -154,7 +149,7 @@ function BlogPage() {
             <div key={blog.blogId} className={styles.blogItem}>
               <h3>{blog.title}</h3>
               <p>{blog.content1.substring(0, 100)}...</p>
-              <button onClick={() => handleEditBlog(blog)}>Edit</button>
+              <button onClick={() => handleEditBlog(blog.blogId)}>Edit</button>
               <button onClick={() => handleDeleteBlog(blog.blogId)}>Delete</button>
             </div>
           ))
@@ -166,7 +161,7 @@ function BlogPage() {
       {isPopupOpen && (
         <div className={styles.overlay}>
           <div className={styles.formContainer}>
-            <h2>{blogId ? "Edit Blog" : "Add Blog"}</h2>
+            <h2>{isEditing ? "Edit Blog" : "Add Blog"}</h2>
             <button className={styles.closeBtn} onClick={() => setPopupOpen(false)}>✖</button>
 
             {step === 1 && (
@@ -177,7 +172,7 @@ function BlogPage() {
                   <textarea name="content1" value={formData.content1} onChange={handleChange} placeholder="Blog Content 1" className={styles.textArea} />
                   <textarea name="content2" value={formData.content2} onChange={handleChange} placeholder="Blog Content 2" className={styles.textArea} />
                 </div>
-                <button onClick={blogId ? handleUpdateBlog : handleNextStep} className={styles.submitButton}>{blogId ? "Update" : "Next"}</button>
+                <button onClick={isEditing ? handleNextStep : handleNextStep} className={styles.submitButton}>{isEditing ? "Update" : "Next"}</button>
               </>
             )}
 
