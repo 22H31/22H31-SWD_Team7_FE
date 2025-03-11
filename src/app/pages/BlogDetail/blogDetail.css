@@ -3,7 +3,7 @@
     max-width: 1400px;
     background-color: #f8f8f8;
     width: 100%;
-    height: auto;
+    /* min-height: 400vh; */
     padding: 0;
     border: none;
   }
