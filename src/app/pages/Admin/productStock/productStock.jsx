@@ -4,7 +4,8 @@ import styles from "../productStock/productStock.module.css";
 import ProductStockTable from "../productStock/productStockTable";
 import Pagination from "../productStock/pagination";
 
-const API_URL = "https://beteam720250214143214.azurewebsites.net/api/products";
+const PRODUCT_API_URL = "https://beteam720250214143214.azurewebsites.net/api/products";
+const VARIANT_API_URL = "https://beteam720250214143214.azurewebsites.net/api/productVariant";
 
 function ProductStock() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,23 +13,39 @@ function ProductStock() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
-  // Fetch danh sách sản phẩm từ API
+  // Fetch danh sách sản phẩm và biến thể từ API
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        // Lọc dữ liệu cần thiết
-        const formattedData = data.map((item) => ({
-          id: item.productId,
-          image: item.productAvatar || "https://placehold.co/60x60/d8d8d8/d8d8d8",
-          name: item.productName,
-          category: item.categoryId || "Unknown Category",
-          price: `$${item.variants?.[0]?.price?.toFixed(2) || "0.00"}`,
-          piece: item.variants?.[0]?.stockQuantity || "N/A",
-        }));
+    const fetchProducts = async () => {
+      try {
+        const productRes = await fetch(PRODUCT_API_URL);
+        const productData = await productRes.json();
+        const variantRes = await fetch(VARIANT_API_URL);
+        const variantData = await variantRes.json();
+
+        // Kiểm tra dữ liệu trước khi sử dụng
+        if (!Array.isArray(productData.products) || !Array.isArray(variantData)) {
+          throw new Error("Dữ liệu từ API không đúng định dạng");
+        }
+
+        // Kết hợp dữ liệu từ hai API
+        const formattedData = variantData.map((variant) => {
+          const product = productData.products.find((p) => p.productId === variant.productId);
+          return {
+            id: variant.productId,
+            name: product?.productName || "Unknown Product",
+            brand: product?.brandName || "Unknown Brand",
+            stockQuantity: variant.stockQuantity || "N/A",
+            price: `$${variant.price?.toFixed(2) || "0.00"}`,
+          };
+        });
+
         setProducts(formattedData);
-      })
-      .catch((err) => console.error("Lỗi khi lấy dữ liệu sản phẩm:", err));
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu sản phẩm:", err);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   // Xử lý tìm kiếm
