@@ -1,60 +1,75 @@
-// import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./BannerBlog.css";
-import { useNavigate } from "react-router";
-const blogPosts = [
-  {
-    id: 1,
-    image: "https://th.bing.com/th/id/R.f88bab41821076740c6136693141c5a0?rik=ugpXHKx6515Pcw&pid=ImgRaw&r=0",
-    date: "20 tháng 6, 2024",
-    title: "Mỹ phẩm hữu cơ là gì?",
-    subtitle: "Top 5 mỹ phẩm hữu cơ được yêu thích nhất",
-    description:
-      "Sử dụng các loại mỹ phẩm hữu cơ đã trở thành một trào lưu được nhiều người đón nhận bởi các cam kết về sức khỏe và bảo vệ môi trường. Đây cũng là một trong những xu hướng làm đẹp mới được nhiều tín đồ mê skincare..",
-  },
-  {
-    "id": 2,
-    "image": "https://th.bing.com/th/id/R.2dc35bf027e1b6c3d331d9a6e9842fca?rik=Kec28%2bsbvV3%2fcA&pid=ImgRaw&r=0",
-    "date": "15 tháng 7, 2024",
-    "title": "Chọn kem chống nắng nào?",
-    "subtitle": "Lựa chọn kem chống nắng phù hợp cho bạn",
-    "description": "Chọn kem chống nắng không chỉ đơn giản là tìm một sản phẩm có chỉ số SPF cao. Việc hiểu rõ loại da của bạn, thành phần trong kem và cách sử dụng đúng sẽ giúp bảo vệ làn da tối ưu trước tác hại của tia UV, ..."
-  }
-  
-  // Thêm các bài viết khác nếu cần
-];
 
 export default function BannerBlog() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
+      .then((response) => {
+        setBlogs(response.data.slice(0, 4)); // Chỉ lấy 4 bài blog đầu tiên
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching blogs:", error);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="banner-container">
-      <Swiper
-        modules={[Pagination, Autoplay]}
-        spaceBetween={20}
-        slidesPerView={1}
-        autoplay={{ delay: 5000 }}
-        pagination={{ clickable: true, el: ".custom-pagination" }}
-      >
-        {blogPosts.map((post) => (
-          <SwiperSlide key={post.id}>
-            <div className="blog-slide">
-              <img src={post.image} alt={post.title} className="blog-image" />
-              <div className="blog-content">
-                <p className="blog-date">{post.date}</p>
-                <h2 className="blog-title">{post.title}</h2>
-                <h3 className="blog-subtitle">{post.subtitle}</h3>
-                <p className="blog-description">{post.description}</p>
-                <button className="blog-button" key="/blogDetail" onClick={() => navigate("/blogDetail")}>  Xem thêm</button>
+      {loading ? (
+        <p>Đang tải dữ liệu...</p>
+      ) : (
+        <Swiper
+          modules={[Pagination, Autoplay]}
+          spaceBetween={20}
+          slidesPerView={1}
+          autoplay={{ delay: 5000 }}
+          pagination={{ clickable: true, el: ".custom-pagination" }}
+        >
+          {blogs.map((post) => (
+            <SwiperSlide key={post.blogId}>
+              <div className="blog-slide">
+                <img
+                  src={post.avartarBlogUrl || "https://via.placeholder.com/600"}
+                  alt={post.title}
+                  className="blog-image"
+                />
+                <div className="blog-content">
+                  <p className="blog-date">
+                    {new Date(post.createdAt).toLocaleDateString("vi-VN")}
+                  </p>
+                  <h2 className="blog-title">{post.title}</h2>
+                  <h3 className="blog-subtitle">
+                    {post.subtitle || "Bài viết về chăm sóc da"}
+                  </h3>
+                  <p className="blog-description">
+                    {post.content1.split(" ").slice(0, 110).join(" ")}...
+                  </p>
+                  <button
+                    className="blog-button"
+                    onClick={() => navigate(`/blog/${post.blogId}`)}
+                  >
+                    Xem thêm
+                  </button>
+                </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
 
-      {/* Pagination được đưa ra ngoài */}
+      {/* Pagination */}
       <div className="custom-pagination"></div>
     </div>
   );

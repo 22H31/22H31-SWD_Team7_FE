@@ -11,7 +11,14 @@
   font-size: 14px;
   color: #555;
 }
-
+.blog-description .blogdescription-subtitle{
+    display: inline;
+    font-size: 18px;
+    font-weight: normal;
+    color: gray;
+    margin-left: 10px; /* Giữ khoảng cách với title */
+  
+}
 /* Hình ảnh */
 .blog-description .main-image {
   width: 100%;
@@ -79,20 +86,20 @@ line-height: 28px; /* 140% */
 
 .blog-description .sidebar .ant-card-head {
   background: rgba(255, 195, 195, 0.26);
-  color: var(--en-t, #44353f);
+  color: var(--mu-nhn, #C0437F);
   text-align: left;
 }
 
 .blog-description .sidebar .ant-list-item {
   margin: 0 20px;
   padding: 20px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid pink;
   color: var(--en-t, #44353f);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
-  line-height: 30px; /* 125% */
+  line-height: 30px; 
   text-transform: uppercase;
 }
 
