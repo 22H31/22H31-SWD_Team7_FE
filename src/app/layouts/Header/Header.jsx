@@ -11,13 +11,14 @@ import { Badge, Button, Input, Layout, Space } from "antd";
 import logo from "../../assets/logo.png";
 import "./index.css";
 import NavigationComponent from "../NavigationBar/NavigationBar";
+import { APIGetUserId } from "../../api/api";
 
 const { Header } = Layout;
 const { Search } = Input;
 
 const HeaderComponent = () => {
   const navigate = useNavigate();
-  
+
   // Sử dụng useState để quản lý trạng thái đăng nhập
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
@@ -40,15 +41,23 @@ const HeaderComponent = () => {
   };
 
   const handleUserClick = () => {
-    if (isAuthenticated) {
+    const userID = localStorage.getItem("userID");
+    if (!userID) {
+      console.error("Không tìm thấy userID!");
+      return;
+    }
+    console.log(userID);
+    if (userID) {
       navigate("/profile");
     } else {
       navigate("/login");
     }
   };
+
   const handleLogout = () => {
     localStorage.removeItem("token"); // Xóa token khỏi localStorage
     window.location.reload(); // Refresh trang để cập nhật trạng thái đăng nhập
+    navigate("/");
   };
   return (
     <>
@@ -97,8 +106,11 @@ const HeaderComponent = () => {
                 <Badge count={0} showZero>
                   <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
                 </Badge>
-                <Badge >
-                <LoginOutlined onClick={handleLogout} style={{ cursor: "pointer" }} />
+                <Badge>
+                  <LoginOutlined
+                    onClick={handleLogout}
+                    style={{ cursor: "pointer" }}
+                  />
                 </Badge>
               </Space>
             </div>

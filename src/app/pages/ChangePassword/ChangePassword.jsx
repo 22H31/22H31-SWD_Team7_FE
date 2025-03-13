@@ -5,33 +5,52 @@ import { APIChangePassword } from "../../api/api";
 export default function ChangePassword() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const token = localStorage.getItem("token");
+  const onFinish = async (user) => {
+    setIsLoading(true);
+    console.log(token);
 
-  const onFinish = (user) => {
-    setIsLoading(true); // Bật trạng thái loading
-  console.log('1');
-    APIChangePassword(user.oldPassword, user.currentPassword, user.confirmPassword)
-      .then((rs) => {
-        console.log(user);
-        if (rs?.status === 200) {
-          // message.success("Đổi mật khẩu thành công!"); // Thông báo thành công
-          console.log("Mật khẩu đã được thay đổi:", rs.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Lỗi khi đổi mật khẩu:", error);
-        setErrorMessage(error.response?.data?.message || "Có lỗi xảy ra!");
-      })
-      .finally(() => {
-        setIsLoading(false); // Tắt loading
-      });
-   
+    try {
+      
+      if (!token) {
+        message.error("Bạn chưa đăng nhập!");
+        setIsLoading(false);
+        return;
+      }
+
+      const rs = await APIChangePassword(
+        user.currentPassword,
+        user.newPassword,
+        user.newPasswordConfirmation
+      );
+
+      if (rs?.status === 200) {
+        console.log(
+          "Mật khẩu đã được thay đổi:",
+          rs.data || "Không có dữ liệu trả về"
+        );
+        message.success("Đổi mật khẩu thành công!");
+      }
+    } catch (error) {
+      console.error("Lỗi khi đổi mật khẩu:", error);
+      if (error.response?.status === 403) {
+        message.error(
+          "Bạn không có quyền đổi mật khẩu! Vui lòng đăng nhập lại."
+        );
+      } else {
+        message.error(error.response?.data?.message || "Có lỗi xảy ra!");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <>
       <div style={{ margin: "10px" }}>
         <Form onFinish={onFinish} layout="vertical">
           <Form.Item
-            name="oldPassword"
+            name="currentPassword"
             rules={[{ required: true, message: "Vui lòng nhập mật khẩu cũ!" }]}
           >
             <Input size="large" placeholder="Mật khẩu cũ" />
@@ -45,7 +64,7 @@ export default function ChangePassword() {
           >
             <Form.Item
               style={{ flex: 1 }}
-              name="currentPassword"
+              name="newPassword"
               rules={[{ required: true, message: "Vui lòng nhập Mật khẩu!" }]}
             >
               <Input
@@ -57,13 +76,13 @@ export default function ChangePassword() {
             </Form.Item>
             <Form.Item
               style={{ flex: 1 }}
-              name="confirmPassword"
+              name="newPasswordConfirmation"
               dependencies={["password"]}
               rules={[
                 { required: true, message: "Vui lòng xác nhận Mật khẩu!" },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue("currentPassword") === value) {
+                    if (!value || getFieldValue("newPassword") === value) {
                       return Promise.resolve();
                     }
                     return Promise.reject(

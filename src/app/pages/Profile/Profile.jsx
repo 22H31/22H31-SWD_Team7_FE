@@ -9,6 +9,7 @@ import ChangePassword from "../ChangePassword/ChangePassword";
 import Address from "../Address/Address";
 import Orders from "../Orders/Orders";
 import Favorites from "../Favorites/Favorites";
+import { APIGetUserId } from "../../api/api";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -22,23 +23,9 @@ const Profile = () => {
     4: <Orders />,
     5: <Favorites />,
   };
+  
 
-  const getProfile = useCallback(async () => {
-    try {
-      const response = await fetch("/api/profile");
-      if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu");
-
-      const data = await response.json();
-      setProfile(data);
-    } catch (error) {
-      console.error("Lỗi khi tải hồ sơ:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
-
+ 
   const items = [
     { key: "1", label: "Thông tin" },
     { key: "2", label: "Thay đổi mật khẩu" },
@@ -54,7 +41,7 @@ const Profile = () => {
   return (
     <PageLayOut>
       <Layout className="layoutStyle">
-        <Sider width="250"  className="siderStyle">
+        <Sider width="250" className="siderStyle">
           <h2
             style={{
               color: "#333",
@@ -74,13 +61,13 @@ const Profile = () => {
             items={items}
           />
         </Sider>
-          <Content className="contentStyle">
-            <h3 style={{ height: "100px" }}>
-              {" "}
-              {items.find((item) => item.key === selectedKey)?.label}
-            </h3>
-            <p>{contentData[selectedKey]}</p>
-          </Content>
+        <Content className="contentStyle">
+          <h3 style={{ height: "100px" }}>
+            {" "}
+            {items.find((item) => item.key === selectedKey)?.label}
+          </h3>
+          <p>{contentData[selectedKey]}</p>
+        </Content>
       </Layout>
     </PageLayOut>
   );

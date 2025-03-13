@@ -16,10 +16,14 @@ export default function Login() {
         if (rs?.status === 200) {
           console.log(user,"1");
           console.log(rs.data.email,"tw");
-          localStorage.setItem("token", rs.data.token); // Lưu token vào localStorage
+          console.log(rs.data.jwtToken);
+          localStorage.setItem("token",rs.data.jwtToken); // Lưu token vào localStorage
           localStorage.setItem("user", JSON.stringify(rs.data));
+          localStorage.setItem("userID", rs.data.id);
           // localStorage.setItem("user", JSON.stringify({ email: "test@example.com", firstName: "A", lastName: "B" }));
           console.log(localStorage.getItem("user"));
+          console.log(localStorage.getItem("userID"));
+          console.log(localStorage.getItem("token"));
         
           // const information = JSON.parse(localStorage.getItem("user"));
           navigate("/");
