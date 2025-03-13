@@ -1,3 +1,10 @@
 /* .blog-page{
     background-color: #fffbfb;
 } */
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Chiếm toàn bộ chiều cao màn hình */
+  }

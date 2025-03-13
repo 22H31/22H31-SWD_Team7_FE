@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { Spin } from "antd"; // Thêm Spin từ Ant Design
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -16,7 +17,9 @@ export default function BannerBlog() {
     axios
       .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
       .then((response) => {
-        setBlogs(response.data.slice(0, 4)); // Chỉ lấy 4 bài blog đầu tiên
+        // Xáo trộn mảng và lấy 4 bài blog ngẫu nhiên
+        const shuffledBlogs = response.data.sort(() => Math.random() - 0.5).slice(0, 4);
+        setBlogs(shuffledBlogs);
         setLoading(false);
       })
       .catch((error) => {
@@ -28,7 +31,9 @@ export default function BannerBlog() {
   return (
     <div className="banner-container">
       {loading ? (
-        <p>Đang tải dữ liệu...</p>
+        <div className="loading-container">
+          <Spin size="large" />
+        </div>
       ) : (
         <Swiper
           modules={[Pagination, Autoplay]}
@@ -47,11 +52,11 @@ export default function BannerBlog() {
                 />
                 <div className="blog-content">
                   <p className="blog-date">
-                    {new Date(post.createdAt).toLocaleDateString("vi-VN")}
+                    {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
                   </p>
                   <h2 className="blog-title">{post.title}</h2>
                   <h3 className="blog-subtitle">
-                    {post.subtitle || "Bài viết về chăm sóc da"}
+                    {post.subTitle || "Bài viết về chăm sóc da"}
                   </h3>
                   <p className="blog-description">
                     {post.content1.split(" ").slice(0, 110).join(" ")}...

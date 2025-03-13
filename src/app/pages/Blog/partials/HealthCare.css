@@ -63,18 +63,30 @@
     font-weight: 700;
     line-height: normal;
     text-transform: uppercase;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   /* Mô tả ngắn */
   .healthcare-description {
+    width: 413px;
     color: #474646;
     font-family: Inter;
     font-size: 20px;
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-    width: 413px;
     margin-bottom: 10px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Giới hạn 3 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   /* Phần footer chứa ngày đăng và lượt xem */

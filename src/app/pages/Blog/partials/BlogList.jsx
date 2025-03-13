@@ -1,11 +1,11 @@
-import { Button, Card, Col, Pagination, Row, Tag } from "antd";
+import { Button, Card, Col, Pagination, Row, Spin, Tag } from "antd"; // Thêm Spin từ Ant Design
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Thêm useNavigate
+import { useNavigate } from "react-router-dom";
 import "./Bloglist.css";
 
 const Bloglist = () => {
-  const navigate = useNavigate(); // Sử dụng useNavigate
+  const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +15,13 @@ const Bloglist = () => {
     axios
       .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
       .then((response) => {
-        setBlogs(response.data);
+        // Sắp xếp bài blog theo thứ tự mới nhất lên đầu
+        const sortedBlogs = response.data.sort((a, b) => {
+          const dateA = new Date(a.createdAt);
+          const dateB = new Date(b.createdAt);
+          return dateB - dateA; // Sắp xếp giảm dần (mới nhất lên đầu)
+        });
+        setBlogs(sortedBlogs);
         setLoading(false);
       })
       .catch((error) => {
@@ -34,7 +40,9 @@ const Bloglist = () => {
       <h2 className="Bloglist-header">Khám Phá Ngay</h2>
 
       {loading ? (
-        <p>Đang tải dữ liệu...</p>
+        <div className="loading-container">
+          <Spin size="large" />
+        </div>
       ) : (
         paginatedBlogs.map((post) => (
           <Card key={post.blogId} className="Bloglist-card">
@@ -49,7 +57,7 @@ const Bloglist = () => {
               </Col>
               <Col xs={24} md={16} className="Bloglist-content">
                 <p className="Bloglist-date">
-                  {new Date(post.createdAt).toLocaleDateString("vi-VN")}
+                  {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
                 </p>
                 <h2
                   className="Bloglist-title"
@@ -59,7 +67,7 @@ const Bloglist = () => {
                   {post.title}
                 </h2>
                 <h3 className="Bloglist-subtitle">
-                  {post.subtitle || "Subtitle mẫu để kiểm tra giao diện"}
+                  {post.subTitle || "Subtitle mẫu để kiểm tra giao diện"}
                 </h3>
                 <p className="Bloglist-description">{post.content1}</p>
                 <div className="Bloglist-tags">
@@ -70,7 +78,7 @@ const Bloglist = () => {
                 <Button
                   type="primary"
                   className="Bloglist-button"
-                  onClick={() => navigate(`/blog/${post.blogId}`)} 
+                  onClick={() => navigate(`/blog/${post.blogId}`)}
                 >
                   Xem thêm
                 </Button>

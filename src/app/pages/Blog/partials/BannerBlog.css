@@ -27,6 +27,7 @@
   width: 627.509px;
   height: 361px;
   flex-shrink: 0;
+  object-fit: cover;
   border-radius: 8px;
   background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
@@ -95,7 +96,7 @@
 
   /* Cho phép hiển thị 5 dòng, tự động thêm "..." nếu nội dung quá dài */
   display: -webkit-box;
-  -webkit-line-clamp: 5; 
+  /* -webkit-line-clamp: 5;  */
   -webkit-box-orient: vertical;
 }
 
