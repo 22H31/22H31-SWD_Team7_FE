@@ -6,12 +6,32 @@
   margin-bottom: 15px;
 }
 
-.blog-description .blog-path,
-.blog-description .author-info {
-  font-size: 14px;
-  color: #555;
-}
 
+.blogdescription-title {
+  display: inline;
+  font-family: Inter;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.blog-description .blogdescription-subtitle {
+  display: inline;
+  color: #1f1f1f;
+  font-family: Inter;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.blog-path {
+  color: var(--mu-nhn, #c0437f);
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 155.556% */
+}
 /* Hình ảnh */
 .blog-description .main-image {
   width: 100%;
@@ -25,7 +45,12 @@
   width: 100%;
   text-align: center;
 }
-
+.additional-image {
+  display: block;
+  /* border-radius: 8px; */
+  max-height: 500px;
+  object-fit: cover;
+}
 /* Nội dung */
 .blog-description .content-item {
   display: flex;
@@ -36,15 +61,12 @@
 
 .blog-description .blog-text {
   width: 100%;
-  line-height: 1.6;
   color: #474646;
-
-/* body bài viết báo */
-font-family: Inter;
-font-size: 20px;
-font-style: normal;
-font-weight: 400;
-line-height: 28px; /* 140% */
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 140% */
 }
 
 /* Khu vực chia sẻ */
@@ -71,29 +93,33 @@ line-height: 28px; /* 140% */
   background: rgba(255, 195, 195, 0.26);
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /* width: 343px; */
   height: 550px;
-  flex-shrink: 0;
 }
 
 .blog-description .sidebar .ant-card-head {
   background: rgba(255, 195, 195, 0.26);
-  color: var(--en-t, #44353f);
+  color: var(--mu-nhn, #c0437f);
   text-align: left;
 }
 
 .blog-description .sidebar .ant-list-item {
   margin: 0 20px;
-  padding: 20px 0;
-  border-bottom: 1px solid #eee;
+  padding: 25px 0;
+  border: none;
+  font-family: Inter;
+  width: 420px;
   color: var(--en-t, #44353f);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
-  line-height: 30px; /* 125% */
+  line-height: 20px; /* 125% */
   text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-start;
 }
 
 .blog-description .sidebar .ant-list-item a {
@@ -118,4 +144,30 @@ line-height: 28px; /* 140% */
 .blog-description .ant-card-body {
   padding: 0 !important;
   border-radius: 0 !important;
+}
+
+.blog-link {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.blog-link:hover {
+  color: #ff4081; /* Màu hồng nhạt khi hover */
+}
+
+.blog-date {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #00000080;
+  display: flex;
+  gap: 5px;
+}
+
+.calendar-icon {
+  color: #00000080;
 }

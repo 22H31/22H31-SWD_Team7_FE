@@ -4,13 +4,20 @@
   grid-template-columns: 2fr 1fr;
   gap: 20px;
   padding: 20px;
-  background-color: gray;
   margin-top: 120px;
   width: 100%;
-  max-width: 1440px;
+  max-width: 1400px;
   background: #FAF6F6;
 }
 
+.shipping-title{
+  color: var(--en-t, #44353F);
+font-family: Inter;
+font-size: 40px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+}
 /* Custom Card Style */
 .custom-card,
 .payment-card,
@@ -18,7 +25,6 @@
   background: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Shipping Info */
@@ -36,29 +42,65 @@
 
 .ant-input,
 .ant-select-selector {
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid #DFE1E3; 
+  background: #FFF;
 }
 
 /* Payment Method */
-.payment-card {
-  margin-top: 20px;
+.payment-container {
+  /* width:  */
+  height: 476px;
 }
 
-/* Cart Item */
+.payment-title {
+  margin: 30px 0px;
+  color: var(--en-t, #44353f);
+  font-family: Inter;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
 
+.payment-card {
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.card-info {
+  display: flex;
+  gap: 20px;
+}
+
+.half-width {
+  flex: 1;
+}
+
+.save-button {
+  background-color: #d63384;
+  border: none;
+  color: white;
+}
+.save-button:hover {
+  background-color: #b0226a !important;
+}
+
+/* checkout buttonbutton */
 .checkout-button-container {
-margin-top: 10px;
-  justify-self: end;
+  margin-top: 10px;
 }
 
 .checkout-button {
-
-  text-align: right;
-  width: 412px;
-height: 62px;
-flex-shrink: 0;
-border-radius: 8px;
-background: var(--mu-nhn, #C0437F);
-
+  height: 62px;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  background: var(--mu-nhn, #c0437f);
+  color: #FFF;
+}
+.checkout-button:hover {
+  background-color: #c0437f !important;
+  color: #FFF !important;
 }

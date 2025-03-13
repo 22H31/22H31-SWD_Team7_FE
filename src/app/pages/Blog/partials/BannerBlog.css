@@ -10,7 +10,7 @@
   margin-top: 80px;
 }
 
-.blog-slide {
+.banner-container .blog-slide {
   margin-top: 80px;
   display: flex;
   align-items: center;
@@ -23,28 +23,27 @@
   overflow: hidden;
 }
 
-.blog-image {
+.banner-container .blog-image {
   width: 627.509px;
   height: 361px;
   flex-shrink: 0;
+  object-fit: cover;
   border-radius: 8px;
   background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
 
-.blog-content {
+.banner-container .blog-content {
   width: 60%;
   padding: 20px;
   word-wrap: break-word;
 
 }
 
-.blog-date {
+.banner-container .blog-date {
   width: 159.259px;
   height: 22.165px;
   flex-shrink: 0;
   color: var(--Color-3, #847a7a);
-
-  /* body 2 */
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -52,7 +51,7 @@
   line-height: 24px; /* 150% */
 }
 
-.blog-title {
+.banner-container .blog-title {
   overflow: hidden;
   max-width: 500px;
   width: 500px;
@@ -68,7 +67,7 @@
   line-height: 60px; /* 166.667% */
 }
 
-.blog-subtitle {
+.banner-container .blog-subtitle {
   overflow: hidden;
   max-width: 600px;
   width: 625.511px;
@@ -84,21 +83,24 @@
   line-height: normal;
 }
 
-.blog-description {
+.banner-container .blog-description {
   width: 545.881px;
-  height: 112px;
-  flex-shrink: 0;
+  max-height: 140px; /* Tăng chiều cao để hiển thị nhiều nội dung hơn */
+  overflow: hidden;
   color: var(--en-t, #44353F);
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 155.556% */
 
-/* body */
-font-family: Inter;
-font-size: 18px;
-font-style: normal;
-font-weight: 400;
-line-height: 28px; /* 155.556% */
+  /* Cho phép hiển thị 5 dòng, tự động thêm "..." nếu nội dung quá dài */
+  display: -webkit-box;
+  /* -webkit-line-clamp: 5;  */
+  -webkit-box-orient: vertical;
 }
 
-.blog-button {
+.banner-container .blog-button {
   display: flex;
   width: 167.55px;
   height: 44px;
@@ -112,6 +114,7 @@ line-height: 28px; /* 155.556% */
   background: var(--mu-nhn, #C0437F);
   border: none;
   color: white;
+  margin-top: 10px;
 }
 
 .blog-button:hover {

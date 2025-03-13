@@ -1,18 +1,18 @@
 import React from "react";
 import styles from "./ProductCard.module.css";
 
-function ProductCard({ name, price, image, onEdit, onDelete }) {
+const ProductCard = ({ name, price, image, onEdit, onDelete }) => {
   return (
-    <article className={styles.productCard}>
-      <img src={image} alt={name} className={styles.productImage} />
-      <div className={styles.productInfo}>
+    <div className={styles.card}>
+      <img src={image} alt={name} className={styles.image} />
+      <div className={styles.details}>
         <h3>{name}</h3>
-        <p>{price}</p>
-        <button onClick={onEdit}>✏️ Edit</button>
-        <button onClick={onDelete}>❌ Delete</button>
+        <p>{price} VND</p>
+        <button onClick={onEdit} className={styles.editButton}>Edit</button>
+        <button onClick={onDelete} className={styles.deleteButton}>Delete</button>
       </div>
-    </article>
+    </div>
   );
-}
+};
 
 export default ProductCard;

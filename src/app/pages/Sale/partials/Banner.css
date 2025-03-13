@@ -1,7 +1,6 @@
-
 .banner {
   width: 100%;
-  height: 515px; 
+  height: 515px;
   background: url("/src/app/assets/bannerSale.png") no-repeat center center;
   background-size: cover;
   display: flex;
@@ -10,13 +9,13 @@
   text-align: left;
   padding: 0 10%;
   margin-top: 50px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 /* Giới hạn phạm vi nội dung banner */
 .banner-content {
   max-width: 600px;
-  color: #1A202C;
+  color: #1a202c;
   text-align: left;
 }
 
@@ -25,10 +24,11 @@
   font-size: 53px;
   font-weight: 800;
   line-height: 80px;
+  text-align: left;
 }
 
 .banner-highlight {
-  color: #C0437F;
+  color: #c0437f;
 }
 
 .banner-text {
@@ -43,7 +43,7 @@
   height: 44px;
   padding: 12px 48px;
   border-radius: 8px;
-  background: #C0437F;
+  background: #c0437f;
   color: white;
   font-size: 18px;
   font-weight: bold;
@@ -81,7 +81,7 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: #C0437F !important;
+  background: #c0437f !important;
   color: white !important;
   font-size: 14px !important;
   display: flex;
@@ -92,6 +92,6 @@
 
 .banner-span {
   font-size: 18px;
-  color: #44353F;
+  color: #44353f;
   margin-left: 12px;
 }

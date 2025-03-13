@@ -1,27 +1,21 @@
-import { Button, Card, Col, Pagination, Row, Spin, Tag } from "antd"; // Thêm Spin từ Ant Design
+import { Button, Card, Col, Row, Tag } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Bloglist.css";
+import { useNavigate } from "react-router-dom"; // Thêm useNavigate
+import "./BlogHomePage.css";
 
-const Bloglist = () => {
-  const navigate = useNavigate();
+const BlogHomePage = () => {
+  const navigate = useNavigate(); // Sử dụng useNavigate
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 3;
+  const [currentPage] = useState(1);
+  const pageSize = 1;
 
   useEffect(() => {
     axios
       .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
       .then((response) => {
-        // Sắp xếp bài blog theo thứ tự mới nhất lên đầu
-        const sortedBlogs = response.data.sort((a, b) => {
-          const dateA = new Date(a.createdAt);
-          const dateB = new Date(b.createdAt);
-          return dateB - dateA; // Sắp xếp giảm dần (mới nhất lên đầu)
-        });
-        setBlogs(sortedBlogs);
+        setBlogs(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -37,12 +31,10 @@ const Bloglist = () => {
 
   return (
     <div className="Bloglist-container">
-      <h2 className="Bloglist-header">Khám Phá Ngay</h2>
+      <h2 className="Bloglist-header">Blog của Beauty Love</h2>
 
       {loading ? (
-        <div className="loading-container">
-          <Spin size="large" />
-        </div>
+        <p>Đang tải dữ liệu...</p>
       ) : (
         paginatedBlogs.map((post) => (
           <Card key={post.blogId} className="Bloglist-card">
@@ -52,12 +44,12 @@ const Bloglist = () => {
                   alt={post.title}
                   src={post.avartarBlogUrl || "https://via.placeholder.com/600"}
                   className="Bloglist-image"
-                  onClick={() => navigate(`/blogDetail/${post.blogId}`)} // Điều hướng khi click vào ảnh
+                  onClick={() => navigate(`/blogDetail/${post.blogId}`)} 
                 />
               </Col>
               <Col xs={24} md={16} className="Bloglist-content">
                 <p className="Bloglist-date">
-                  {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
+                  {new Date(post.createdAt).toLocaleDateString("vi-VN")}
                 </p>
                 <h2
                   className="Bloglist-title"
@@ -67,7 +59,7 @@ const Bloglist = () => {
                   {post.title}
                 </h2>
                 <h3 className="Bloglist-subtitle">
-                  {post.subTitle || "Subtitle mẫu để kiểm tra giao diện"}
+                  {post.subtitle || "Subtitle mẫu để kiểm tra giao diện"}
                 </h3>
                 <p className="Bloglist-description">{post.content1}</p>
                 <div className="Bloglist-tags">
@@ -78,7 +70,7 @@ const Bloglist = () => {
                 <Button
                   type="primary"
                   className="Bloglist-button"
-                  onClick={() => navigate(`/blog/${post.blogId}`)}
+                  onClick={() => navigate(`/blog/${post.blogId}`)} 
                 >
                   Xem thêm
                 </Button>
@@ -88,17 +80,8 @@ const Bloglist = () => {
           </Card>
         ))
       )}
-
-      <Pagination
-        className="Bloglist-pagination"
-        current={currentPage}
-        pageSize={pageSize}
-        total={blogs.length}
-        showSizeChanger={false}
-        onChange={(page) => setCurrentPage(page)}
-      />
     </div>
   );
 };
 
-export default Bloglist;
+export default BlogHomePage;
