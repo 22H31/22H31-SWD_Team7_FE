@@ -13,8 +13,6 @@ function ProductsGrid() {
   const [productId, setProductId] = useState(null);
   const [imageFiles, setImageFiles] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [variants, setVariants] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const initialFormData = {
     productName: "",
@@ -38,10 +36,19 @@ function ProductsGrid() {
       scent: "",
     },
     useManual: { step1: "", step2: "", step3: "", step4: "" },
-    variants: [{ productId: "", volume: "", skinType: "", price: "", stockQuantity: "", mainIngredients: "", fullIngredients: "" }]
+  };
+
+  const initialVariantData = {
+    volume: "",
+    skinType: "",
+    price: "",
+    stockQuantity: "",
+    mainIngredients: "",
+    fullIngredients: ""
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const [variantData, setVariantData] = useState(initialVariantData);
 
   useEffect(() => {
     fetch(`${API_URL}/products`)
@@ -61,12 +68,7 @@ function ProductsGrid() {
           setCategories(data.flatMap((cat) => cat.categorys));
         }
       })
-      .catch(() => setCategories([]));   
-
-    fetch(`${API_URL}/productVariant`)
-      .then((res) => res.json())
-      .then((data) => setVariants(Array.isArray(data) ? data : []))
-      .catch(() => setVariants([]));
+      .catch(() => setCategories([]));
   }, []);
 
   const handleChange = (e) => {
@@ -83,24 +85,38 @@ function ProductsGrid() {
     });
   };
 
+  const handleVariantChange = (e) => {
+    const { name, value } = e.target;
+    setVariantData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleNextStep = async () => {
     if (step === 1) {
       try {
-        const res = await fetch(`${API_URL}/products`, {
-          method: "POST",
+        const method = isEditing ? "PUT" : "POST";
+        const url = isEditing ? `${API_URL}/products/${productId}` : `${API_URL}/products`;
+
+        const res = await fetch(url, {
+          method,
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
 
-        if (!res.ok) throw new Error("Lỗi khi tạo sản phẩm!");
+        if (!res.ok) throw new Error(isEditing ? "Lỗi khi cập nhật sản phẩm!" : "Lỗi khi tạo sản phẩm!");
         const data = await res.json();
-        setProductId(data.productId);
-        console.log("Product ID:", data.productId); // Thêm thông báo để kiểm tra productId
-        alert("Sản phẩm đã được tạo thành công!");
+
+        if (!isEditing) {
+          setProductId(data.productId);
+          console.log("Product ID:", data.productId); // Thêm thông báo để kiểm tra productId
+          alert("Sản phẩm đã được tạo thành công!");
+        } else {
+          alert("Sản phẩm đã được cập nhật thành công!");
+        }
+
         setStep(2);
       } catch (err) {
-        console.error("Lỗi khi tạo sản phẩm:", err);
-        alert("Tạo sản phẩm thất bại!");
+        console.error(isEditing ? "Lỗi khi cập nhật sản phẩm:" : "Lỗi khi tạo sản phẩm:", err);
+        alert(isEditing ? "Cập nhật sản phẩm thất bại!" : "Tạo sản phẩm thất bại!");
       }
     } else if (step === 2) {
       if (!productId || !imageFiles.avatar) {
@@ -117,32 +133,12 @@ function ProductsGrid() {
           body: formDataUpload,
         });
         alert("Ảnh đại diện đã được upload!");
-        setStep(3);
+        setStep(3); // Move to the next step for uploading product images
       } catch (err) {
         console.error("Lỗi upload ảnh đại diện:", err);
         alert("Upload ảnh thất bại!");
       }
     } else if (step === 3) {
-      if (!productId || formData.variants.length === 0) {
-        alert("Chưa có biến thể sản phẩm!");
-        return;
-      }
-
-      try {
-        await fetch(`${API_URL}/productVariant`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(
-            formData.variants.map((variant) => ({ ...variant, productId }))
-          ),
-        });
-        alert("Biến thể sản phẩm đã được tạo!");
-        setStep(4);
-      } catch (err) {
-        console.error("Lỗi khi thêm variant:", err);
-        alert("Thêm biến thể thất bại!");
-      }
-    } else if (step === 4) {
       if (!productId || !imageFiles.productImages.length) {
         alert("Chưa chọn ảnh sản phẩm!");
         return;
@@ -159,20 +155,35 @@ function ProductsGrid() {
           body: formDataUpload,
         });
         alert("Ảnh sản phẩm đã được upload!");
-        setPopupOpen(false);
+        setStep(4); // Move to the next step for adding product variant
       } catch (err) {
         console.error("Lỗi upload ảnh sản phẩm:", err);
         alert("Upload ảnh sản phẩm thất bại!");
       }
+    } else if (step === 4) {
+      try {
+        const res = await fetch(`${API_URL}/productVariant`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...variantData, productId }),
+        });
+
+        if (!res.ok) throw new Error("Lỗi khi tạo biến thể sản phẩm!");
+        alert("Biến thể sản phẩm đã được tạo thành công!");
+        setPopupOpen(false);
+      } catch (err) {
+        console.error("Lỗi khi tạo biến thể sản phẩm:", err);
+        alert("Tạo biến thể sản phẩm thất bại!");
+      }
     }
   };
 
-  const handleEditClick = async (id) => {
+  const handleEditProduct = async (product) => {
     try {
-      const res = await fetch(`${API_URL}/products/${id}`);
+      const res = await fetch(`${API_URL}/products/${product.productId}`);
       if (!res.ok) throw new Error("Lỗi khi lấy thông tin sản phẩm!");
       const data = await res.json();
-      setSelectedProduct(data);
+
       setFormData({
         productName: data.productName,
         brandId: data.brandId,
@@ -180,11 +191,10 @@ function ProductsGrid() {
         describe: data.describe,
         specifications: data.specifications,
         useManual: data.useManual,
-        variants: data.variants,
       });
-      setProductId(id);
+      setProductId(product.productId);
       setIsEditing(true);
-      setStep(1);
+      setStep(1); // Ensure the step is set to 1 when editing a product
       setPopupOpen(true);
     } catch (err) {
       console.error("Lỗi khi lấy thông tin sản phẩm:", err);
@@ -192,25 +202,9 @@ function ProductsGrid() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
-
-    try {
-      const res = await fetch(`${API_URL}/products/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Lỗi khi xóa sản phẩm!");
-      alert("Sản phẩm đã được xóa thành công!");
-      setProducts(products.filter((product) => product.productId !== id));
-    } catch (err) {
-      console.error("Lỗi khi xóa sản phẩm:", err);
-      alert("Lỗi khi xóa sản phẩm!");
-    }
-  };
-
   const handleAddClick = () => {
     setFormData(initialFormData);
+    setVariantData(initialVariantData);
     setIsEditing(false);
     setPopupOpen(true);
     setStep(1);
@@ -232,8 +226,9 @@ function ProductsGrid() {
             name={product.productName}
             price={product.variants?.[0]?.price || "N/A"}
             image={product.productAvatar}
-            onEdit={() => handleEditClick(product.productId)}
-            onDelete={() => handleDelete(product.productId)}
+            productId={product.productId}
+            variants={product.variants}
+            onEditProduct={() => handleEditProduct(product)}
           />
         ))}
       </div>
@@ -310,86 +305,73 @@ function ProductsGrid() {
 
             {step === 3 && (
               <>
-                <fieldset>
-                  <legend>Product Variants</legend>
-
-                  {/* Render variant fields dynamically */}
-                  {formData.variants.map((variant, index) => (
-                    <div key={index}>
-                      <label>Product ID:</label>
-                      <input
-                        type="text"
-                        name={`variants.${index}.productId`}
-                        value={productId} // Automatically fill the productId
-                        readOnly
-                      />
-                      <label>Volume (ml):</label>
-                      <input
-                        type="number"
-                        name={`variants.${index}.volume`}
-                        value={variant.volume}
-                        onChange={handleChange}
-                        placeholder="Enter volume"
-                        required
-                      />
-                      <label>Skin Type:</label>
-                      <input
-                        type="text"
-                        name={`variants.${index}.skinType`}
-                        value={variant.skinType}
-                        onChange={handleChange}
-                        placeholder="Enter skin type"
-                        required
-                      />
-                      <label>Price (VND):</label>
-                      <input
-                        type="number"
-                        name={`variants.${index}.price`}
-                        value={variant.price}
-                        onChange={handleChange}
-                        placeholder="Enter price"
-                        required
-                      />
-                      <label>Stock Quantity:</label>
-                      <input
-                        type="number"
-                        name={`variants.${index}.stockQuantity`}
-                        value={variant.stockQuantity}
-                        onChange={handleChange}
-                        placeholder="Enter stock quantity"
-                        required
-                      />
-                      <label>Main Ingredients:</label>
-                      <input
-                        type="text"
-                        name={`variants.${index}.mainIngredients`}
-                        value={variant.mainIngredients}
-                        onChange={handleChange}
-                        placeholder="Enter main ingredients"
-                        required
-                      />
-                      <label>Full Ingredients:</label>
-                      <input
-                        type="text"
-                        name={`variants.${index}.fullIngredients`}
-                        value={variant.fullIngredients}
-                        onChange={handleChange}
-                        placeholder="Enter full ingredients"
-                        required
-                      />
-                    </div>
-                  ))}
-                </fieldset>
-
+                <input type="file" accept="image/*" multiple onChange={(e) => setImageFiles({ ...imageFiles, productImages: e.target.files })} />
+                <label>Product ID:</label>
+                <input type="text" name="productId" value={productId} readOnly /> {/* Display productId */}
                 <button onClick={handleNextStep}>Next</button>
               </>
             )}
 
             {step === 4 && (
               <>
-                <input type="file" accept="image/*" multiple onChange={(e) => setImageFiles({ ...imageFiles, productImages: e.target.files })} />
-                <label>Product ID:</label>
-                <input type="text" name="productId" value={productId} readOnly /> {/* Display productId */}
+                <fieldset>
+                  <legend>Product Variant</legend>
+                  <label>Volume (ml):</label>
+                  <input
+                    type="number"
+                    name="volume"
+                    value={variantData.volume}
+                    onChange={handleVariantChange}
+                    placeholder="Enter volume"
+                    required
+                  />
+                  <label>Skin Type:</label>
+                  <input
+                    type="text"
+                    name="skinType"
+                    value={variantData.skinType}
+                    onChange={handleVariantChange}
+                    placeholder="Enter skin type"
+                    required
+                  />
+                  <label>Price (VND):</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={variantData.price}
+                    onChange={handleVariantChange}
+                    placeholder="Enter price"
+                    required
+                  />
+                  <label>Stock Quantity:</label>
+                  <input
+                    type="number"
+                    name="stockQuantity"
+                    value={variantData.stockQuantity}
+                    onChange={handleVariantChange}
+                    placeholder="Enter stock quantity"
+                    required
+                  />
+                  <label>Main Ingredients:</label>
+                  <input
+                    type="text"
+                    name="mainIngredients"
+                    value={variantData.mainIngredients}
+                    onChange={handleVariantChange}
+                    placeholder="Enter main ingredients"
+                    required
+                  />
+                  <label>Full Ingredients:</label>
+                  <input
+                    type="text"
+                    name="fullIngredients"
+                    value={variantData.fullIngredients}
+                    onChange={handleVariantChange}
+                    placeholder="Enter full ingredients"
+                    required
+                  />
+                </fieldset>
+
                 <button onClick={handleNextStep}>Finish</button>
               </>
             )}
