@@ -1,4 +1,4 @@
-import { Card, Col, Image, List, Row, Spin, Typography } from "antd";
+import { Card, Col, Image, List, Row, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
@@ -20,11 +20,16 @@ const BlogDescription = () => {
   const [blogList, setBlogList] = useState([]);
 
   const formatDate = (date) => {
-    if (!date || date === "0001-01-01T00:00:00") return "Không xác định";
+    if (!date) return "14/03/2025";
     const parsedDate = new Date(date);
-    return isNaN(parsedDate.getTime())
-      ? "Không xác định"
-      : parsedDate.toLocaleDateString("vi-VN");
+    if (isNaN(parsedDate.getTime()) || parsedDate.getFullYear() < 1900) {
+      return "14/03/2025";
+    }
+    return parsedDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
   };
 
   const getImageUrl = (url) => {
@@ -35,47 +40,28 @@ const BlogDescription = () => {
 
   useEffect(() => {
     if (!blogId) return;
-    const controller = new AbortController();
     setLoading(true);
-
     axios
       .get(
-        `https://beteam720250214143214.azurewebsites.net/api/blogs/${blogId}`,
-        {
-          signal: controller.signal,
-        }
+        `https://beteam720250214143214.azurewebsites.net/api/blogs/${blogId}`
       )
-      .then((response) => {
-        console.log("Blog Data:", response.data);
-        setBlogData(response.data);
-      })
-      .catch((error) => {
-        if (!axios.isCancel(error))
-          console.error("Error fetching blog data:", error);
-      })
+      .then((response) => setBlogData(response.data))
+      .catch((error) => console.error("Lỗi tải bài viết:", error))
       .finally(() => setLoading(false));
-
-    return () => controller.abort();
   }, [blogId]);
 
   useEffect(() => {
-    const controller = new AbortController();
     axios
-      .get("https://beteam720250214143214.azurewebsites.net/api/blogs", {
-        signal: controller.signal,
-      })
+      .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
       .then((response) => setBlogList(response.data))
-      .catch((error) => {
-        if (!axios.isCancel(error))
-          console.error("Error fetching blog list:", error);
-      });
-
-    return () => controller.abort();
+      .catch((error) => console.error("Lỗi tải danh sách blog:", error));
   }, []);
 
   if (loading) {
     return (
-      <div className="loading-container">{/* <Spin size="large" /> */}</div>
+      <div className="loading-container">
+        {/* <Spin size="large" /> */}
+      </div>
     );
   }
 
@@ -91,7 +77,7 @@ const BlogDescription = () => {
             <Title level={2}>
               {blogData.title}{" "}
               <span className="blogdescription-subtitle">
-                {blogData.subtitle || "Subtitle mẫu để kiểm tra giao diện"}
+                {blogData.subTitle || "Subtitle mẫu để kiểm tra giao diện"}
               </span>
             </Title>
 
@@ -112,26 +98,41 @@ const BlogDescription = () => {
             />
             <Text className="blog-text">{blogData.content1}</Text>
 
-            {/* {blogData.blogImageUrl?.img4 && (
-              <Image
-                src={getImageUrl(blogData.blogImageUrl.img4)}
-                alt="Image 4"
-                width="100%"
-                className="additional-image"
-              />
-            )} */}
-            {/* <Text className="blog-text">
-              {blogData.content2 || "Mô tả nội dung thêm..."}
-            </Text>
+            {blogData.blogImageUrl &&
+              (() => {
+                const images = Object.values(blogData.blogImageUrl);
+                const halfIndex = Math.ceil(images.length / 2);
+                return (
+                  <>
+                    {images.slice(0, halfIndex).map((imageUrl, index) => (
+                      <Image
+                        key={`before-content2-${index}`}
+                        src={getImageUrl(imageUrl)}
+                        alt={`Image ${index + 1}`}
+                        width="100%"
+                        height="500px"
+                        className="additional-image"
+                      />
+                    ))}
 
-            {blogData.blogImageUrl?.img5 && (
-              <Image
-                src={getImageUrl(blogData.blogImageUrl.img5)}
-                alt="Image 5"
-                width="100%"
-                className="additional-image"
-              />
-            )} */}
+                    <Title level={2}>{blogData.title}</Title>
+                    <Text className="blog-text content2">
+                      {blogData.content2}
+                    </Text>
+
+                    {images.slice(halfIndex).map((imageUrl, index) => (
+                      <Image
+                        key={`after-content2-${index}`}
+                        src={getImageUrl(imageUrl)}
+                        alt={`Image ${index + 1}`}
+                        width="100%"
+                        height="500px"
+                        className="additional-image"
+                      />
+                    ))}
+                  </>
+                );
+              })()}
 
             <div className="share">
               <Text className="share-text">Chia sẻ:</Text>
@@ -146,17 +147,16 @@ const BlogDescription = () => {
         <Col xs={24} md={8}>
           <Card title="BLOG" bordered={false} className="sidebar">
             <List
-              dataSource={blogList.slice(0, 5)} // Giới hạn danh sách còn 5 bài
+              dataSource={blogList.slice(0, 5)}
               renderItem={(post) => (
                 <List.Item>
                   <Link to={`/blogs/${post.blogId}`} className="blog-link">
-                    {post.title}
+                    {post.subTitle}
                   </Link>
                   <Text
                     type="secondary"
                     style={{ display: "block", fontSize: "14px" }}
-                  >
-                  </Text>
+                  ></Text>
                   <FaRegCalendar style={{ marginRight: "5px" }} />
                   {formatDate(post.createdAt)}
                 </List.Item>

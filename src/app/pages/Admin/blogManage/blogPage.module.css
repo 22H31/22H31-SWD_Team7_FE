@@ -1,142 +1,121 @@
-.container {
+/* blogPage.module.css */
+
+.pageContainer {
   padding: 20px;
+  background-color: #f9f9f9;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .searchInput {
-  padding: 10px;
-  font-size: 16px;
   width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  padding: 8px;
+  margin-right: 20px; /* Adding margin between input and button */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .addButton {
-  padding: 10px 20px;
+  align-self: center;
   font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 0 20px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .addButton:hover {
-  background-color: #0056b3;
+  background-color: #1890ff;
+  color: white;
 }
 
 .blogList {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
 .blogItem {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: calc(33.333% - 20px);
-  box-sizing: border-box;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  height: 360px; /* Fixed height */
+  display: flex;
+  flex-direction: column;
 }
 
-.blogItem h3 {
-  margin-top: 0;
-}
-
-.blogItem p {
+.blogItem .ant-card-meta-title {
+  font-size: 1.4rem;
+  font-weight: 600;
   margin-bottom: 10px;
 }
 
-.blogItem button {
-  padding: 5px 10px;
-  font-size: 14px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 5px;
+.blogItem .ant-card-meta-description {
+  font-size: 1rem;
+  color: #555;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.blogItem button:hover {
-  background-color: #0056b3;
+.blogItem .ant-card-cover img {
+  object-fit: cover;
+  height: 200px;
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+.blogItem .ant-card-actions {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.formContainer {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 4px;
-  width: 600px;
-  max-width: 100%;
-}
-
-.formContainer h2 {
-  margin-top: 0;
-}
-
-.closeBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.formGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  justify-content: space-between;
+  margin-top: auto;
 }
 
 .inputField {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   width: 100%;
 }
 
 .textArea {
-  grid-column: span 2;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   width: 100%;
-  height: 100px;
 }
 
-.submitButton {
-  padding: 10px 20px;
+.ant-btn {
+  font-size: 14px;
+}
+
+.uploadButton {
+  margin-top: 20px;
+}
+
+.imagePreview {
+  margin-top: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.modalFooterButton {
   font-size: 16px;
-  color: #fff;
-  background-color: #28a745;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
-.submitButton:hover {
-  background-color: #218838;
+@media (max-width: 768px) {
+  .searchInput {
+    width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchInput {
+    width: 200px;
+  }
+
+  .blogItem {
+    transform: scale(1);
+  }
 }
