@@ -4,6 +4,7 @@
     margin: auto;
     text-align: center;
     margin-bottom: 40px;
+    margin-top: 40px;
   }
   
   /* Tiêu đề chính */
@@ -53,29 +54,42 @@
     gap: 10px;
   }
   
-  /* Tiêu đề bài viết */
-  .relatedblogs-post-title {
-    width: 413px;
-    color: var(--en-t, #44353F);
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    text-transform: uppercase;
-  }
+  /* Tiêu đề bài viết - Giới hạn 2 dòng */
+.relatedblogs-post-title {
+  width: 413px;
+  color: var(--en-t, #44353F);
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
   
-  /* Mô tả ngắn */
-  .relatedblogs-description {
-    color: #474646;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-    width: 413px;
-    margin-bottom: 10px;
-  }
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mô tả ngắn - Giới hạn 3 dòng */
+.relatedblogs-description {
+  width: 413px;
+  color: #474646;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-bottom: 10px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Giới hạn 3 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
   
   /* Phần footer chứa ngày đăng và lượt xem */
   .relatedblogs-footer {

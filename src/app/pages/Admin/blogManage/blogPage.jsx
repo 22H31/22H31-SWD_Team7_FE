@@ -67,6 +67,7 @@ const BlogPage = () => {
       setBlogs(data);
       setFilteredBlogs(data);
     } catch (error) {
+      console.error("Lỗi khi tải danh sách blog:", error); // Sử dụng biến error
       message.error("Lỗi khi tải danh sách blog");
     }
   };
@@ -102,6 +103,7 @@ const BlogPage = () => {
       form.resetFields(); // Clear form data
       fetchBlogs();
     } catch (error) {
+      console.error("Lỗi khi lưu blog:", error); // Sử dụng biến error
       message.error("Lỗi khi lưu blog");
     }
   };
@@ -206,6 +208,7 @@ const BlogPage = () => {
               }
               actions={[
                 <Button
+                  key="edit"
                   icon={<EditOutlined />}
                   onClick={() => {
                     setEditingBlog(blog);
@@ -214,6 +217,7 @@ const BlogPage = () => {
                   }}
                 />,
                 <Button
+                  key="delete"
                   icon={<DeleteOutlined />}
                   onClick={() => handleDelete(blog.blogId)}
                   danger
@@ -226,7 +230,7 @@ const BlogPage = () => {
                   <>
                     <Paragraph ellipsis={{ rows: 2 }}>{blog.subTitle}</Paragraph>
                     <Paragraph type="secondary">
-                      {new Date(blog.createdAt).toLocaleDateString()}
+                      {new Date(blog.blogCreatedAt).toLocaleDateString()}
                     </Paragraph>
                   </>
                 }
@@ -269,28 +273,16 @@ const BlogPage = () => {
           onFinish={handleCreateOrUpdate}
           initialValues={editingBlog || { content1: "", content2: "" }}
         >
-          <Form.Item
-            name="title"
-            label="Tiêu đề"
-            rules={[{ required: true, message: "Vui lòng nhập tiêu đề" }]}
-          >
+          <Form.Item name="title" label="Tiêu đề">
             <Input className="inputField" />
           </Form.Item>
           <Form.Item name="subTitle" label="Mô tả">
             <Input className="inputField" />
           </Form.Item>
-          <Form.Item
-            name="content1"
-            label="Nội dung 1"
-            rules={[{ required: true, message: "Vui lòng nhập nội dung 1" }]}
-          >
+          <Form.Item name="content1" label="Nội dung 1">
             <Input.TextArea className="textArea" autoSize={{ minRows: 3, maxRows: 6 }} />
           </Form.Item>
-          <Form.Item
-            name="content2"
-            label="Nội dung 2"
-            rules={[{ required: true, message: "Vui lòng nhập nội dung 2" }]}
-          >
+          <Form.Item name="content2" label="Nội dung 2">
             <Input.TextArea className="textArea" autoSize={{ minRows: 3, maxRows: 6 }} />
           </Form.Item>
         </Form>

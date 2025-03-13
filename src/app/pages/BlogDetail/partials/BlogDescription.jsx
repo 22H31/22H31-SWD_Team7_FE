@@ -1,4 +1,4 @@
-import { Card, Col, Image, List, Row, Typography } from "antd";
+import { Card, Col, Image, List, Row, Spin, Typography } from "antd"; // Thêm Spin
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
@@ -20,10 +20,10 @@ const BlogDescription = () => {
   const [blogList, setBlogList] = useState([]);
 
   const formatDate = (date) => {
-    if (!date) return "14/03/2025";
+    if (!date) return ""; // Trả về chuỗi rỗng nếu không có ngày
     const parsedDate = new Date(date);
     if (isNaN(parsedDate.getTime()) || parsedDate.getFullYear() < 1900) {
-      return "14/03/2025";
+      return ""; // Trả về chuỗi rỗng nếu ngày không hợp lệ
     }
     return parsedDate.toLocaleDateString("vi-VN", {
       day: "2-digit",
@@ -60,7 +60,7 @@ const BlogDescription = () => {
   if (loading) {
     return (
       <div className="loading-container">
-        {/* <Spin size="large" /> */}
+        <Spin size="large" />
       </div>
     );
   }
@@ -74,7 +74,7 @@ const BlogDescription = () => {
       <Row gutter={[32, 32]} justify="center">
         <Col xs={24} md={16}>
           <Card bordered={false}>
-            <Title level={2}>
+            <Title className="blogdescription-title">
               {blogData.title}{" "}
               <span className="blogdescription-subtitle">
                 {blogData.subTitle || "Subtitle mẫu để kiểm tra giao diện"}
@@ -82,11 +82,14 @@ const BlogDescription = () => {
             </Title>
 
             <div className="blog-header">
-              <Text type="secondary" className="blog-path">
-                Blog {">"} Chăm sóc da | {formatDate(blogData.createdAt)}
-              </Text>
+              {formatDate(blogData.blogCreatedAt) && (
+                <Text className="blog-path">
+                  Blog {">"} Chăm sóc da | {formatDate(blogData.blogCreatedAt)}
+                </Text>
+              )}
+
               <div className="author-info">
-                <Text strong>By {blogData.author || "Beauty Love"}</Text>
+                <Text className="blog-path" >By {blogData.author || "Beauty Love"}</Text>
               </div>
             </div>
 
@@ -149,16 +152,18 @@ const BlogDescription = () => {
             <List
               dataSource={blogList.slice(0, 5)}
               renderItem={(post) => (
-                <List.Item>
-                  <Link to={`/blogs/${post.blogId}`} className="blog-link">
+                <List.Item className="blog-item">
+                  <Link
+                    to={`/blog/${post.blogId}`}
+                    className="blog-link"
+                    onClick={() => console.log(post.blogId)}
+                  >
                     {post.subTitle}
                   </Link>
-                  <Text
-                    type="secondary"
-                    style={{ display: "block", fontSize: "14px" }}
-                  ></Text>
-                  <FaRegCalendar style={{ marginRight: "5px" }} />
-                  {formatDate(post.createdAt)}
+                  <div className="blog-date">
+                    <FaRegCalendar className="calendar-icon" />
+                    {formatDate(post.blogCreatedAt)}
+                  </div>
                 </List.Item>
               )}
             />
