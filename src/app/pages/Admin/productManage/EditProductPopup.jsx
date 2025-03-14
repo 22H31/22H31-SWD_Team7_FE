@@ -1,6 +1,6 @@
 import React from "react";
+import { Form, Input, InputNumber, Button, Modal } from "antd";
 import ProductForm from "./ProductForm";
-import styles from "../productManage/ProductsGrid.module.css";
 
 const EditProductPopup = ({
   isEditing,
@@ -15,37 +15,44 @@ const EditProductPopup = ({
   handleAddVariant,
   setPopupOpen,
   productId,
+  isPopupOpen,
 }) => {
   return (
-    <div className={styles.overlay}>
-      <div className={styles.popup}>
-        <h2>{isEditing ? "Chỉnh sửa sản phẩm" : "Thêm Sản Phẩm Mới"}</h2>
-        <button className={styles.closeBtn} onClick={() => setPopupOpen(false)}>✖</button>
+    <Modal
+      title={isEditing ? "Chỉnh sửa sản phẩm" : "Thêm Sản Phẩm Mới"}
+      visible={isPopupOpen}
+      onCancel={() => setPopupOpen(false)}
+      footer={null}
+      width="80%"
+    >
+      {step === 1 && (
+        <>
+          <ProductForm formData={formData} handleChange={handleChange} brands={brands} categories={categories} />
+          <Button type="primary" onClick={handleAddProduct} style={{ marginTop: 16 }}>
+            {isEditing ? "Update Product" : "Add Product"}
+          </Button>
+        </>
+      )}
 
-        {step === 1 && (
-          <>
-            <ProductForm formData={formData} handleChange={handleChange} brands={brands} categories={categories} />
-            <button onClick={handleAddProduct}>{isEditing ? "Update Product" : "Add Product"}</button>
-          </>
-        )}
-
-        {!isEditing && step === 4 && (
-          <>
-            <fieldset>
-              <legend>Product Variant</legend>
-              <label>Product ID:</label>
-              <input type="text" name="productId" value={productId} readOnly />
-              <label>Volume (ml):</label>
-              <input
-                type="number"
+      {!isEditing && step === 4 && (
+        <Form layout="vertical" onFinish={handleAddVariant}>
+          <fieldset>
+            <legend>Product Variant</legend>
+            <Form.Item label="Product ID">
+              <Input type="text" name="productId" value={productId} readOnly />
+            </Form.Item>
+            <Form.Item label="Volume (ml)">
+              <InputNumber
                 name="volume"
                 value={variantData.volume}
-                onChange={handleVariantChange}
+                onChange={(value) => handleVariantChange({ target: { name: "volume", value } })}
                 placeholder="Enter volume"
                 required
+                style={{ width: "100%" }}
               />
-              <label>Skin Type:</label>
-              <input
+            </Form.Item>
+            <Form.Item label="Skin Type">
+              <Input
                 type="text"
                 name="skinType"
                 value={variantData.skinType}
@@ -53,26 +60,29 @@ const EditProductPopup = ({
                 placeholder="Enter skin type"
                 required
               />
-              <label>Price (VND):</label>
-              <input
-                type="number"
+            </Form.Item>
+            <Form.Item label="Price (VND)">
+              <InputNumber
                 name="price"
                 value={variantData.price}
-                onChange={handleVariantChange}
+                onChange={(value) => handleVariantChange({ target: { name: "price", value } })}
                 placeholder="Enter price"
                 required
+                style={{ width: "100%" }}
               />
-              <label>Stock Quantity:</label>
-              <input
-                type="number"
+            </Form.Item>
+            <Form.Item label="Stock Quantity">
+              <InputNumber
                 name="stockQuantity"
                 value={variantData.stockQuantity}
-                onChange={handleVariantChange}
+                onChange={(value) => handleVariantChange({ target: { name: "stockQuantity", value } })}
                 placeholder="Enter stock quantity"
                 required
+                style={{ width: "100%" }}
               />
-              <label>Main Ingredients:</label>
-              <input
+            </Form.Item>
+            <Form.Item label="Main Ingredients">
+              <Input
                 type="text"
                 name="mainIngredients"
                 value={variantData.mainIngredients}
@@ -80,8 +90,9 @@ const EditProductPopup = ({
                 placeholder="Enter main ingredients"
                 required
               />
-              <label>Full Ingredients:</label>
-              <input
+            </Form.Item>
+            <Form.Item label="Full Ingredients">
+              <Input
                 type="text"
                 name="fullIngredients"
                 value={variantData.fullIngredients}
@@ -89,13 +100,15 @@ const EditProductPopup = ({
                 placeholder="Enter full ingredients"
                 required
               />
-            </fieldset>
+            </Form.Item>
+          </fieldset>
 
-            <button onClick={handleAddVariant}>Add Variant</button>
-          </>
-        )}
-      </div>
-    </div>
+          <Button type="primary" htmlType="submit" style={{ marginTop: 16 }}>
+            Add Variant
+          </Button>
+        </Form>
+      )}
+    </Modal>
   );
 };
 

@@ -120,23 +120,25 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct, o
   };
 
   return (
-    <Card
-      hoverable
-      cover={<img alt={name} src={image} className={styles.image} />}
-      actions={[
-        <Button type="primary" onClick={handleEditProductClick}>Edit Product</Button>,
-        <Button onClick={() => onUploadImages(productId)}>Upload Images</Button>,
-        <Button danger onClick={handleDeleteClick}>Delete</Button>
-      ]}
-    >
-      <Card.Meta title={name} description={`${price} VND`} />
-      {productVariants.map((variant) => (
-        <Card key={variant.variantId} className={styles.variant}>
-          <p>Variant ID: {variant.variantId}</p>
-          <Button type="primary" onClick={() => handleEditVariantClick(variant.variantId)}>Edit Variant</Button>
-          <Button danger onClick={() => handleDeleteVariantClick(variant.variantId)}>Delete Variant</Button>
-        </Card>
-      ))}
+    <div style={{ width: '100%' }}>
+      <Card
+        hoverable
+        cover={<img alt={name} src={image} className={styles.image} />}
+        actions={[
+          <Button type="primary" onClick={handleEditProductClick}>Edit Product</Button>,
+          <Button onClick={() => onUploadImages(productId)}>Upload Images</Button>,
+          <Button danger onClick={handleDeleteClick}>Delete</Button>
+        ]}
+      >
+        <Card.Meta title={name} description={`${price} VND`} />
+        {productVariants.map((variant) => (
+          <Card key={variant.variantId} className={styles.variant}>
+            <p>Variant ID: {variant.variantId}</p>
+            <Button type="primary" onClick={() => handleEditVariantClick(variant.variantId)}>Edit Variant</Button>
+            <Button danger onClick={() => handleDeleteVariantClick(variant.variantId)}>Delete Variant</Button>
+          </Card>
+        ))}
+      </Card>
 
       <Modal
         title="Edit Variant"
@@ -224,7 +226,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct, o
           </Form>
         )}
       </Modal>
-    </Card>
+    </div>
   );
 };
 

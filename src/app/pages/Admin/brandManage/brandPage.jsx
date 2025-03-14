@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Table, Button, Input, Modal, Form, message } from "antd";
 import styles from "./brandPage.module.css";
 
 const API_URL = "https://beteam720250214143214.azurewebsites.net/api/brand";
@@ -11,20 +12,20 @@ const BrandPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  // **Lấy danh sách Brand từ API**
+  // Fetch brand list from API
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
       .then((data) => setBrands(data))
-      .catch((err) => console.error("Lỗi khi lấy dữ liệu:", err));
+      .catch((err) => console.error("Error fetching data:", err));
   }, []);
 
-  // **Xử lý thay đổi input**
+  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // **Thêm Brand mới (POST)**
+  // Add new brand (POST)
   const handleAdd = () => {
     fetch(API_URL, {
       method: "POST",
@@ -35,11 +36,15 @@ const BrandPage = () => {
       .then((newBrand) => {
         setBrands([...brands, newBrand]);
         setPopupOpen(false);
+        message.success("Brand added successfully!");
       })
-      .catch((err) => console.error("Lỗi khi thêm Brand:", err));
+      .catch((err) => {
+        console.error("Error adding brand:", err);
+        message.error("Error adding brand!");
+      });
   };
 
-  // **Cập nhật Brand (PUT)**
+  // Update brand (PUT)
   const handleEdit = () => {
     fetch(`${API_URL}/${editId}`, {
       method: "PUT",
@@ -53,20 +58,28 @@ const BrandPage = () => {
           )
         );
         setPopupOpen(false);
+        message.success("Brand updated successfully!");
       })
-      .catch((err) => console.error("Lỗi khi cập nhật Brand:", err));
+      .catch((err) => {
+        console.error("Error updating brand:", err);
+        message.error("Error updating brand!");
+      });
   };
 
-  // **Xóa Brand (DELETE)**
+  // Delete brand (DELETE)
   const handleDelete = (id) => {
     fetch(`${API_URL}/${id}`, { method: "DELETE" })
       .then(() => {
         setBrands(brands.filter((item) => item.brandId !== id));
+        message.success("Brand deleted successfully!");
       })
-      .catch((err) => console.error("Lỗi khi xóa Brand:", err));
+      .catch((err) => {
+        console.error("Error deleting brand:", err);
+        message.error("Error deleting brand!");
+      });
   };
 
-  // **Mở popup chỉnh sửa**
+  // Open edit popup
   const handleEditClick = (brand) => {
     setFormData({ brandName: brand.brandName, brandImg: brand.brandImg });
     setIsEditing(true);
@@ -74,17 +87,51 @@ const BrandPage = () => {
     setPopupOpen(true);
   };
 
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "brandId",
+      key: "brandId",
+    },
+    {
+      title: "Brand Name",
+      dataIndex: "brandName",
+      key: "brandName",
+    },
+    {
+      title: "Logo",
+      dataIndex: "brandImg",
+      key: "brandImg",
+      render: (text) => <img src={text} alt="Brand Logo" style={{ width: 50 }} />,
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => (
+        <>
+          <Button type="primary" onClick={() => handleEditClick(record)} style={{ marginRight: 8 }}>
+            Edit
+          </Button>
+          <Button type="primary" danger onClick={() => handleDelete(record.brandId)}>
+            Delete
+          </Button>
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className={styles.container}>
       <h1>Brand Management</h1>
       <div className={styles.controls}>
-        <input
-          type="text"
+        <Input
           placeholder="🔍 Search Brand"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          style={{ width: 200, marginRight: 8 }}
         />
-        <button
+        <Button
+          type="primary"
           onClick={() => {
             setPopupOpen(true);
             setIsEditing(false);
@@ -92,61 +139,52 @@ const BrandPage = () => {
           }}
         >
           ➕ Add New Brand
-        </button>
+        </Button>
       </div>
 
-      {/* Hiển thị danh sách Brand */}
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Brand Name</th>
-            <th>Logo</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {brands
-            .filter((brand) =>
-              brand.brandName.toLowerCase().includes(search.toLowerCase())
-            )
-            .map((brand) => (
-              <tr key={brand.brandId}>
-                <td>{brand.brandId}</td>
-                <td>{brand.brandName}</td>
-                <td>
-                  <img src={brand.brandImg} alt={brand.brandName} />
-                </td>
-                <td>
-                  <button onClick={() => handleEditClick(brand)}>✏️</button>
-                  <button onClick={() => handleDelete(brand.brandId)}>❌</button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <Table
+        dataSource={brands.filter((brand) =>
+          brand.brandName.toLowerCase().includes(search.toLowerCase())
+        )}
+        columns={columns}
+        rowKey="brandId"
+        className={styles.table}
+      />
 
-      {/* Popup Form */}
-      {isPopupOpen && (
-        <div className={styles.overlay}>
-          <div className={styles.popup}>
-            <h2>{isEditing ? "Edit Brand" : "Add Brand"}</h2>
-            <button className={styles.closeBtn} onClick={() => setPopupOpen(false)}>✖</button>
-
-            <div className={styles.formGroup}>
-              <label>Brand Name</label>
-              <input type="text" name="brandName" value={formData.brandName} onChange={handleChange} />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Brand Logo URL</label>
-              <input type="text" name="brandImg" value={formData.brandImg} onChange={handleChange} />
-            </div>
-            <button onClick={isEditing ? handleEdit : handleAdd} className={styles.submitBtn}>
+      <Modal
+        title={isEditing ? "Edit Brand" : "Add Brand"}
+        visible={isPopupOpen}
+        onCancel={() => setPopupOpen(false)}
+        footer={null}
+      >
+        <Form layout="vertical" onFinish={isEditing ? handleEdit : handleAdd}>
+          <Form.Item label="Brand Name">
+            <Input
+              type="text"
+              name="brandName"
+              value={formData.brandName}
+              onChange={handleChange}
+              placeholder="Enter brand name"
+              required
+            />
+          </Form.Item>
+          <Form.Item label="Brand Logo URL">
+            <Input
+              type="text"
+              name="brandImg"
+              value={formData.brandImg}
+              onChange={handleChange}
+              placeholder="Enter brand logo URL"
+              required
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
               {isEditing ? "Update" : "Add"}
-            </button>
-          </div>
-        </div>
-      )}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

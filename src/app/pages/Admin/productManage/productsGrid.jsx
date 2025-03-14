@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Row, Col, Button, Modal, message } from "antd";
 import ProductCard from "./ProductCard";
-import ProductForm from "./ProductForm";
 import EditProductPopup from "./EditProductPopup";
 import UploadProductImages from "./UploadProductImages";
 import styles from "../productManage/ProductsGrid.module.css";
@@ -109,16 +109,15 @@ function ProductsGrid() {
 
       if (!isEditing) {
         setProductId(data.productId);
-        console.log("Product ID:", data.productId); // Thêm thông báo để kiểm tra productId
-        alert("Sản phẩm đã được tạo thành công!");
+        message.success("Sản phẩm đã được tạo thành công!");
         setStep(4); // Move to step 4 for adding product variant
       } else {
-        alert("Sản phẩm đã được cập nhật thành công!");
+        message.success("Sản phẩm đã được cập nhật thành công!");
         setPopupOpen(false); // Close the popup after updating the product
       }
     } catch (err) {
       console.error(isEditing ? "Lỗi khi cập nhật sản phẩm:" : "Lỗi khi tạo sản phẩm:", err);
-      alert(isEditing ? "Cập nhật sản phẩm thất bại!" : "Tạo sản phẩm thất bại!");
+      message.error(isEditing ? "Cập nhật sản phẩm thất bại!" : "Tạo sản phẩm thất bại!");
     }
   };
 
@@ -131,7 +130,7 @@ function ProductsGrid() {
       });
 
       if (!res.ok) throw new Error("Lỗi khi tạo biến thể sản phẩm!");
-      alert("Biến thể sản phẩm đã được tạo thành công!");
+      message.success("Biến thể sản phẩm đã được tạo thành công!");
       setPopupOpen(false);
       // Refresh the product list to show the new product
       fetch(`${API_URL}/products`)
@@ -140,7 +139,7 @@ function ProductsGrid() {
         .catch(() => setProducts([]));
     } catch (err) {
       console.error("Lỗi khi tạo biến thể sản phẩm:", err);
-      alert("Tạo biến thể sản phẩm thất bại!");
+      message.error("Tạo biến thể sản phẩm thất bại!");
     }
   };
 
@@ -165,7 +164,7 @@ function ProductsGrid() {
       setIsUploadingImages(false); // Ensure the popup is for editing, not uploading images
     } catch (err) {
       console.error("Lỗi khi lấy thông tin sản phẩm:", err);
-      alert("Lỗi khi lấy thông tin sản phẩm!");
+      message.error("Lỗi khi lấy thông tin sản phẩm!");
     }
   };
 
@@ -185,53 +184,56 @@ function ProductsGrid() {
   };
 
   return (
-    <section className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.sectionTitle}>Products</h2>
-        <button className={styles.addButton} onClick={handleAddClick}>
-          ➕ Add New Product
-        </button>
-      </div>
+    <>
+      <Row justify="space-between" align="middle" style={{ marginBottom: 16 }}>
+        <Col>
+          <h2>Products</h2>
+        </Col>
+        <Col>
+          <Button type="primary" onClick={handleAddClick}>
+            ➕ Add New Product
+          </Button>
+        </Col>
+      </Row>
 
-      <div className={styles.productsGrid}>
+      <Row gutter={[16, 16]}>
         {products.map((product) => (
-          <ProductCard
-            key={product.productId}
-            name={product.productName}
-            price={product.variants?.[0]?.price || "N/A"}
-            image={product.productAvatar}
-            productId={product.productId}
-            variants={product.variants}
-            onEditProduct={() => handleEditProduct(product)}
-            onUploadImages={() => handleUploadImagesClick(product.productId)}
-          />
+          <Col key={product.productId} xs={24} sm={12} md={8} lg={6}>
+            <ProductCard
+              name={product.productName}
+              price={product.variants?.[0]?.price || "N/A"}
+              image={product.productAvatar}
+              productId={product.productId}
+              variants={product.variants}
+              onEditProduct={() => handleEditProduct(product)}
+              onUploadImages={() => handleUploadImagesClick(product.productId)}
+            />
+          </Col>
         ))}
-      </div>
+      </Row>
 
-      {isPopupOpen && !isUploadingImages && (
-        <EditProductPopup
-          isEditing={isEditing}
-          step={step}
-          formData={formData}
-          handleChange={handleChange}
-          brands={brands}
-          categories={categories}
-          handleAddProduct={handleAddProduct}
-          handleVariantChange={handleVariantChange}
-          variantData={variantData}
-          handleAddVariant={handleAddVariant}
-          setPopupOpen={setPopupOpen}
-          productId={productId}
-        />
-      )}
+      <EditProductPopup
+        isEditing={isEditing}
+        step={step}
+        formData={formData}
+        handleChange={handleChange}
+        brands={brands}
+        categories={categories}
+        handleAddProduct={handleAddProduct}
+        handleVariantChange={handleVariantChange}
+        variantData={variantData}
+        handleAddVariant={handleAddVariant}
+        setPopupOpen={setPopupOpen}
+        productId={productId}
+        isPopupOpen={isPopupOpen && !isUploadingImages}
+      />
 
-      {isPopupOpen && isUploadingImages && (
-        <UploadProductImages
-          productId={productId}
-          setPopupOpen={setPopupOpen}
-        />
-      )}
-    </section>
+      <UploadProductImages
+        productId={productId}
+        isPopupOpen={isPopupOpen && isUploadingImages}
+        setPopupOpen={setPopupOpen}
+      />
+    </>
   );
 }
 
