@@ -1,10 +1,9 @@
-// import React from "react";
-import "./HealthCare.css";
-import { useEffect, useState } from "react";
 import { Spin } from "antd"; // Thêm Spin từ Ant Design
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Thêm useNavigate để điều hướng
+import "./RelatedBlog.css";
 
-const HealthCare = () => {
+const RelatedBlogs = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); // Thêm trạng thái loading
   const navigate = useNavigate(); // Sử dụng hook useNavigate
@@ -41,12 +40,11 @@ const HealthCare = () => {
   }
 
   return (
-    <div className="healthcare-container">
-      <h2 className="healthcare-title">Chăm sóc sức khỏe</h2>
-      <div className="healthcare-grid">
+    <div className="relatedblogs-container">
+      <div className="relatedblogs-grid">
         {posts.map((post, index) => (
-          <div key={index} className="healthcare-card">
-            <div className="healthcare-image-container">
+          <div key={index} className="relatedblogs-card">
+            <div className="relatedblogs-image-container">
               <img
                 src={post.avartarBlogUrl || "https://via.placeholder.com/300"} // Thêm fallback image
                 alt={post.title}
@@ -58,18 +56,20 @@ const HealthCare = () => {
                 style={{ cursor: "pointer" }}
               />
             </div>
-            <div className="healthcare-content">
-              <h3 className="healthcare-post-title">{post.title}</h3>
-              <p className="healthcare-description">{post.content1}</p>
-              <div className="healthcare-footer">
-                {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
+            <div className="relatedblogs-content">
+              <h3 className="relatedblogs-post-title">{post.title}</h3>
+              <p className="relatedblogs-description">{post.content1}</p>
+              <div className="relatedblogs-footer">
+                <span className="relatedblogs-date">
+                  {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
+                </span>
               </div>
             </div>
           </div>
         ))}
       </div>
-      <div className="healthcare-more">
-        <button className="healthcare-button" onClick={handleViewMore}>
+      <div className="relatedblogs-more">
+        <button className="relatedblogs-button" onClick={handleViewMore}>
           Xem thêm
         </button>
       </div>
@@ -77,4 +77,4 @@ const HealthCare = () => {
   );
 };
 
-export default HealthCare;
+export default RelatedBlogs;

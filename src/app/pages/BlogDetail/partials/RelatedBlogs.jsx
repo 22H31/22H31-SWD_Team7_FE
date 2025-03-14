@@ -49,6 +49,11 @@ const RelatedBlogs = () => {
                 src={post.avartarBlogUrl || "https://via.placeholder.com/300"} // Thêm fallback image
                 alt={post.title}
                 className="relatedblogs-image"
+                onClick={() => {
+                  navigate(`/blog/${post.blogId}`);
+                  window.scrollTo(0, 0); // Cuộn lên đầu trang
+                }}
+                style={{ cursor: "pointer" }}
               />
             </div>
             <div className="relatedblogs-content">

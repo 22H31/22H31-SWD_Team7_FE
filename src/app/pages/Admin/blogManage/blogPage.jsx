@@ -39,7 +39,7 @@ const BlogPage = () => {
   const [blogImages, setBlogImages] = useState([]);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Trạng thái trang hiện tại
-  const pageSize = 12; // Số blog mỗi trang
+  const pageSize = 8; // Số blog mỗi trang
 
   // Lấy danh sách blog từ API khi component load
   useEffect(() => {
@@ -67,8 +67,20 @@ const BlogPage = () => {
       setBlogs(data);
       setFilteredBlogs(data);
     } catch (error) {
-      console.error("Lỗi khi tải danh sách blog:", error); // Sử dụng biến error
+      console.error("Lỗi khi tải danh sách blog:", error);
       message.error("Lỗi khi tải danh sách blog");
+    }
+  };
+
+  // Lấy thông tin chi tiết của một blog
+  const fetchBlogDetails = async (blogId) => {
+    try {
+      const response = await fetch(`${API_URL}/${blogId}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Lỗi khi tải chi tiết blog:", error);
+      message.error("Lỗi khi tải chi tiết blog");
     }
   };
 
@@ -89,13 +101,23 @@ const BlogPage = () => {
           ...values,
           subTitle: values.subTitle || "",
           content1: values.content1 || "",
-          content2: values.content2 || "", // Đảm bảo content2 được gửi lên
+          content2: values.content2 || "",
         }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error("Lỗi khi lưu blog");
-      message.success("Lưu blog thành công!");
-      setEditingBlog(result);
+
+      // Nếu là tạo mới, mở modal upload ảnh
+      if (!editingBlog) {
+        setEditingBlog(result); // Lưu blog vừa tạo
+        setAvatarModalVisible(true); // Mở modal upload ảnh đại diện
+      } else {
+        message.success("Cập nhật blog thành công!");
+        fetchBlogs(); // Lấy lại danh sách blog
+      }
+
+      setModalVisible(false);
+      form.resetFields();
       setAvatarUrl(null);
       setBlogImages([]);
       setAvatarModalVisible(true);
@@ -103,7 +125,7 @@ const BlogPage = () => {
       form.resetFields(); // Clear form data
       fetchBlogs();
     } catch (error) {
-      console.error("Lỗi khi lưu blog:", error); // Sử dụng biến error
+      console.error("Lỗi khi lưu blog:", error);
       message.error("Lỗi khi lưu blog");
     }
   };
@@ -113,12 +135,22 @@ const BlogPage = () => {
     if (!editingBlog) return;
     const formData = new FormData();
     formData.append("fileDtos", file);
-    await fetch(`${API_URL}/${editingBlog.blogId}/blog_avartar_images`, {
-      method: "POST",
-      body: formData,
-    });
-    message.success("Tải ảnh đại diện thành công!");
-    setAvatarUrl(URL.createObjectURL(file));
+    try {
+      const response = await fetch(
+        `${API_URL}/${editingBlog.blogId}/blog_avartar_images`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) throw new Error("Lỗi khi tải ảnh đại diện");
+      message.success("Tải ảnh đại diện thành công!");
+      setAvatarUrl(URL.createObjectURL(file));
+      fetchBlogs(); // Cập nhật danh sách blog
+    } catch (error) {
+      console.error("Lỗi khi tải ảnh đại diện:", error);
+      message.error("Lỗi khi tải ảnh đại diện");
+    }
   };
 
   // Tải ảnh blog lên API
@@ -129,12 +161,22 @@ const BlogPage = () => {
     }
     const formData = new FormData();
     formData.append("fileDtos", file);
-    await fetch(`${API_URL}/${editingBlog.blogId}/blog_images`, {
-      method: "POST",
-      body: formData,
-    });
-    message.success("Tải ảnh blog thành công!");
-    setBlogImages((prevImages) => [...prevImages, URL.createObjectURL(file)]);
+    try {
+      const response = await fetch(
+        `${API_URL}/${editingBlog.blogId}/blog_images`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) throw new Error("Lỗi khi tải ảnh blog");
+      message.success("Tải ảnh blog thành công!");
+      setBlogImages((prevImages) => [...prevImages, URL.createObjectURL(file)]);
+      fetchBlogs(); // Cập nhật danh sách blog
+    } catch (error) {
+      console.error("Lỗi khi tải ảnh blog:", error);
+      message.error("Lỗi khi tải ảnh blog");
+    }
   };
 
   // Xóa blog
@@ -143,12 +185,16 @@ const BlogPage = () => {
       title: "Bạn có chắc muốn xóa blog này?",
       icon: <ExclamationCircleOutlined />,
       onOk: async () => {
-        const response = await fetch(`${API_URL}/${blogId}`, { method: "DELETE" });
-        if (response.ok) {
+        try {
+          const response = await fetch(`${API_URL}/${blogId}`, {
+            method: "DELETE",
+          });
+          if (!response.ok) throw new Error("Lỗi khi xóa blog");
           message.success("Xóa blog thành công!");
           fetchBlogs();
-        } else {
-          message.error("Xóa blog thất bại!");
+        } catch (error) {
+          console.error("Lỗi khi xóa blog:", error);
+          message.error("Lỗi khi xóa blog");
         }
       },
     });
@@ -159,6 +205,19 @@ const BlogPage = () => {
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
+
+  // Hàm mở modal cập nhật blog
+  const openUpdateModal = async (blog) => {
+    const blogDetails = await fetchBlogDetails(blog.blogId);
+    setEditingBlog(blogDetails);
+    setModalVisible(true);
+    form.setFieldsValue(blogDetails);
+    setAvatarUrl(blogDetails.blogAvartarImageUrl);
+    setBlogImages([
+      blogDetails.blogImageUrl?.img1,
+      blogDetails.blogImageUrl?.img2,
+    ].filter(Boolean));
+  };
 
   return (
     <div className="pageContainer">
@@ -210,11 +269,7 @@ const BlogPage = () => {
                 <Button
                   key="edit"
                   icon={<EditOutlined />}
-                  onClick={() => {
-                    setEditingBlog(blog);
-                    setModalVisible(true);
-                    form.setFieldsValue(blog);
-                  }}
+                  onClick={() => openUpdateModal(blog)}
                 />,
                 <Button
                   key="delete"
@@ -250,8 +305,7 @@ const BlogPage = () => {
         style={{ textAlign: "center", marginTop: 20 }}
       />
 
-      {/* Modals for handling form and image uploads */}
-      {/* Popup thêm/sửa blog */}
+      {/* Modal thêm/sửa blog */}
       <Modal
         title={editingBlog ? "Chỉnh sửa Blog" : "Thêm Blog"}
         open={modalVisible}
@@ -273,22 +327,64 @@ const BlogPage = () => {
           onFinish={handleCreateOrUpdate}
           initialValues={editingBlog || { content1: "", content2: "" }}
         >
-          <Form.Item name="title" label="Tiêu đề">
+          <Form.Item
+            name="title"
+            label="Tiêu đề"
+            rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
+          >
             <Input className="inputField" />
           </Form.Item>
-          <Form.Item name="subTitle" label="Mô tả">
+          <Form.Item
+            name="subTitle"
+            label="Mô tả"
+            rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+          >
             <Input className="inputField" />
           </Form.Item>
-          <Form.Item name="content1" label="Nội dung 1">
+          <Form.Item
+            name="content1"
+            label="Nội dung 1"
+            rules={[{ required: true, message: "Vui lòng nhập nội dung 1!" }]}
+          >
             <Input.TextArea className="textArea" autoSize={{ minRows: 3, maxRows: 6 }} />
           </Form.Item>
           <Form.Item name="content2" label="Nội dung 2">
             <Input.TextArea className="textArea" autoSize={{ minRows: 3, maxRows: 6 }} />
           </Form.Item>
+          {/* Hiển thị avatar, img1, img2 */}
+          {editingBlog && (
+            <Row gutter={16}>
+              <Col span={8}>
+                <Form.Item label="Ảnh đại diện">
+                  <Image
+                    src={editingBlog.blogAvartarImageUrl || "https://via.placeholder.com/150"}
+                    style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 8 }}
+                    rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item label="Ảnh 1">
+                  <Image
+                    src={editingBlog.blogImageUrl?.img1 || "https://via.placeholder.com/150"}
+                    style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 8 }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item label="Ảnh 2">
+                  <Image
+                    src={editingBlog.blogImageUrl?.img2 || "https://via.placeholder.com/150"}
+                    style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 8 }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          )}
         </Form>
       </Modal>
 
-      {/* Popup upload ảnh đại diện */}
+      {/* Modal upload ảnh đại diện */}
       <Modal
         title="Tải Ảnh Đại Diện"
         open={avatarModalVisible}
@@ -321,7 +417,7 @@ const BlogPage = () => {
         )}
       </Modal>
 
-      {/* Popup upload ảnh blog */}
+      {/* Modal upload ảnh blog */}
       <Modal
         title="Tải Ảnh Blog"
         open={imageModalVisible}
@@ -349,20 +445,21 @@ const BlogPage = () => {
             Tải ảnh blog (tối đa 2)
           </Button>
         </Upload>
-        <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+        <Row gutter={16} style={{ marginTop: 20 }}>
           {blogImages.map((img, index) => (
-            <Image
-              key={index}
-              src={img}
-              style={{
-                width: 150,
-                height: 150,
-                objectFit: "cover",
-                borderRadius: 8,
-              }}
-            />
+            <Col key={index} span={8}>
+              <Image
+                src={img}
+                style={{
+                  width: "100%",
+                  height: 150,
+                  objectFit: "cover",
+                  borderRadius: 8,
+                }}
+              />
+            </Col>
           ))}
-        </div>
+        </Row>
       </Modal>
     </div>
   );

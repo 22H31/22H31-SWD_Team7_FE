@@ -150,7 +150,7 @@ const BlogDescription = () => {
         <Col xs={24} md={8}>
           <Card title="BLOG" bordered={false} className="sidebar">
             <List
-              dataSource={blogList.slice(0, 5)}
+              dataSource={blogList.slice(0, 4)}
               renderItem={(post) => (
                 <List.Item className="blog-item">
                   <Link

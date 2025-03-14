@@ -5,6 +5,7 @@ import "./index.css";
 
 const NavigationComponent = () => {
   const navigate = useNavigate();
+  window.scrollTo(0, 0);
   const location = useLocation(); // Lấy đường dẫn hiện tại
 
   return (
