@@ -3,38 +3,37 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./Sidebar.module.css";
-
 import {
-  IconLayoutDashboard,
-  IconBox,
-  IconArticle,
-  IconInbox,
-  IconList,
-  IconBoxSeam,
-  IconCoin,
-  IconTags, // Brand Icon
-  IconCategory, // Category Icon
-  IconBookmark, // Category Title Icon
-  IconUsersGroup,
-  IconSettings,
-  IconLogout,
-} from "@tabler/icons-react";
+  DashboardOutlined,
+  AppstoreOutlined,
+  FileTextOutlined,
+  InboxOutlined,
+  UnorderedListOutlined,
+  BoxPlotOutlined,
+  DollarOutlined,
+  TagsOutlined,
+  AppstoreAddOutlined,
+  BookOutlined,
+  TeamOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 
 // Danh sách icon với key-value
 const icons = {
-  dashboard: <IconLayoutDashboard size={22} className={styles.icon} />,
-  products: <IconBox size={22} className={styles.icon} />,
-  blog: <IconArticle size={22} className={styles.icon} />,
-  inbox: <IconInbox size={22} className={styles.icon} />,
-  orders: <IconList size={22} className={styles.icon} />,
-  stock: <IconBoxSeam size={22} className={styles.icon} />,
-  pricing: <IconCoin size={22} className={styles.icon} />,
-  brand: <IconTags size={22} className={styles.icon} />, // Brand
-  category: <IconCategory size={22} className={styles.icon} />, // Category
-  categoryTitle: <IconBookmark size={22} className={styles.icon} />, // Category Title
-  team: <IconUsersGroup size={22} className={styles.icon} />,
-  settings: <IconSettings size={22} className={styles.icon} />,
-  logout: <IconLogout size={22} className={styles.icon} />,
+  dashboard: <DashboardOutlined className={styles.icon} />,
+  products: <AppstoreOutlined className={styles.icon} />,
+  blog: <FileTextOutlined className={styles.icon} />,
+  inbox: <InboxOutlined className={styles.icon} />,
+  orders: <UnorderedListOutlined className={styles.icon} />,
+  stock: <BoxPlotOutlined className={styles.icon} />,
+  pricing: <DollarOutlined className={styles.icon} />,
+  brand: <TagsOutlined className={styles.icon} />,
+  category: <AppstoreAddOutlined className={styles.icon} />,
+  categoryTitle: <BookOutlined className={styles.icon} />,
+  team: <TeamOutlined className={styles.icon} />,
+  settings: <SettingOutlined className={styles.icon} />,
+  logout: <LogoutOutlined className={styles.icon} />,
 };
 
 const NavItem = ({ icon, text, path }) => {

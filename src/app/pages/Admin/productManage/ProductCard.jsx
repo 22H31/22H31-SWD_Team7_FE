@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Card, Button, Modal, Input, Form, InputNumber, message } from "antd";
 import styles from "../productManage/ProductCard.module.css";
 
 const API_URL = "https://beteam720250214143214.azurewebsites.net/api";
 
-const ProductCard = ({ name, price, image, productId, variants, onEditProduct }) => {
+const ProductCard = ({ name, price, image, productId, variants, onEditProduct, onUploadImages }) => {
   const [productVariants, setProductVariants] = useState([]);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -27,7 +28,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct })
         setProductVariants(filteredVariants);
       } catch (err) {
         console.error("Lỗi khi lấy thông tin biến thể sản phẩm:", err);
-        alert("Lỗi khi lấy thông tin biến thể sản phẩm!");
+        message.error("Lỗi khi lấy thông tin biến thể sản phẩm!");
       }
     };
 
@@ -42,7 +43,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct })
       onEditProduct(data);
     } catch (err) {
       console.error("Lỗi khi lấy thông tin sản phẩm:", err);
-      alert("Lỗi khi lấy thông tin sản phẩm!");
+      message.error("Lỗi khi lấy thông tin sản phẩm!");
     }
   };
 
@@ -57,7 +58,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct })
       setPopupOpen(true);
     } catch (err) {
       console.error("Lỗi khi lấy thông tin biến thể sản phẩm:", err);
-      alert("Lỗi khi lấy thông tin biến thể sản phẩm!");
+      message.error("Lỗi khi lấy thông tin biến thể sản phẩm!");
     }
   };
 
@@ -70,11 +71,11 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct })
       });
 
       if (!res.ok) throw new Error("Lỗi khi xóa biến thể!");
-      alert("Biến thể đã được xóa thành công!");
+      message.success("Biến thể đã được xóa thành công!");
       setProductVariants(productVariants.filter(variant => variant.variantId !== variantId));
     } catch (err) {
       console.error("Lỗi khi xóa biến thể:", err);
-      alert("Lỗi khi xóa biến thể!");
+      message.error("Lỗi khi xóa biến thể!");
     }
   };
 
@@ -87,11 +88,11 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct })
       });
 
       if (!res.ok) throw new Error("Lỗi khi cập nhật biến thể sản phẩm!");
-      alert("Biến thể sản phẩm đã được cập nhật thành công!");
+      message.success("Biến thể sản phẩm đã được cập nhật thành công!");
       setPopupOpen(false);
     } catch (err) {
       console.error("Lỗi khi cập nhật biến thể sản phẩm:", err);
-      alert("Cập nhật biến thể sản phẩm thất bại!");
+      message.error("Cập nhật biến thể sản phẩm thất bại!");
     }
   };
 
@@ -109,130 +110,121 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct })
       });
 
       if (!res.ok) throw new Error("Lỗi khi xóa sản phẩm!");
-      alert("Sản phẩm đã được xóa thành công!");
+      message.success("Sản phẩm đã được xóa thành công!");
       // Handle delete logic here
       console.log("Deleted product:", productId);
     } catch (err) {
       console.error("Lỗi khi xóa sản phẩm:", err);
-      alert("Lỗi khi xóa sản phẩm!");
+      message.error("Lỗi khi xóa sản phẩm!");
     }
   };
 
   return (
-    <div className={styles.card}>
-      <img src={image} alt={name} className={styles.image} />
-      <div className={styles.details}>
-        <h3 className={styles.name}>{name}</h3>
-        <p className={styles.price}>{price} VND</p>
-        <button className={styles.editButton} onClick={handleEditProductClick}>Edit Product</button>
-        {productVariants.map((variant) => (
-          <div key={variant.variantId} className={styles.variant}>
-            <p>Variant ID: {variant.variantId}</p>
-            <button
-              className={styles.editButton}
-              onClick={() => handleEditVariantClick(variant.variantId)}
-            >
-              Edit Variant
-            </button>
-            <button
-              className={styles.deleteButton}
-              onClick={() => handleDeleteVariantClick(variant.variantId)}
-            >
-              Delete Variant
-            </button>
-          </div>
-        ))}
-        <button className={styles.deleteButton} onClick={handleDeleteClick}>Delete</button>
-      </div>
+    <Card
+      hoverable
+      cover={<img alt={name} src={image} className={styles.image} />}
+      actions={[
+        <Button type="primary" onClick={handleEditProductClick}>Edit Product</Button>,
+        <Button onClick={() => onUploadImages(productId)}>Upload Images</Button>,
+        <Button danger onClick={handleDeleteClick}>Delete</Button>
+      ]}
+    >
+      <Card.Meta title={name} description={`${price} VND`} />
+      {productVariants.map((variant) => (
+        <Card key={variant.variantId} className={styles.variant}>
+          <p>Variant ID: {variant.variantId}</p>
+          <Button type="primary" onClick={() => handleEditVariantClick(variant.variantId)}>Edit Variant</Button>
+          <Button danger onClick={() => handleDeleteVariantClick(variant.variantId)}>Delete Variant</Button>
+        </Card>
+      ))}
 
-      {isPopupOpen && (
-        <div className={styles.overlay}>
-          <div className={styles.popup}>
-            <h2>Edit Variant</h2>
-            <button className={styles.closeBtn} onClick={() => setPopupOpen(false)}>✖</button>
+      <Modal
+        title="Edit Variant"
+        visible={isPopupOpen}
+        onCancel={() => setPopupOpen(false)}
+        footer={null}
+      >
+        {step === 1 && (
+          <Form layout="vertical">
+            <Form.Item label="Variant ID">
+              <Input
+                value={variantIdInput}
+                onChange={(e) => setVariantIdInput(e.target.value)}
+                placeholder="Enter Variant ID"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" onClick={() => handleEditVariantClick(variantIdInput)}>Fetch Variant</Button>
+            </Form.Item>
+          </Form>
+        )}
 
-            {step === 1 && (
-              <>
-                <label>Variant ID:</label>
-                <input
-                  type="text"
-                  value={variantIdInput}
-                  onChange={(e) => setVariantIdInput(e.target.value)}
-                  placeholder="Enter Variant ID"
-                />
-                <button onClick={handleEditVariantClick}>Fetch Variant</button>
-              </>
-            )}
-
-            {step === 2 && (
-              <>
-                <fieldset>
-                  <legend>Product Variants</legend>
-                  <label>Volume (ml):</label>
-                  <input
-                    type="number"
-                    name="volume"
-                    value={formData.volume}
-                    onChange={handleChange}
-                    placeholder="Enter volume"
-                    required
-                  />
-                  <label>Skin Type:</label>
-                  <input
-                    type="text"
-                    name="skinType"
-                    value={formData.skinType}
-                    onChange={handleChange}
-                    placeholder="Enter skin type"
-                    required
-                  />
-                  <label>Price (VND):</label>
-                  <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    placeholder="Enter price"
-                    required
-                  />
-                  <label>Stock Quantity:</label>
-                  <input
-                    type="number"
-                    name="stockQuantity"
-                    value={formData.stockQuantity}
-                    onChange={handleChange}
-                    placeholder="Enter stock quantity"
-                    required
-                  />
-                  <label>Main Ingredients:</label>
-                  <input
-                    type="text"
-                    name="mainIngredients"
-                    value={formData.mainIngredients}
-                    onChange={handleChange}
-                    placeholder="Enter main ingredients"
-                    required
-                  />
-                  <label>Full Ingredients:</label>
-                  <input
-                    type="text"
-                    name="fullIngredients"
-                    value={formData.fullIngredients}
-                    onChange={handleChange}
-                    placeholder="Enter full ingredients"
-                    required
-                  />
-                </fieldset>
-
-                <label>Variant ID:</label>
-                <input type="text" name="variantId" value={variantIdInput} readOnly /> {/* Display variantId */}
-                <button onClick={handleFinish}>Finish</button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+        {step === 2 && (
+          <Form layout="vertical" onFinish={handleFinish}>
+            <Form.Item label="Volume (ml)">
+              <InputNumber
+                name="volume"
+                value={formData.volume}
+                onChange={(value) => handleChange({ target: { name: "volume", value } })}
+                placeholder="Enter volume"
+                required
+              />
+            </Form.Item>
+            <Form.Item label="Skin Type">
+              <Input
+                name="skinType"
+                value={formData.skinType}
+                onChange={handleChange}
+                placeholder="Enter skin type"
+                required
+              />
+            </Form.Item>
+            <Form.Item label="Price (VND)">
+              <InputNumber
+                name="price"
+                value={formData.price}
+                onChange={(value) => handleChange({ target: { name: "price", value } })}
+                placeholder="Enter price"
+                required
+              />
+            </Form.Item>
+            <Form.Item label="Stock Quantity">
+              <InputNumber
+                name="stockQuantity"
+                value={formData.stockQuantity}
+                onChange={(value) => handleChange({ target: { name: "stockQuantity", value } })}
+                placeholder="Enter stock quantity"
+                required
+              />
+            </Form.Item>
+            <Form.Item label="Main Ingredients">
+              <Input
+                name="mainIngredients"
+                value={formData.mainIngredients}
+                onChange={handleChange}
+                placeholder="Enter main ingredients"
+                required
+              />
+            </Form.Item>
+            <Form.Item label="Full Ingredients">
+              <Input
+                name="fullIngredients"
+                value={formData.fullIngredients}
+                onChange={handleChange}
+                placeholder="Enter full ingredients"
+                required
+              />
+            </Form.Item>
+            <Form.Item label="Variant ID">
+              <Input name="variantId" value={variantIdInput} readOnly />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">Finish</Button>
+            </Form.Item>
+          </Form>
+        )}
+      </Modal>
+    </Card>
   );
 };
 
