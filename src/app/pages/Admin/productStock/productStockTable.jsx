@@ -1,28 +1,39 @@
 import React from "react";
+import { Table } from "antd";
 import styles from "./productStockTable.module.css";
 
 const ProductStockTable = ({ products }) => {
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Brand",
+      dataIndex: "brand",
+      key: "brand",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Stock Quantity",
+      dataIndex: "stockQuantity",
+      key: "stockQuantity",
+    },
+  ];
+
   return (
-    <table className={styles.table}>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Brand</th>
-          <th>Price</th>
-          <th>Stock Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products.map((product) => (
-          <tr key={product.id}>
-            <td>{product.name}</td>
-            <td>{product.brand}</td>
-            <td>{product.price}</td>
-            <td>{product.stockQuantity}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table
+      className={styles.table}
+      dataSource={products}
+      columns={columns}
+      rowKey="id"
+      pagination={false}
+    />
   );
 };
 

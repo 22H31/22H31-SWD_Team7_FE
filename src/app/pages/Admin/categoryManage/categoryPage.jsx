@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Table, Button, Input, Modal, Form, Select, message } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import styles from "../categoryManage/categoryPage.module.css";
 
 const CATEGORY_API = "https://beteam720250214143214.azurewebsites.net/api/categories";
@@ -17,7 +19,6 @@ const CategoryPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  // **Lấy danh sách Category và Category Title**
   useEffect(() => {
     fetch(CATEGORY_API)
       .then((res) => res.json())
@@ -27,11 +28,10 @@ const CategoryPage = () => {
           return;
         }
 
-        // Trích xuất thông tin cần thiết
         const extractedCategories = data.flatMap((item) =>
           item.categorys.map((subCategory) => ({
             categoryId: subCategory.categoryId,
-            categoryTitleId: item.categoryTitleId, 
+            categoryTitleId: item.categoryTitleId,
             categoryName: subCategory.categoryName,
             description: subCategory.description,
           }))
@@ -47,15 +47,13 @@ const CategoryPage = () => {
       .catch((err) => console.error("Lỗi khi lấy category title:", err));
   }, []);
 
-  // **Xử lý thay đổi trong form**
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // **Thêm mới Category (POST)**
   const handleAdd = async () => {
     if (!formData.categoryTitleId || !formData.categoryName) {
-      alert("Vui lòng chọn Category Title và nhập Category Name!");
+      message.error("Vui lòng chọn Category Title và nhập Category Name!");
       return;
     }
 
@@ -71,19 +69,18 @@ const CategoryPage = () => {
 
       setCategories([...categories, newCategory]);
       setPopupOpen(false);
+      message.success("Danh mục đã được thêm thành công!");
     } catch (err) {
       console.error("Lỗi khi thêm:", err);
+      message.error("Lỗi khi thêm danh mục!");
     }
   };
 
-  // **Cập nhật Category (PUT)**
   const handleEdit = async () => {
     if (!editId || !formData.categoryName) {
-      alert("Dữ liệu không hợp lệ!");
+      message.error("Dữ liệu không hợp lệ!");
       return;
     }
-
-    console.log("Đang cập nhật category:", editId, formData);
 
     try {
       const res = await fetch(`${CATEGORY_API}/${editId}`, {
@@ -103,13 +100,13 @@ const CategoryPage = () => {
         )
       );
       setPopupOpen(false);
+      message.success("Danh mục đã được cập nhật thành công!");
     } catch (err) {
       console.error("Lỗi khi cập nhật:", err);
-      alert(`Lỗi khi cập nhật: ${err.message}`);
+      message.error(`Lỗi khi cập nhật: ${err.message}`);
     }
   };
 
-  // **Xóa Category (DELETE)**
   const handleDelete = async (id) => {
     if (!id || !window.confirm("Bạn có chắc muốn xóa danh mục này?")) return;
 
@@ -119,15 +116,16 @@ const CategoryPage = () => {
       if (!res.ok) throw new Error("Lỗi khi xóa danh mục");
 
       setCategories(categories.filter((item) => item.categoryId !== id));
+      message.success("Danh mục đã được xóa thành công!");
     } catch (err) {
       console.error("Lỗi khi xóa:", err);
+      message.error("Lỗi khi xóa danh mục!");
     }
   };
 
-  // **Mở popup chỉnh sửa**
   const handleEditClick = (category) => {
     setFormData({
-      categoryTitleId: category.categoryTitleId, 
+      categoryTitleId: category.categoryTitleId,
       categoryName: category.categoryName,
       description: category.description,
     });
@@ -136,87 +134,116 @@ const CategoryPage = () => {
     setPopupOpen(true);
   };
 
+  const columns = [
+    {
+      title: "Category Name",
+      dataIndex: "categoryName",
+      key: "categoryName",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => (
+        <>
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => handleEditClick(record)}
+            style={{ marginRight: 8 }}
+          />
+          <Button
+            type="primary"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record.categoryId)}
+          />
+        </>
+      ),
+    },
+  ];
+
   return (
-    <div className={styles.container}>
+    <>
       <h1>Category Management</h1>
       <div className={styles.controls}>
-        <input
-          type="text"
+        <Input
           placeholder="🔍 Search Category"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          style={{ width: 200, marginRight: 8 }}
         />
-        <button
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
           onClick={() => {
             setPopupOpen(true);
             setIsEditing(false);
             setFormData({ categoryTitleId: "", categoryName: "", description: "" });
           }}
         >
-          ➕ Add New Category
-        </button>
+          Add New Category
+        </Button>
       </div>
 
-      {/* Hiển thị danh sách danh mục */}
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Category Name</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories
-            .filter((cat) =>
-              (cat.categoryName || "").toLowerCase().includes(search.toLowerCase())
-            )
-            .map((category) => (
-              <tr key={category.categoryId}>
-                <td>{category.categoryName}</td>
-                <td>{category.description}</td>
-                <td>
-                  <button onClick={() => handleEditClick(category)}>✏️</button>
-                  <button onClick={() => handleDelete(category.categoryId)}>❌</button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <Table
+        dataSource={categories.filter((cat) =>
+          (cat.categoryName || "").toLowerCase().includes(search.toLowerCase())
+        )}
+        columns={columns}
+        rowKey="categoryId"
+        className={styles.table}
+      />
 
-      {/* Popup Form */}
-      {isPopupOpen && (
-        <div className={styles.overlay}>
-          <div className={styles.popup}>
-            <h2>{isEditing ? "Edit Category" : "Add Category"}</h2>
-            <button className={styles.closeBtn} onClick={() => setPopupOpen(false)}>✖</button>
-
-            <div className={styles.formGroup}>
-              <label>Category Title</label>
-              <select name="categoryTitleId" value={formData.categoryTitleId} onChange={handleChange}>
-                <option value="">Select Category Title</option>
-                {categoryTitles.map((title) => (
-                  <option key={title.categoryTitleId} value={title.categoryTitleId}>
-                    {title.categoryTitleName}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Category Name</label>
-              <input type="text" name="categoryName" value={formData.categoryName} onChange={handleChange} />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Description</label>
-              <input type="text" name="description" value={formData.description} onChange={handleChange} />
-            </div>
-            <button onClick={isEditing ? handleEdit : handleAdd} className={styles.submitBtn}>
+      <Modal
+        title={isEditing ? "Edit Category" : "Add Category"}
+        visible={isPopupOpen}
+        onCancel={() => setPopupOpen(false)}
+        footer={null}
+      >
+        <Form layout="vertical" onFinish={isEditing ? handleEdit : handleAdd}>
+          <Form.Item label="Category Title">
+            <Select
+              name="categoryTitleId"
+              value={formData.categoryTitleId}
+              onChange={(value) => setFormData({ ...formData, categoryTitleId: value })}
+            >
+              <Select.Option value="">Select Category Title</Select.Option>
+              {categoryTitles.map((title) => (
+                <Select.Option key={title.categoryTitleId} value={title.categoryTitleId}>
+                  {title.categoryTitleName}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item label="Category Name">
+            <Input
+              name="categoryName"
+              value={formData.categoryName}
+              onChange={handleChange}
+              required
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
               {isEditing ? "Update" : "Add"}
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
 };
 
