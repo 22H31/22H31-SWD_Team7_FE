@@ -1,48 +1,30 @@
 import { Button, Form, Input, message } from "antd";
 import React, { useState } from "react";
 import { APIChangePassword } from "../../api/api";
+import { SSpin } from "../../globalVariable/spin";
 
 export default function ChangePassword() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem("token");
-  const onFinish = async (user) => {
-    setIsLoading(true);
-    console.log(token);
+  const onFinish = async (values) => {
+    console.log(values);
+    SSpin.set(true);
+    APIChangePassword(values)
+      .then((rs) => {
+        console.log(rs);
+        if (rs.status === 200) {
+          message.success("Đổi mật khẩu thành công!")
+          
+        }
 
-    try {
-      
-      if (!token) {
-        message.error("Bạn chưa đăng nhập!");
-        setIsLoading(false);
-        return;
-      }
-
-      const rs = await APIChangePassword(
-        user.currentPassword,
-        user.newPassword,
-        user.newPasswordConfirmation
-      );
-
-      if (rs?.status === 200) {
-        console.log(
-          "Mật khẩu đã được thay đổi:",
-          rs.data || "Không có dữ liệu trả về"
-        );
-        message.success("Đổi mật khẩu thành công!");
-      }
-    } catch (error) {
-      console.error("Lỗi khi đổi mật khẩu:", error);
-      if (error.response?.status === 403) {
-        message.error(
-          "Bạn không có quyền đổi mật khẩu! Vui lòng đăng nhập lại."
-        );
-      } else {
-        message.error(error.response?.data?.message || "Có lỗi xảy ra!");
-      }
-    } finally {
-      setIsLoading(false);
-    }
+      })
+      .catch((error) => {
+        message.error(error.response.data)
+      })
+      .finally(() => {
+        SSpin.set(false);
+      });
   };
 
   return (
@@ -53,7 +35,7 @@ export default function ChangePassword() {
             name="currentPassword"
             rules={[{ required: true, message: "Vui lòng nhập mật khẩu cũ!" }]}
           >
-            <Input size="large" placeholder="Mật khẩu cũ" />
+            <Input type="password" size="large" placeholder="Mật khẩu cũ" />
           </Form.Item>
           <div
             style={{
@@ -68,7 +50,7 @@ export default function ChangePassword() {
               rules={[{ required: true, message: "Vui lòng nhập Mật khẩu!" }]}
             >
               <Input
-                size="large"
+type="password"                size="large"
                 // type="password"
                 placeholder="Mật khẩu"
                 style={{ width: "100%" }}
@@ -93,7 +75,7 @@ export default function ChangePassword() {
               ]}
             >
               <Input
-                size="large"
+type="password"                size="large"
                 style={{ width: "100%" }}
                 // type="password"
                 placeholder="Xác nhận Mật khẩu"

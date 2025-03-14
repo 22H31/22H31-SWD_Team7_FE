@@ -22,22 +22,23 @@ export const APIGetInformation = () =>
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 export const APIChangePassword = (
-  currentPassword,
-  newPassword,
-  newPasswordConfirmation
+values
 ) =>
   api.post(
     "account/change-password",
     {
-      currentPassword: currentPassword,
-      newPassword: newPassword,
-      newPasswordConfirmation: newPasswordConfirmation,
-    },
-    {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      currentPassword: values.currentPassword,
+      newPassword: values.newPassword,
+      newPasswordConfirmation: values.newPasswordConfirmation,
     }
   );
 
-export const APIGetUserId = (userId) =>
-  api.get(`User/${userId}`);
-  export const APILogOut= () => api.post("account/logout")
+export const APIGetUserId = (userId) => api.get(`User/${userId}`);
+export const APILogOut = () => api.post("account/logout");
+export const APIPutUserId = (values, userId) =>
+  api.put(`User/${userId}`, {
+    name: values.name,
+    phoneNumber: values.phone,
+    // address:"values.address",
+    // dateOfBirth: ""
+  });

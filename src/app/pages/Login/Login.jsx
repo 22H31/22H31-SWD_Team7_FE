@@ -4,13 +4,15 @@ import { Button, Checkbox, Form, Input, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
 import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
 import { APIlogin } from "../../api/api";
+import { SSpin } from "../../globalVariable/spin";
 
 export default function Login() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  
   
   const onFinish = (user) => {
+    SSpin.set(true)
     APIlogin(user.username, user.password)
       .then((rs) => {
         if (rs?.status === 200) {
@@ -38,7 +40,7 @@ export default function Login() {
         setErrorMessage(error.response?.data?.message || "Có lỗi xảy ra!");
       })
       .finally(() => {
-        setIsLoading(false);
+        SSpin.set(false)
       });
   };
   
@@ -76,7 +78,7 @@ export default function Login() {
               block
               type="primary"
               htmlType="submit"
-              loading={isLoading}
+
               style={{
                 backgroundColor: "#C0437F",
                 color: "white",
