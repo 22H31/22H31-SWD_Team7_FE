@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Tag } from "antd";
+import { Button, Card, Col, Row, Spin, Tag } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Thêm useNavigate
@@ -34,7 +34,9 @@ const BlogHomePage = () => {
       <h2 className="Bloglist-header">Blog của Beauty Love</h2>
 
       {loading ? (
-        <p>Đang tải dữ liệu...</p>
+        <div className="loading-container">
+          <Spin size="large" />
+        </div>
       ) : (
         paginatedBlogs.map((post) => (
           <Card key={post.blogId} className="Bloglist-card">
@@ -44,17 +46,17 @@ const BlogHomePage = () => {
                   alt={post.title}
                   src={post.avartarBlogUrl || "https://via.placeholder.com/600"}
                   className="Bloglist-image"
-                  onClick={() => navigate(`/blogDetail/${post.blogId}`)} 
+                  onClick={() => navigate(`/blogDetail/${post.blogId}`)}
                 />
               </Col>
               <Col xs={24} md={16} className="Bloglist-content">
                 <p className="Bloglist-date">
-                  {new Date(post.createdAt).toLocaleDateString("vi-VN")}
+                  {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
                 </p>
                 <h2
                   className="Bloglist-title"
-                  onClick={() => navigate(`/blogDetail/${post.blogId}`)} // Điều hướng khi click vào tiêu đề
-                  style={{ cursor: "pointer" }} // Giữ nguyên style, chỉ thêm hiệu ứng nhấn vào
+                  // onClick={() => navigate(`/blogDetail/${post.blogId}`)} // Điều hướng khi click vào tiêu đề
+                  // style={{ cursor: "pointer" }} // Giữ nguyên style, chỉ thêm hiệu ứng nhấn vào
                 >
                   {post.title}
                 </h2>
@@ -63,14 +65,20 @@ const BlogHomePage = () => {
                 </h3>
                 <p className="Bloglist-description">{post.content1}</p>
                 <div className="Bloglist-tags">
+                  <Tag color="pink">#mẹo</Tag>
                   <Tag color="purple">#chăm sóc da</Tag>
                   <Tag color="blue">#dưỡng ẩm</Tag>
                   <Tag color="green">#làm đẹp</Tag>
+                  <Tag color="red">#thân thiện môi trường</Tag>
                 </div>
                 <Button
                   type="primary"
                   className="Bloglist-button"
-                  onClick={() => navigate(`/blog/${post.blogId}`)} 
+                  onClick={() => {
+                    navigate(`/blog/${post.blogId}`);
+                    window.scrollTo(0, 0); // Cuộn lên đầu trang
+                  }}
+                  style={{ cursor: "pointer" }}
                 >
                   Xem thêm
                 </Button>
