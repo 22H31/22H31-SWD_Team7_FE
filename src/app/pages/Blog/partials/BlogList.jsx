@@ -52,33 +52,33 @@ const Bloglist = () => {
                   alt={post.title}
                   src={post.avartarBlogUrl || "https://via.placeholder.com/600"}
                   className="Bloglist-image"
-                  onClick={() => navigate(`/blogDetail/${post.blogId}`)} // Điều hướng khi click vào ảnh
+                  // onClick={() => navigate(`/blogDetail/${post.blogId}`)}
                 />
               </Col>
               <Col xs={24} md={16} className="Bloglist-content">
                 <p className="Bloglist-date">
                   {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
                 </p>
-                <h2
-                  className="Bloglist-title"
-                  onClick={() => navigate(`/blogDetail/${post.blogId}`)} // Điều hướng khi click vào tiêu đề
-                  style={{ cursor: "pointer" }} // Giữ nguyên style, chỉ thêm hiệu ứng nhấn vào
-                >
-                  {post.title}
-                </h2>
+                <h2 className="Bloglist-title">{post.title}</h2>
                 <h3 className="Bloglist-subtitle">
                   {post.subTitle || "Subtitle mẫu để kiểm tra giao diện"}
                 </h3>
                 <p className="Bloglist-description">{post.content1}</p>
                 <div className="Bloglist-tags">
+                  <Tag color="pink">#mẹo</Tag>
                   <Tag color="purple">#chăm sóc da</Tag>
                   <Tag color="blue">#dưỡng ẩm</Tag>
                   <Tag color="green">#làm đẹp</Tag>
+                  <Tag color="red">#thân thiện môi trường</Tag>
                 </div>
                 <Button
                   type="primary"
                   className="Bloglist-button"
-                  onClick={() => navigate(`/blog/${post.blogId}`)}
+                  onClick={() => {
+                    navigate(`/blog/${post.blogId}`);
+                    window.scrollTo(0, 0); // Cuộn lên đầu trang
+                  }}
+                  style={{ cursor: "pointer" }}
                 >
                   Xem thêm
                 </Button>
