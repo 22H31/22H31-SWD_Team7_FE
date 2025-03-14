@@ -170,11 +170,12 @@ export default function GeminiChat() {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Nhập tin nhắn..."
                     onPressEnter={sendMessage}
+                    style={{ padding: "15px 25px",height:"30px" }}
                   />
                   <Button
                     type="primary"
                     onClick={sendMessage}
-                    style={{ padding: "15px 25px" }}
+                    style={{ padding: "15px 25px",height:"30px" }}
                   >
                     Gửi
                   </Button>

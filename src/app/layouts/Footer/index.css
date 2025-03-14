@@ -55,7 +55,6 @@
 
 .subscribe {
   display: flex;
-  align-items: center;
   gap: 0; 
 }
 
@@ -68,6 +67,7 @@
   border-right: none;
   border-radius: 5px 0 0 5px;
   outline: none;
+  
 }
 
 .subscribe-button {

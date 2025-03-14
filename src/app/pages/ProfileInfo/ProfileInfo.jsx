@@ -1,4 +1,4 @@
-import { Button, Form, Input, message } from "antd";
+import { Button, DatePicker, Form, Input, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { APIGetUserId, APIPutUserId } from "../../api/api";
 import api from "../../api/axios";
@@ -57,8 +57,8 @@ export default function ProfileInfo() {
             email: profile.email,
             name: profile.name,
             phone: profile.phoneNumber,
-            address: profile.address || "",
-            dateOfBirth: profile.dateOfBirth || "",
+            address: profile.address,
+            dateOfBirth: profile.dateOfBirth,
           });
         })
         .catch((error) => {
@@ -74,13 +74,11 @@ export default function ProfileInfo() {
       console.warn("Không tìm thấy UserID trong localStorage");
     }
   };
-  const [userData, setUserData] = useState(null);
   useEffect(() => {
     getData();
   }, []);
-  useEffect(() => {
-    api.get("blogs").then((data) => console.log(data));
-  });
+
+  
   return (
     <div style={{ margin: "10px" }}>
       <Form form={form} onFinish={onFinish} layout="vertical">
@@ -111,6 +109,28 @@ export default function ProfileInfo() {
               placeholder="Số điện thoai"
 
               // value={userData?.phoneNumber || "Vui lòng cập nhật thông tin!"}
+            />
+          </Form.Item>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "16px",
+          }}
+        >
+          <Form.Item name="address" label="Địa chỉ:" style={{ flex: 1 }}>
+            <Input
+              placeholder="Địa chỉ"
+              // value={userData?.name || "Vui lòng cập nhật thông tin!"}
+            />
+          </Form.Item>
+
+          <Form.Item name="dateOfBirth" label="Ngày sinh:" style={{ flex: 1 }}>
+            {/* <DatePicker onChange={onChange} /> */}
+            <Input
+              placeholder="Ngày sinh"
+              // value={userData?.name || "Vui lòng cập nhật thông tin!"}
             />
           </Form.Item>
         </div>

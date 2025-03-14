@@ -39,6 +39,6 @@ export const APIPutUserId = (values, userId) =>
   api.put(`User/${userId}`, {
     name: values.name,
     phoneNumber: values.phone,
-    // address:"values.address",
-    // dateOfBirth: ""
+    address: values.address,
+    dateOfBirth: values.dateOfBirth
   });
