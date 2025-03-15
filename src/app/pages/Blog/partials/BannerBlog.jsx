@@ -8,6 +8,15 @@ import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./BannerBlog.css";
 
+// Hàm loại bỏ các ký tự Markdown
+const removeMarkdown = (text) => {
+  if (!text) return ""; // Trả về chuỗi rỗng nếu text là null hoặc undefined
+  return text
+    .replace(/#|\*|`|\[|\]|\(|\)/g, "") // Loại bỏ các ký tự Markdown
+    .replace(/\s+/g, " ") // Loại bỏ khoảng trắng thừa
+    .trim(); // Loại bỏ khoảng trắng ở đầu và cuối
+};
+
 export default function BannerBlog() {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
@@ -59,7 +68,7 @@ export default function BannerBlog() {
                     {post.subTitle || "Bài viết về chăm sóc da"}
                   </h3>
                   <p className="blog-description">
-                    {post.content1.split(" ").slice(0, 110).join(" ")}...
+                    {removeMarkdown(post.content1).split(" ").slice(0, 110).join(" ")}...
                   </p>
                   <button
                     className="blog-button"
