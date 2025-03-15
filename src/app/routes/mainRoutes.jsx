@@ -24,6 +24,7 @@ import Cart from "../pages/cart";
 import Checkout from "../pages/Checkout";
 import CustomerSupport from "../pages/CustomerSupport";
 import PaymentSuccess from "../pages/PaymentSuccess";
+import ProductDetail from "../pages/Home/ProductDetail/ProductDetail";
 
 export default function MainRoutes() {
   const location = useLocation();
@@ -55,7 +56,7 @@ export default function MainRoutes() {
         <Route path="categoryTitlePage" element={<CategoryTitle />} />
         <Route path="blog" element={<BlogManage />} />
         </Route>
-
+        <Route path="/product/:id" element={<ProductDetail />} />
         {/* Uncomment to handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
