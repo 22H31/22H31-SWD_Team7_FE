@@ -9,6 +9,7 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import { Link, useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown"; // Thêm react-markdown
 import "./BlogDescription.css";
 
 const { Title, Text } = Typography;
@@ -89,7 +90,7 @@ const BlogDescription = () => {
               )}
 
               <div className="author-info">
-                <Text className="blog-path" >By {blogData.author || "Beauty Love"}</Text>
+                <Text className="blog-path">By {blogData.author || "Beauty Love"}</Text>
               </div>
             </div>
 
@@ -99,7 +100,11 @@ const BlogDescription = () => {
               width="100%"
               className="main-image"
             />
-            <Text className="blog-text">{blogData.content1}</Text>
+
+            {/* Hiển thị content1 với react-markdown */}
+            <div className="blog-text">
+              <ReactMarkdown>{blogData.content1}</ReactMarkdown>
+            </div>
 
             {blogData.blogImageUrl &&
               (() => {
@@ -118,10 +123,10 @@ const BlogDescription = () => {
                       />
                     ))}
 
-                    <Title level={2}>{blogData.title}</Title>
-                    <Text className="blog-text content2">
-                      {blogData.content2}
-                    </Text>
+                    {/* Hiển thị content2 với react-markdown */}
+                    <div className="blog-text content2">
+                      <ReactMarkdown>{blogData.content2}</ReactMarkdown>
+                    </div>
 
                     {images.slice(halfIndex).map((imageUrl, index) => (
                       <Image

@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Thêm useNavigate
 import "./BlogHomePage.css";
 
+const removeMarkdown = (text) => {
+  if (!text) return ""; // Trả về chuỗi rỗng nếu text là null hoặc undefined
+  return text
+    .replace(/#|\*|`|\[|\]|\(|\)/g, "") // Loại bỏ các ký tự Markdown
+    .replace(/\s+/g, " ") // Loại bỏ khoảng trắng thừa
+    .trim(); // Loại bỏ khoảng trắng ở đầu và cuối
+};
 const BlogHomePage = () => {
   const navigate = useNavigate(); // Sử dụng useNavigate
   const [blogs, setBlogs] = useState([]);
@@ -63,7 +70,7 @@ const BlogHomePage = () => {
                 <h3 className="Bloglist-subtitle">
                   {post.subtitle || "Subtitle mẫu để kiểm tra giao diện"}
                 </h3>
-                <p className="Bloglist-description">{post.content1}</p>
+                <p className="Bloglist-description">{removeMarkdown(post.content1).split(" ").slice(0, 110).join(" ")}...</p>
                 <div className="Bloglist-tags">
                   <Tag color="pink">#mẹo</Tag>
                   <Tag color="purple">#chăm sóc da</Tag>

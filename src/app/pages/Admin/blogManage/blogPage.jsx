@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -20,7 +21,7 @@ import {
   Typography,
   Upload,
 } from "antd";
-import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "./blogPage.module.css"; // Import file CSS
 
 const API_URL = "https://beteam720250214143214.azurewebsites.net/api/blogs";
@@ -107,7 +108,7 @@ const BlogPage = () => {
       const result = await response.json();
       if (!response.ok) throw new Error("Lỗi khi lưu blog");
 
-      // Nếu là tạo mới, mở modal upload ảnh
+      // Nếu là tạo mới, mở modal upload ảnh đại diện
       if (!editingBlog) {
         setEditingBlog(result); // Lưu blog vừa tạo
         setAvatarModalVisible(true); // Mở modal upload ảnh đại diện
@@ -120,10 +121,6 @@ const BlogPage = () => {
       form.resetFields();
       setAvatarUrl(null);
       setBlogImages([]);
-      setAvatarModalVisible(true);
-      setModalVisible(false);
-      form.resetFields(); // Clear form data
-      fetchBlogs();
     } catch (error) {
       console.error("Lỗi khi lưu blog:", error);
       message.error("Lỗi khi lưu blog");
@@ -145,7 +142,8 @@ const BlogPage = () => {
       );
       if (!response.ok) throw new Error("Lỗi khi tải ảnh đại diện");
       message.success("Tải ảnh đại diện thành công!");
-      setAvatarUrl(URL.createObjectURL(file));
+      const avatarUrl = URL.createObjectURL(file);
+      setAvatarUrl(avatarUrl); // Hiển thị ảnh đại diện trên popup
       fetchBlogs(); // Cập nhật danh sách blog
     } catch (error) {
       console.error("Lỗi khi tải ảnh đại diện:", error);
@@ -351,6 +349,10 @@ const BlogPage = () => {
           <Form.Item name="content2" label="Nội dung 2">
             <Input.TextArea className="textArea" autoSize={{ minRows: 3, maxRows: 6 }} />
           </Form.Item>
+          {/* Hiển thị preview markdown */}
+          <Form.Item label="Preview Markdown">
+            <ReactMarkdown>{form.getFieldValue("content1") || ""}</ReactMarkdown>
+          </Form.Item>
           {/* Hiển thị avatar, img1, img2 */}
           {editingBlog && (
             <Row gutter={16}>
@@ -359,7 +361,6 @@ const BlogPage = () => {
                   <Image
                     src={editingBlog.blogAvartarImageUrl || "https://via.placeholder.com/150"}
                     style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 8 }}
-                    rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
                   />
                 </Form.Item>
               </Col>
@@ -433,6 +434,7 @@ const BlogPage = () => {
               setImageModalVisible(false);
               setAvatarUrl(null);
               setBlogImages([]);
+              setEditingBlog(null); // Reset editing blog
             }}
           >
             Hoàn thành

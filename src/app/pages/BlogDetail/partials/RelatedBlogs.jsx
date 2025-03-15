@@ -3,6 +3,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Thêm useNavigate để điều hướng
 import "./RelatedBlog.css";
 
+const removeMarkdown = (text) => {
+  if (!text) return ""; // Trả về chuỗi rỗng nếu text là null hoặc undefined
+  return text
+    .replace(/#|\*|`|\[|\]|\(|\)/g, "") // Loại bỏ các ký tự Markdown
+    .replace(/\s+/g, " ") // Loại bỏ khoảng trắng thừa
+    .trim(); // Loại bỏ khoảng trắng ở đầu và cuối
+};
+
 const RelatedBlogs = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); // Thêm trạng thái loading
@@ -58,7 +66,7 @@ const RelatedBlogs = () => {
             </div>
             <div className="relatedblogs-content">
               <h3 className="relatedblogs-post-title">{post.title}</h3>
-              <p className="relatedblogs-description">{post.content1}</p>
+              <p className="relatedblogs-description">{removeMarkdown(post.content1).split(" ").slice(0, 110).join(" ")}...</p>
               <div className="relatedblogs-footer">
                 <span className="relatedblogs-date">
                   {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}

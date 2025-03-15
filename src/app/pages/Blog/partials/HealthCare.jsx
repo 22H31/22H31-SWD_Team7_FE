@@ -4,6 +4,14 @@ import { useEffect, useState } from "react";
 import { Spin } from "antd"; // Thêm Spin từ Ant Design
 import { useNavigate } from "react-router-dom"; // Thêm useNavigate để điều hướng
 
+const removeMarkdown = (text) => {
+  if (!text) return ""; // Trả về chuỗi rỗng nếu text là null hoặc undefined
+  return text
+    .replace(/#|\*|`|\[|\]|\(|\)/g, "") // Loại bỏ các ký tự Markdown
+    .replace(/\s+/g, " ") // Loại bỏ khoảng trắng thừa
+    .trim(); // Loại bỏ khoảng trắng ở đầu và cuối
+};
+
 const HealthCare = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); // Thêm trạng thái loading
@@ -60,7 +68,8 @@ const HealthCare = () => {
             </div>
             <div className="healthcare-content">
               <h3 className="healthcare-post-title">{post.title}</h3>
-              <p className="healthcare-description">{post.content1}</p>
+              <p className="healthcare-description"> {removeMarkdown(post.content1).split(" ").slice(0, 110).join(" ")}...</p>
+
               <div className="healthcare-footer">
                 {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
               </div>
