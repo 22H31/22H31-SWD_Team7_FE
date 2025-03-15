@@ -1,95 +1,82 @@
-import { Spin } from "antd";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import "./HotSale.css";
+import { APIGetProductById, APIGetProducts } from "../../../api/api";
+import { useNavigate } from "react-router";
 
-const ITEMS_PER_PAGE = 12; // Số sản phẩm hiển thị trên mỗi trang
+
+const ITEMS_PER_PAGE = 12;
 
 const HotSale = () => {
-  const [products, setProducts] = useState([]); // State để lưu danh sách sản phẩm
-  const [currentPage, setCurrentPage] = useState(0); // State để theo dõi trang hiện tại
-  const [loading, setLoading] = useState(true); // State để hiển thị loading
-  const [error, setError] = useState(null); // State để xử lý lỗi
-  const [totalCount, setTotalCount] = useState(0); // State để lưu tổng số sản phẩm
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  // Gọi API để lấy danh sách sản phẩm
+  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const displayedProducts = products.slice(
+    currentPage * ITEMS_PER_PAGE,
+    (currentPage + 1) * ITEMS_PER_PAGE
+  );
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          "https://beteam720250214143214.azurewebsites.net/api/products",
-          {
-            params: {
-              PageNumber: currentPage + 1, // Trang hiện tại (API bắt đầu từ 1)
-              PageSize: ITEMS_PER_PAGE, // Số sản phẩm trên mỗi trang
-            },
-          }
-        );
-        const productsWithOldPrice = response.data.items.map((product) => ({
-          ...product,
-          oldPrice: Math.round(product.variants[0].price * (1 + Math.random() * 0.05 + 0.5)), // Làm tròn đến số nguyên
-        }));
-        setProducts(productsWithOldPrice); // Cập nhật danh sách sản phẩm
-        setTotalCount(response.data.totalCount); // Cập nhật tổng số sản phẩm
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setError("Failed to load products. Please try again later."); 
-        setLoading(false); 
-      }
-    };
-
-    fetchProducts();
-  }, [currentPage]);
-
-  // Hiển thị loading nếu đang tải dữ liệu
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <Spin size="large" />
-      </div>
-    );
-  }
-
-  // Hiển thị lỗi nếu có
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
-
+    APIGetProducts().then((rs) => {
+      console.log(rs.data.items, "1");
+      const fetchedProducts = Array.isArray(rs.data.items) ? rs.data.items : [];
+      setProducts(fetchedProducts);
+    });
+  }, []);
+  const handleBuyNow = (productId) => {
+    APIGetProductById(productId).then((rs) => {
+      console.log(rs.data, "product");
+      localStorage.setItem("productId", productId);
+      navigate(`/product/${productId}`);
+    });
+  };
   return (
     <div className="OnSale">
       <h2>Sản phẩm đang hot</h2>
 
       {/* Danh sách sản phẩm */}
       <div className="product-list">
-        {products.map((product) => (
+        {displayedProducts.map((product) => (
           <div key={product.productId} className="product">
-            <img
-              src={product.avartarImageUrl || "https://via.placeholder.com/200"}
-              alt={product.productName}
-            />
+            <img src={product.avartarImageUrl} alt={product.name} />
             <h3>{product.productName}</h3>
             <p className="price">
-              {product.variants[0].price.toLocaleString("vi-VN")} đ{" "}
-              <del>{product.oldPrice.toLocaleString("vi-VN")} đ</del>
+              {Number(product.variants[0]?.price || 0).toLocaleString("vi-VN")}{" "}
+              VND
+              <del>
+                {Number(
+                  (product.variants[0]?.price || 0) * 1.05
+                ).toLocaleString("vi-VN")}{" "}
+                VND
+              </del>
             </p>
+
+            <span className="reviews">
+              {product.soldQuantity} Số lượng đã bán
+            </span>
+            <button
+              onClick={() => handleBuyNow(product.productId)}
+              className="buy"
+            >
+              Mua ngay
+            </button>
             <div className="rating">
-              {Array.from({ length: Math.floor(product.averageRating) }, (_, i) => (
+              {Array.from({ length: product.averageRating }, (_, i) => (
                 <span key={i} className="star">
                   ⭐
                 </span>
-              ))}
+              ))}{" "}
               <span className="reviews">{product.totalFeedback} Đánh giá</span>
             </div>
-            <button className="buy">Mua ngay</button>
           </div>
         ))}
       </div>
 
       {/* Phân trang */}
-      {totalCount > ITEMS_PER_PAGE && (
+      {totalPages > 1 && (
         <div className="pagination">
-          {Array.from({ length: Math.ceil(totalCount / ITEMS_PER_PAGE) }, (_, index) => (
+          {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
               className={`page-number ${currentPage === index ? "active" : ""}`}

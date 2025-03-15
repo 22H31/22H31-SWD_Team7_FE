@@ -7,11 +7,11 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Badge, Button, Input, Layout, Space } from "antd";
+import { Badge, Button, Input, Layout, message, Space } from "antd";
 import logo from "../../assets/logo.png";
 import "./index.css";
 import NavigationComponent from "../NavigationBar/NavigationBar";
-import { APIGetUserId } from "../../api/api";
+import { APIGetUserId, APILogOut } from "../../api/api";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -55,9 +55,20 @@ const HeaderComponent = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Xóa token khỏi localStorage
-    window.location.reload(); // Refresh trang để cập nhật trạng thái đăng nhập
-    navigate("/");
+    APILogOut()
+      .then((rs) => {
+        if (rs.status === 200) {
+          console.log("Đăng xuất thành công");
+          localStorage.removeItem("token"); // Xóa token khỏi localStorage
+          setIsAuthenticated(false); // Cập nhật trạng thái đăng nhập
+          navigate("/"); // Điều hướng về trang chủ
+          message.success("Đăng xuất thành công!");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        message.error("Đăng xuất thất bại!");
+      });
   };
   return (
     <>

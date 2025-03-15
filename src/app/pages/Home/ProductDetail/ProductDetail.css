@@ -1,0 +1,160 @@
+.product-detail-container {
+  width: 80%;
+  max-width: 1200px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+  margin-top: 50px;
+}
+
+.product-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 80px; /* Tăng khoảng cách giữa ảnh và thông tin */
+}
+
+.product-image img {
+  width: 400px; /* Tăng kích thước ảnh */
+  height: auto;
+  border-radius: 8px;
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Giãn đều thông tin */
+}
+
+.product-meta {
+  display: flex;
+  gap: 20px;
+  color: gray;
+  align-items: center;
+  flex-wrap: wrap; /* Nếu không đủ chỗ, sẽ xuống dòng */
+}
+
+.product-price {
+  font-size: 30px;
+  font-weight: bold;
+  color: red;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+  font-size: 18px;
+}
+
+.add-to-cart {
+  background-color: #d10024;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Giãn cách giữa các phần */
+  margin-top: 30px;
+}
+
+.product-details h2 {
+  border-bottom: 3px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.product-description {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  font-size: 18px;
+  line-height: 1.6; /* Tăng khoảng cách giữa các dòng */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+.product-reviews {
+  margin-top: 50px;
+  background: #fff3f3;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.review-summary {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.rating-score {
+  font-size: 42px;
+  font-weight: bold;
+  color: #f4a900;
+}
+
+.review-list {
+  margin-top: 15px;
+}
+
+.review-item {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.review-user {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.review-stars {
+  color: #f4a900;
+}
+
+.write-review {
+  background-color: #d10024;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  width: 220px;
+  margin: 25px auto 0;
+  font-size: 18px;
+  border-radius: 6px;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.discounted-price {
+  color: red;
+  margin-right: 12px;
+}
+
+.original-price {
+  color: gray;
+  font-size: 18px;
+}

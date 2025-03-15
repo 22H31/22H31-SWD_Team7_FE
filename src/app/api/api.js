@@ -42,3 +42,6 @@ export const APIPutUserId = (values, userId) =>
     address: values.address,
     dateOfBirth: values.dateOfBirth
   });
+export const APIGetCategories = () => api.get("categories");
+export const APIGetProducts = () => api.get("products");
+export const APIGetProductById = (productId) => api.get(`products/${productId}`);
