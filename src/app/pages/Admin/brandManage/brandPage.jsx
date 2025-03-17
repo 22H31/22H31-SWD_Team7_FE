@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Input, Modal, Form, message } from "antd";
+import { Table, Button, Input, Modal, Form, message, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import styles from "./brandPage.module.css";
 
-const API_URL = "https://beteam720250214143214.azurewebsites.net/api/brand";
+const API_URL = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/brand";
 
 const BrandPage = () => {
   const [brands, setBrands] = useState([]);
   const [search, setSearch] = useState("");
   const [isPopupOpen, setPopupOpen] = useState(false);
-  const [formData, setFormData] = useState({ brandName: "", brandImg: "" });
+  const [formData, setFormData] = useState({ brandName: "", brandDescription: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [isImageUploadOpen, setImageUploadOpen] = useState(false);
+  const [imageUploadBrandId, setImageUploadBrandId] = useState("");
 
   // Fetch brand list from API
   useEffect(() => {
@@ -19,6 +22,20 @@ const BrandPage = () => {
       .then((data) => setBrands(data))
       .catch((err) => console.error("Error fetching data:", err));
   }, []);
+
+  // Fetch brand details by ID
+  const fetchBrandDetails = (brandId) => {
+    fetch(`${API_URL}/${brandId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFormData({
+          brandName: data.brandName,
+          brandDescription: data.brandDescription,
+          brandImg: data.avatarBrandUrl,
+        });
+      })
+      .catch((err) => console.error("Error fetching brand details:", err));
+  };
 
   // Handle input change
   const handleChange = (e) => {
@@ -81,10 +98,50 @@ const BrandPage = () => {
 
   // Open edit popup
   const handleEditClick = (brand) => {
-    setFormData({ brandName: brand.brandName, brandImg: brand.brandImg });
+    fetchBrandDetails(brand.brandId);
     setIsEditing(true);
     setEditId(brand.brandId);
     setPopupOpen(true);
+  };
+
+  // Handle image upload
+  const handleImageUpload = ({ file, onSuccess, onError }) => {
+    if (!imageUploadBrandId) {
+      message.error("Please enter a BrandID to upload an image.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("fileDtos", file); // Ensure the key matches the expected parameter name
+
+    fetch(`${API_URL}/${imageUploadBrandId}/brand_avartar_images`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.text(); // Use res.text() instead of res.json() to handle non-JSON responses
+      })
+      .then((text) => {
+        try {
+          const data = JSON.parse(text); // Try to parse the response as JSON
+          setImageUploadOpen(false);
+          message.success("Image uploaded successfully!");
+          onSuccess("ok");
+        } catch (err) {
+          // Handle non-JSON response
+          setImageUploadOpen(false);
+          message.success("Image uploaded successfully!");
+          onSuccess("ok");
+        }
+      })
+      .catch((err) => {
+        console.error("Error uploading image:", err);
+        message.error("Error uploading image!");
+        onError(err);
+      });
   };
 
   const columns = [
@@ -112,8 +169,18 @@ const BrandPage = () => {
           <Button type="primary" onClick={() => handleEditClick(record)} style={{ marginRight: 8 }}>
             Edit
           </Button>
-          <Button type="primary" danger onClick={() => handleDelete(record.brandId)}>
+          <Button type="primary" danger onClick={() => handleDelete(record.brandId)} style={{ marginRight: 8 }}>
             Delete
+          </Button>
+          <Button
+            type="default"
+            onClick={() => {
+              setImageUploadBrandId(record.brandId);
+              setImageUploadOpen(true);
+            }}
+            style={{ backgroundColor: "#1890ff", color: "#fff" }}
+          >
+            Add Image
           </Button>
         </>
       ),
@@ -135,7 +202,7 @@ const BrandPage = () => {
           onClick={() => {
             setPopupOpen(true);
             setIsEditing(false);
-            setFormData({ brandName: "", brandImg: "" });
+            setFormData({ brandName: "", brandDescription: "" });
           }}
         >
           ➕ Add New Brand
@@ -168,13 +235,13 @@ const BrandPage = () => {
               required
             />
           </Form.Item>
-          <Form.Item label="Brand Logo URL">
+          <Form.Item label="Brand Description">
             <Input
               type="text"
-              name="brandImg"
-              value={formData.brandImg}
+              name="brandDescription"
+              value={formData.brandDescription}
               onChange={handleChange}
-              placeholder="Enter brand logo URL"
+              placeholder="Enter brand description"
               required
             />
           </Form.Item>
@@ -183,6 +250,28 @@ const BrandPage = () => {
               {isEditing ? "Update" : "Add"}
             </Button>
           </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Upload Brand Image"
+        visible={isImageUploadOpen}
+        onCancel={() => setImageUploadOpen(false)}
+        footer={null}
+      >
+        <Form layout="vertical">
+          <Form.Item label="Brand ID">
+            <Input
+              type="text"
+              value={imageUploadBrandId}
+              onChange={(e) => setImageUploadBrandId(e.target.value)}
+              placeholder="Enter Brand ID"
+              required
+            />
+          </Form.Item>
+          <Upload customRequest={handleImageUpload}>
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          </Upload>
         </Form>
       </Modal>
     </div>

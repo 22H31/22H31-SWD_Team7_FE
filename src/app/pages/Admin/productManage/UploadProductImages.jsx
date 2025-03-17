@@ -3,7 +3,7 @@ import { Upload, Button, Modal, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import styles from "./UploadProductImage.module.css";
 
-const API_URL = "https://beteam720250214143214.azurewebsites.net/api";
+const API_URL = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api";
 
 const UploadProductImages = ({ productId, isPopupOpen, setPopupOpen }) => {
   const [avatarFiles, setAvatarFiles] = useState([]);

@@ -3,8 +3,8 @@ import { Table, Button, Input, Modal, Form, Select, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import styles from "../categoryManage/categoryPage.module.css";
 
-const CATEGORY_API = "https://beteam720250214143214.azurewebsites.net/api/categories";
-const CATEGORY_TITLE_API = "https://beteam720250214143214.azurewebsites.net/api/categoryTitle";
+const CATEGORY_API = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/categories";
+const CATEGORY_TITLE_API = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/categoryTitle";
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Input, Modal, Form, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-const API_URL = "https://beteam720250214143214.azurewebsites.net/api/categoryTitle";
+const API_URL = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/categoryTitle";
 
 const CategoryTitlePage = () => {
   const [titles, setTitles] = useState([]);
