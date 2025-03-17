@@ -74,11 +74,10 @@ const Sidebar = () => {
       <nav>
         <ul className={styles.navItems}>
           <NavItem icon="dashboard" text="Dashboard" path="dashboard" />
-          <NavItem icon="products" text="Products" path="products" />
+          <NavItem icon="products" text="Products & Stocks" path="products" />
           <NavItem icon="blog" text="Blog" path="blog" />
           <NavItem icon="inbox" text="Inbox" path="/admin/inbox" />
           <NavItem icon="orders" text="Order Lists" path="/admin/orders" />
-          <NavItem icon="stock" text="Product Stock" path="productStock" />
 
           <li className={styles.divider}></li>
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Modal, Input, Form, InputNumber, message } from "antd";
 import styles from "../productManage/ProductCard.module.css";
 
-const API_URL = "https://beteam720250214143214.azurewebsites.net/api";
+const API_URL = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api";
 
-const ProductCard = ({ name, price, image, productId, variants, onEditProduct, onUploadImages }) => {
+const ProductCard = ({ name, price, avatarImageURL, productId, variants, onEditProduct, onUploadImages }) => {
   const [productVariants, setProductVariants] = useState([]);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -123,7 +123,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct, o
     <div style={{ width: '100%' }}>
       <Card
         hoverable
-        cover={<img alt={name} src={image} className={styles.image} />}
+        cover={<img alt={name} src={avatarImageURL} className={styles.image} />}
         actions={[
           <Button type="primary" onClick={handleEditProductClick}>Edit Product</Button>,
           <Button onClick={() => onUploadImages(productId)}>Upload Images</Button>,
@@ -134,6 +134,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct, o
         {productVariants.map((variant) => (
           <Card key={variant.variantId} className={styles.variant}>
             <p>Variant ID: {variant.variantId}</p>
+            <p>Stock: {variant.stockQuantity}</p> {/* Display stock information */}
             <Button type="primary" onClick={() => handleEditVariantClick(variant.variantId)}>Edit Variant</Button>
             <Button danger onClick={() => handleDeleteVariantClick(variant.variantId)}>Delete Variant</Button>
           </Card>
@@ -167,7 +168,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct, o
               <InputNumber
                 name="volume"
                 value={formData.volume}
-                onChange={(value) => handleChange({ target: { name: "volume", value } })}
+                onChange={(value) => handleChange({ target: { name: "volume", value } })} 
                 placeholder="Enter volume"
                 required
               />
@@ -185,7 +186,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct, o
               <InputNumber
                 name="price"
                 value={formData.price}
-                onChange={(value) => handleChange({ target: { name: "price", value } })}
+                onChange={(value) => handleChange({ target: { name: "price", value } })} 
                 placeholder="Enter price"
                 required
               />
@@ -194,7 +195,7 @@ const ProductCard = ({ name, price, image, productId, variants, onEditProduct, o
               <InputNumber
                 name="stockQuantity"
                 value={formData.stockQuantity}
-                onChange={(value) => handleChange({ target: { name: "stockQuantity", value } })}
+                onChange={(value) => handleChange({ target: { name: "stockQuantity", value } })} 
                 placeholder="Enter stock quantity"
                 required
               />

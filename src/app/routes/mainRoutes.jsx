@@ -17,7 +17,6 @@ import Brand from "../pages/Admin/brandManage/brandPage";
 import Category from "../pages/Admin/categoryManage/categoryPage";
 import CategoryTitle from "../pages/Admin/categoryManage/categoryTitlePage";
 import ProductsGrid from "../pages/Admin/productManage/productsGrid";
-import ProductStock from "../pages/Admin/productStock/productStock";
 import TeamManage from "../pages/Admin/teamManage/teamPage";
 import BlogDetail from "../pages/BlogDetail";
 import Cart from "../pages/cart";
@@ -49,7 +48,6 @@ export default function MainRoutes() {
 
         <Route path="/admin" element={<AdminLayout />}>
         <Route path="products" element={<ProductsGrid />} />
-        <Route path="productStock" element={<ProductStock />} />
         <Route path="teamPage" element={<TeamManage />} />
         <Route path="brandPage" element={<Brand />} />
         <Route path="categoryPage" element={<Category />} />

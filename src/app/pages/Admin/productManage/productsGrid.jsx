@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, message } from "antd";
+import { Row, Col, Button, message } from "antd";
 import ProductCard from "./ProductCard";
 import EditProductPopup from "./EditProductPopup";
 import UploadProductImages from "./UploadProductImages";
 import styles from "../productManage/ProductsGrid.module.css";
 
-const API_URL = "https://beteam720250214143214.azurewebsites.net/api";
+const API_URL = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api";
 
 function ProductsGrid() {
   const [products, setProducts] = useState([]);
@@ -187,7 +187,7 @@ function ProductsGrid() {
     <>
       <Row justify="space-between" align="middle" style={{ marginBottom: 16 }}>
         <Col>
-          <h2>Products</h2>
+          <h2>Products & Stocks</h2>
         </Col>
         <Col>
           <Button type="primary" onClick={handleAddClick}>
@@ -202,7 +202,7 @@ function ProductsGrid() {
             <ProductCard
               name={product.productName}
               price={product.variants?.[0]?.price || "N/A"}
-              image={product.productAvatar}
+              avatarImageURL={product.avatarImageURL}
               productId={product.productId}
               variants={product.variants}
               onEditProduct={() => handleEditProduct(product)}
