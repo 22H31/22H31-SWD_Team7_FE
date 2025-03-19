@@ -44,7 +44,7 @@ const BlogDescription = () => {
     setLoading(true);
     axios
       .get(
-        `https://beteam720250214143214.azurewebsites.net/api/blogs/${blogId}`
+        `https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs/${blogId}`
       )
       .then((response) => setBlogData(response.data))
       .catch((error) => console.error("Lỗi tải bài viết:", error))
@@ -53,7 +53,7 @@ const BlogDescription = () => {
 
   useEffect(() => {
     axios
-      .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
+      .get("https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs")
       .then((response) => setBlogList(response.data))
       .catch((error) => console.error("Lỗi tải danh sách blog:", error));
   }, []);

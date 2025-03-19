@@ -35,7 +35,7 @@
   font-size: 14px;
 }
 
-.apply-button {
+.discount-code-card .apply-button {
   background-color: #d63384;
   color: white;
   border: none;
@@ -53,4 +53,8 @@
 
 .ant-btn {
   margin-top: 0px;
+}
+
+input[type="text"], input[type="number"], input[type="file"], textarea {
+  margin-bottom: 0;
 }

@@ -27,7 +27,7 @@ const OnSale = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://beteam720250214143214.azurewebsites.net/api/products",
+          "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/products",
           {
             params: {
               PageNumber: currentPage + 1, // Trang hiện tại (API bắt đầu từ 1)

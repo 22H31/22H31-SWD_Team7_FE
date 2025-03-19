@@ -103,7 +103,7 @@
     margin-top: 20px;
   }
   
-  .healthcare-button {
+  .healthcare-container .healthcare-button {
     border-radius: 8px;
     background: var(--mu-nhn, #C0437F);
     display: inline-flex;

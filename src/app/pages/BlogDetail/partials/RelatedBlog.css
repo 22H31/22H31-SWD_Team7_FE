@@ -104,7 +104,7 @@
     margin-top: 20px;
   }
   
-  .relatedblogs-button {
+  .relatedblogs-container .relatedblogs-button {
     border-radius: 8px;
     background: var(--mu-nhn, #C0437F);
     display: inline-flex;

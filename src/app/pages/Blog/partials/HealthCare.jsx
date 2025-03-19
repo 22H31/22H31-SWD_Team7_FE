@@ -18,7 +18,7 @@ const HealthCare = () => {
   const navigate = useNavigate(); // Sử dụng hook useNavigate
 
   useEffect(() => {
-    fetch("https://beteam720250214143214.azurewebsites.net/api/blogs", {
+    fetch("https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
