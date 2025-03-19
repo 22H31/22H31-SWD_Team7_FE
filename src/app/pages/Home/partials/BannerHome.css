@@ -56,8 +56,8 @@
   margin-bottom: 20px;
 }
 
-.banner-btn {
-  background-color: #a03266;
+.banner-home .banner-btn {
+  background: #c0437f;
   color: white;
   font-size: 20px;
   font-weight: bold;
@@ -65,7 +65,7 @@
   border: none;
   cursor: pointer;
   display: flex;
-  width: 252px;
+  width: 356px;
   height: 44px;
   padding: 12px 48px;
   justify-content: center;
@@ -99,10 +99,12 @@
 
 .banner-arrow.left {
   left: 20px;
+  background-color: unset;
 }
 
 .banner-arrow.right {
   right: 20px;
+  background-color: unset;
 }
 
 .banner-arrow:hover {

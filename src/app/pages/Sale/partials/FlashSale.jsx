@@ -20,7 +20,7 @@ const FlashSale = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://beteam720250214143214.azurewebsites.net/api/products",
+          "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/products",
           {
             params: {
               PageNumber: 1, // Trang hiện tại (API bắt đầu từ 1)
@@ -95,7 +95,7 @@ const FlashSale = () => {
       <h2>Flash Sale ⚡</h2>
       <div className="countdown">Kết Thúc Sau {formatTime(timeLeft)}</div>
       <div className="slider">
-        <button className="arrow left" onClick={prevSlide}><LeftOutlined /></button>
+        <button className="arrow left" style={{background:"#ffc3c3"}} onClick={prevSlide}><LeftOutlined /></button>
         <Row gutter={[16, 16]} className="product-list" ref={sliderRef}>
           {products.slice(currentIndex, currentIndex + 4).map((product) => (
             <Col key={product.productId} xs={24} sm={12} md={6} className="product">
@@ -120,7 +120,7 @@ const FlashSale = () => {
             </Col>
           ))}
         </Row>
-        <button className="arrow right" onClick={nextSlide}><RightOutlined /></button>
+        <button className="arrow right" style={{background:"#ffc3c3"}} onClick={nextSlide}><RightOutlined /></button>
       </div>
     </div>
   );
