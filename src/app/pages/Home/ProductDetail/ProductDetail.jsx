@@ -1,32 +1,59 @@
+import { Button, Col, Image, message } from "antd";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { APIGetProductById } from "../../../api/api";
-import "./ProductDetail.css";
+import { APIAddToCart, APIGetProductById } from "../../../api/api";
 import PageLayOut from "../../../layouts/PageLayOut/PageLayOut";
-import { Col, Image } from "antd";
-
+import "./ProductDetail.css";
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
-  const id = localStorage.getItem("productId");
+  const { productId } = useParams(); // Get productId from URL
+  const userId = localStorage.getItem("userID"); // Get userId from localStorage
+
   useEffect(() => {
-    APIGetProductById(id).then((rs) => {
-      setProduct(rs.data);
-      console.log("Product Data:", rs.data);
-    });
-  }, [id]);
+    if (!productId) return; // Check if productId exists
+
+    // Fetch product details
+    APIGetProductById(productId)
+      .then((response) => {
+        setProduct(response.data);
+        console.log("Product Data:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching product:", error);
+      });
+  }, [productId]);
+
+  // Function to add product to cart
+  const handleAddToCart = async (variantId) => {
+    if (!userId) {
+      message.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+      return;
+    }
+
+    try {
+      const response = await APIAddToCart(userId, variantId, 1); // Default quantity is 1
+
+      if (response.status === 200) {
+        message.success("Thêm sản phẩm vào giỏ hàng thành công!");
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      message.error("Thêm sản phẩm vào giỏ hàng thất bại.");
+    }
+  };
 
   if (!product) return <p>Loading...</p>;
 
   return (
     <PageLayOut>
       <div className="product-detail-container">
-        {/* Ảnh sản phẩm */}
+        {/* Product Image */}
         <div className="product-header">
-        <Col span={10}>
-              <Image src={product.avatarImageUrl} alt={product.productName} />
-            </Col>
+          <Col span={10}>
+            <Image src={product.avatarImageUrl} alt={product.productName} />
+          </Col>
 
-          {/* Thông tin chung */}
+          {/* General Information */}
           <div className="product-info">
             <h1 style={{ textAlign: "left", color: "#C0437F" }}>
               {product.productName}
@@ -39,7 +66,7 @@ const ProductDetail = () => {
               >
                 ({product.feedbacks.length} đánh giá)
               </span>{" "}
-              |<span  style={{textAlign:"left",color:"#C0437F"}} className="product-code">Mã sản phẩm: {id}</span>
+              |<span style={{ textAlign: "left", color: "#C0437F" }} className="product-code">Mã sản phẩm: {productId}</span>
             </div>
 
             <p className="price">
@@ -47,7 +74,7 @@ const ProductDetail = () => {
                 <>
                   <span className="discounted-price">
                     {Number(product.variants[0].price).toLocaleString("vi-VN")}{" "}
-                    VND
+                    đ
                   </span>
                   <del className="original-price">
                     {Number(product.variants[0].price * 1.05).toLocaleString(
@@ -60,12 +87,20 @@ const ProductDetail = () => {
                 <span>Liên hệ để biết giá</span>
               )}
             </p>
+            <p>Dung tích: {product.variants[0].volume}ml</p>
+
             <p>Số lượng còn: {product.variants[0].stockQuantity}</p>
-            <button className="add-to-cart">Thêm vào giỏ hàng</button>
+            <Button
+              type="primary"
+              className="add-to-cart"
+              onClick={() => handleAddToCart(product.variants[0].variantId)}
+            >
+              Thêm vào giỏ hàng
+            </Button>
           </div>
         </div>
 
-        {/* Thông tin chi tiết */}
+        {/* Product Details */}
         <div className="product-details">
           <h2>Thông tin sản phẩm:</h2>
           <div className="product-description">
@@ -111,8 +146,7 @@ const ProductDetail = () => {
           <p>{product.describe?.preserve || "Không có thông tin"}</p>
         </div>
 
-        {/* Đánh giá sản phẩm */}
-        {/* Đánh giá sản phẩm */}
+        {/* Product Reviews */}
         <div className="product-reviews">
           <h2>Đánh giá sản phẩm:</h2>
           <div className="review-summary">
@@ -125,7 +159,7 @@ const ProductDetail = () => {
             <p>{product.feedbacks.length} đánh giá</p>
           </div>
 
-          {/* Danh sách đánh giá */}
+          {/* Review List */}
           <div className="review-list">
             {product.feedbacks.length > 0 ? (
               product.feedbacks.map((fb, index) => (
@@ -140,7 +174,7 @@ const ProductDetail = () => {
             )}
           </div>
 
-          {/* Nút Viết Bình Luận */}
+          {/* Write Review Button */}
           <button className="write-review">Viết Bình Luận</button>
         </div>
       </div>

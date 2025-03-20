@@ -1,159 +1,190 @@
 import {
-    DeleteOutlined,
-    HeartOutlined,
-    RightOutlined,
-  } from "@ant-design/icons";
-  import { Button, Card, Input, Table } from "antd";
-  import { useState } from "react";
-  import "./CartPage.css";
-  import { useNavigate } from "react-router-dom";
-  
-  const fakeCartData = [
+  DeleteOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
+import { Button, Card, Input, Table, message } from "antd";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  APIAddToCart,
+  APIGetCartItems,
+  APIRemoveCartItem,
+  APIUpdateCartItem,
+} from "../../../api/api"; // Import API functions
+import "./CartPage.css";
+
+const CartPage = () => {
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState([]);
+  const [discountCode, setDiscountCode] = useState("");
+  const userId = localStorage.getItem("userID"); // Get userId from localStorage
+
+  // Fetch cart items
+  const fetchCartItems = async () => {
+    try {
+      const response = await APIGetCartItems(userId);
+      setCartItems(response.data);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      message.error("Không thể lấy danh sách sản phẩm trong giỏ hàng.");
+    }
+  };
+
+  // Add item to cart
+  const handleAddToCart = async (variantId, quantity) => {
+    try {
+      await APIAddToCart(userId, variantId, quantity).then((rs)=>{
+        console.log(rs)
+      });
+      message.success("Thêm sản phẩm vào giỏ hàng thành công!");
+      fetchCartItems(); // Refresh cart items
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      message.error("Thêm sản phẩm vào giỏ hàng thất bại.");
+    }
+  };
+
+  // Update item quantity
+  const handleQuantityChange = async (cartItemId, quantity) => {
+    try {
+      await APIUpdateCartItem(cartItemId, quantity);
+      message.success("Cập nhật số lượng thành công!");
+      fetchCartItems(); // Refresh cart items
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      message.error("Cập nhật số lượng thất bại.");
+    }
+  };
+
+  // Remove item from cart
+  const handleRemoveItem = async (cartItemId) => {
+    try {
+      await APIRemoveCartItem(cartItemId);
+      message.success("Xóa sản phẩm khỏi giỏ hàng thành công!");
+      fetchCartItems(); // Refresh cart items
+    } catch (error) {
+      console.error("Error removing item:", error);
+      message.error("Xóa sản phẩm khỏi giỏ hàng thất bại.");
+    }
+  };
+
+  // Format currency
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN").format(amount) + " đ";
+  };
+
+  // Calculate total price
+  const getTotalPrice = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+  };
+
+  // Table columns
+  const columns = [
     {
-      key: "1",
-      name: "Hada Labo - Serum HA cấp ẩm giúp trắng da, mờ thâm 30ml",
-      price: 280000,
-      quantity: 1,
-      image:
-        "https://slowsoak.com/wp-content/uploads/2020/05/Hada-Labo-Gokujyun-Hyaluronic-Lotion-600x600.jpg",
-    },
-    {
-      key: "2",
-      name: "Hada Labo - Serum HA cấp ẩm giúp trắng da, mờ thâm 30ml",
-      price: 280000,
-      quantity: 1,
-      image:
-        "https://slowsoak.com/wp-content/uploads/2020/05/Hada-Labo-Gokujyun-Hyaluronic-Lotion-600x600.jpg",
-    },
-    {
-      key: "3",
-      name: "Hada Labo - Serum HA cấp ẩm giúp trắng da, mờ thâm 30ml",
-      price: 280000,
-      quantity: 1,
-      image:
-        "https://slowsoak.com/wp-content/uploads/2020/05/Hada-Labo-Gokujyun-Hyaluronic-Lotion-600x600.jpg",
-    },
-  ];
-  
-  const CartPage = () => {
-    const navigate = useNavigate();
-    const [cartItems, setCartItems] = useState(fakeCartData);
-    const [discountCode, setDiscountCode] = useState("");
-  
-    const handleQuantityChange = (key, value) => {
-      const updatedCart = cartItems.map((item) =>
-        item.key === key ? { ...item, quantity: value } : item
-      );
-      setCartItems(updatedCart);
-    };
-  
-    const handleRemoveItem = (key) => {
-      setCartItems(cartItems.filter((item) => item.key !== key));
-    };
-    const formatCurrency = (amount) => {
-      return new Intl.NumberFormat("vi-VN").format(amount) + " vnđ";
-    };
-    const getTotalPrice = () => {
-      return cartItems.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      );
-    };
-  
-    const columns = [
-      {
-        title: "Sản phẩm",
-        dataIndex: "name",
-        key: "name",
-        render: (text, record) => (
-          <div className="cart-item">
-            <img src={record.image} alt={text} className="cart-item-image" />
-            <div>
-              <p>{text}</p>
-              <div className="cart-actions">
-                <HeartOutlined className="cart-icon" />
-                <DeleteOutlined
-                  className="cart-icon"
-                  onClick={() => handleRemoveItem(record.key)}
-                />
-              </div>
+      title: "Sản phẩm",
+      dataIndex: "productName",
+      key: "productName",
+      render: (text, record) => (
+        <div className="cart-item">
+          <img src={record.productAvatarImage} alt={text} className="cart-item-image" />
+
+          <div>
+            <p>{text}</p>
+            <div className="cart-actions">
+              <DeleteOutlined
+                className="cart-icon"
+                onClick={() => handleRemoveItem(record.cartItemId)}
+              />
             </div>
           </div>
-        ),
-      },
-      {
-        title: "Số lượng",
-        dataIndex: "quantity",
-        key: "quantity",
-        render: (text, record) => (
-          <Input
-            type="number"
-            min={1}
-            value={text}
-            onChange={(e) =>
-              handleQuantityChange(record.key, parseInt(e.target.value))
-            }
-            className="quantity-input"
-          />
-        ),
-      },
-      {
-        title: "Tạm tính",
-        dataIndex: "price",
-        key: "price",
-        render: (text, record) => (
-          <span>{new Intl.NumberFormat("vi-VN").format(record.price * record.quantity)} vnđ</span>
-        ),
-      },
-      
-    ];
-  
-    return (
-      <div className="cart-container">
-        <Card
-          title={`Giỏ hàng (${cartItems.length} sản phẩm)`}
-          className="cart-card"
-        >
-          <Table columns={columns} dataSource={cartItems} pagination={false} />
-        </Card>
-  
-        <Card title="Thông tin đơn hàng" className="summary-card">
+        </div>
+      ),
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+      key: "quantity",
+      render: (text, record) => (
+        <Input
+          type="number"
+          min={1}
+          value={text}
+          onChange={(e) =>
+            handleQuantityChange(record.cartItemId, parseInt(e.target.value))
+          }
+          className="quantity-input"
+        />
+      ),
+    },
+    {
+      title: "Tạm tính",
+      dataIndex: "price",
+      key: "price",
+      render: (text, record) => (
+        <span>
+          {new Intl.NumberFormat("vi-VN").format(record.price * record.quantity)}{" "}
+          vnđ
+        </span>
+      ),
+    },
+  ];
+
+  // Fetch cart items on component mount
+  useEffect(() => {
+    if (userId) {
+      fetchCartItems();
+    }
+  }, [userId]);
+
+  return (
+    <div className="cart-container">
+      <Card
+        title={`Giỏ hàng (${cartItems.length} sản phẩm)`}
+        className="cart-card"
+      >
+        <Table columns={columns} dataSource={cartItems} pagination={false} />
+      </Card>
+
+      <Card title="Thông tin đơn hàng" className="summary-card">
         <p>Tổng sản phẩm: {cartItems.length}</p>
         <p>Tạm tính: {formatCurrency(getTotalPrice())}</p>
         <p>Mã giảm giá: {formatCurrency(0)}</p>
         <p>
           <b>Tổng thanh toán: {formatCurrency(getTotalPrice())}</b>
         </p>
-          {/* thêm ưu đãi của tôi ở đâyđây */}
-          <div className="my-discount">
-            <Button className="discount-button" type="default">
-              <span className="discount-text">Ưu đãi của tôi</span>
-              <RightOutlined className="arrow-icon" />
+        <div className="my-discount">
+          <Button className="discount-button" type="default">
+            <span className="discount-text">Ưu đãi của tôi</span>
+            <RightOutlined className="arrow-icon" />
+          </Button>
+        </div>
+        <div className="discount-space">
+          <h3>Mã giảm giá</h3>
+          <div className="discount-section">
+            <Input
+              placeholder="Nhập mã giảm giá"
+              value={discountCode}
+              onChange={(e) => setDiscountCode(e.target.value)}
+            />
+            <Button className="apply" type="primary">
+              Áp dụng
             </Button>
           </div>
-          <div className="discount-space">
-            <h3>Mã giảm giá</h3>
-            <div className="discount-section">
-              <Input
-                placeholder="Nhập mã giảm giá"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value)}
-              />
-              <Button className="apply" type="primary">Áp dụng</Button>
-            </div>
-          </div>
-          <Button
-      block
-      size="large"
-      className="checkout-button"
-      onClick={() => navigate("/checkout")} // Điều hướng tới trang Checkout
-    >
-      Đặt Hàng
-    </Button>
-        </Card>
-      </div>
-    );
-  };
-  
-  export default CartPage;
-  
+        </div>
+        <Button
+          block
+          size="large"
+          className="checkout-button"
+          onClick={() => navigate("/checkout")}
+        >
+          Đặt Hàng
+        </Button>
+      </Card>
+    </div>
+  );
+};
+
+export default CartPage;
