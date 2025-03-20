@@ -58,7 +58,7 @@ export default function MainRoutes() {
           <Route path="chatAdmin" element={<ChatForAdmin />} />
         </Route>
         
-        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/product/:productId" element={<ProductDetail />} />
         {/* Uncomment to handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
