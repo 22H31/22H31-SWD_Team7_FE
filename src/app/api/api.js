@@ -21,17 +21,12 @@ export const APIGetInformation = () =>
   api.get("User", {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
-export const APIChangePassword = (
-values
-) =>
-  api.post(
-    "account/change-password",
-    {
-      currentPassword: values.currentPassword,
-      newPassword: values.newPassword,
-      newPasswordConfirmation: values.newPasswordConfirmation,
-    }
-  );
+export const APIChangePassword = (values) =>
+  api.post("account/change-password", {
+    currentPassword: values.currentPassword,
+    newPassword: values.newPassword,
+    newPasswordConfirmation: values.newPasswordConfirmation,
+  });
 
 export const APIGetUserId = (userId) => api.get(`User/${userId}`);
 export const APILogOut = () => api.post("account/logout");
@@ -40,8 +35,15 @@ export const APIPutUserId = (values, userId) =>
     name: values.name,
     phoneNumber: values.phone,
     address: values.address,
-    dateOfBirth: values.dateOfBirth
+    dateOfBirth: values.dateOfBirth,
   });
 export const APIGetCategories = () => api.get("categories");
 export const APIGetProducts = () => api.get("products");
-export const APIGetProductById = (productId) => api.get(`products/${productId}`);
+export const APIGetProductById = (productId) =>
+  api.get(`products/${productId}`);
+export const APIGetSkintestQuestion = () =>
+  api.get("skintest-question/questions");
+export const APIGetSkintestResult = (id, answers) =>
+  api.post("Skin_Test_Result/create", { id: id, answerIds: answers });
+export const APIGetFullProduct =  () =>
+  api.get("products");

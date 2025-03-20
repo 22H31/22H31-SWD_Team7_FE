@@ -24,11 +24,14 @@ import Checkout from "../pages/Checkout";
 import CustomerSupport from "../pages/CustomerSupport";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import ProductDetail from "../pages/Home/ProductDetail/ProductDetail";
+import QuizPopup from "../QuizPopup/QuizPopup";
+import ProductFull from "../pages/Product/ProductFull";
+import LayoutProduct from "../layouts/LayoutProduct/LayoutProduct";
 
 export default function MainRoutes() {
   const location = useLocation();
-  const hideFooter = ["/login", "/forgotPassword", "/register","/admin"].some((path) =>
-    location.pathname.includes(path)
+  const hideFooter = ["/login", "/forgotPassword", "/register", "/admin"].some(
+    (path) => location.pathname.includes(path)
   );
   return (
     <>
@@ -40,24 +43,29 @@ export default function MainRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:blogId" element={<BlogDetail />} /> 
+        <Route path="/blog/:blogId" element={<BlogDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/customerSupport" element={<CustomerSupport />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/paymentSuccess" element={<PaymentSuccess/>} />
+        <Route path="/paymentSuccess" element={<PaymentSuccess />} />
 
         <Route path="/admin" element={<AdminLayout />}>
-        <Route path="products" element={<ProductsGrid />} />
-        <Route path="teamPage" element={<TeamManage />} />
-        <Route path="brandPage" element={<Brand />} />
-        <Route path="categoryPage" element={<Category />} />
-        <Route path="categoryTitlePage" element={<CategoryTitle />} />
-        <Route path="blog" element={<BlogManage />} />
+          <Route path="products" element={<ProductsGrid />} />
+
+          <Route path="teamPage" element={<TeamManage />} />
+          <Route path="brandPage" element={<Brand />} />
+          <Route path="categoryPage" element={<Category />} />
+          <Route path="categoryTitlePage" element={<CategoryTitle />} />
+          <Route path="blog" element={<BlogManage />} />
         </Route>
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/quiz" element={<QuizPopup />} />
         {/* Uncomment to handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
+        <Route path="/productFull" element={<ProductFull />} />
+        <Route path="/LayoutProduct" element={<LayoutProduct />} />
       </Routes>
+
       <GeminiChat />
       {!hideFooter && <FooterComponent />}
     </>
