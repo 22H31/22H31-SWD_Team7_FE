@@ -31,18 +31,18 @@
     justify-content: space-between;
   }
   
-  button {
+  buttonGroup-button {
     padding: 10px;
     border: none;
     cursor: pointer;
-  }
+  } 
   
-  button:first-child {
+   buttonGroup-button:first-child {
     background: #007bff;
     color: white;
-  }
+  } 
   
-  button:last-child {
+   buttonGroup-button:last-child {
     background: #ff4444;
     color: white;
   }

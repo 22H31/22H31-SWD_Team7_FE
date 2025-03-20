@@ -45,8 +45,8 @@ const PopupForm = ({ onClose, onSave }) => {
           </label>
 
           <div className={styles.buttonGroup}>
-            <button type="submit">Save</button>
-            <button type="button" onClick={onClose}>Cancel</button>
+            <button className="buttonGroup-button" type="submit">Save</button>
+            <button className="buttonGroup-button" type="button" onClick={onClose}>Cancel</button>
           </div>
         </form>
       </div>
