@@ -32,16 +32,16 @@ const HotSale = () => {
     });
   };
   return (
-    <div className="OnSale">
+    <div className="HotSale">
       <h2>Sản phẩm đang hot</h2>
 
       {/* Danh sách sản phẩm */}
-      <div className="product-list" >
+      <div className="HotSale-product-list" >
         {displayedProducts.map((product) => (
-          <div key={product.productId} className="product" onClick={() => handleBuyNow(product.productId)}>
+          <div key={product.productId} className="HotSale-product" onClick={() => handleBuyNow(product.productId)}>
             <img src={product.avartarImageUrl} alt={product.name} />
             <h3>{product.productName}</h3>
-            <p className="price">
+            <p className="HotSale-price">
               {Number(product.variants[0]?.price || 0).toLocaleString("vi-VN")}{" "}
               VND
               <del>
@@ -52,22 +52,22 @@ const HotSale = () => {
               </del>
             </p>
 
-            <span className="reviews">
+            <span className="HotSale-reviews">
               {product.soldQuantity} Số lượng đã bán
             </span>
             <button
               onClick={() => handleBuyNow(product.productId)}
-              className="buy"
+              className="HotSale-buy"
             >
               Mua ngay
             </button>
-            <div className="rating">
+            <div className="HotSale-rating">
               {Array.from({ length: product.averageRating }, (_, i) => (
-                <span key={i} className="star">
+                <span key={i} className="HotSale-star">
                   ⭐
                 </span>
               ))}{" "}
-              <span className="reviews">{product.totalFeedback} Đánh giá</span>
+              <span className="HotSale-reviews">{product.totalFeedback} Đánh giá</span>
             </div>
           </div>
         ))}
@@ -75,7 +75,7 @@ const HotSale = () => {
 
       {/* Phân trang */}
       {totalPages > 1 && (
-        <div className="pagination">
+        <div className="HotSale-pagination">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
