@@ -76,7 +76,7 @@ const Sidebar = () => {
           <NavItem icon="dashboard" text="Dashboard" path="dashboard" />
           <NavItem icon="products" text="Products & Stocks" path="products" />
           <NavItem icon="blog" text="Blog" path="blog" />
-          <NavItem icon="inbox" text="Inbox" path="/admin/inbox" />
+          <NavItem icon="inbox" text="Inbox" path="chatAdmin" />
           <NavItem icon="orders" text="Order Lists" path="/admin/orders" />
 
           <li className={styles.divider}></li>

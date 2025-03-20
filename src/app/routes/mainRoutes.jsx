@@ -24,9 +24,14 @@ import Checkout from "../pages/Checkout";
 import CustomerSupport from "../pages/CustomerSupport";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import ProductDetail from "../pages/Home/ProductDetail/ProductDetail";
+<<<<<<< HEAD
 import QuizPopup from "../QuizPopup/QuizPopup";
 import ProductFull from "../pages/Product/ProductFull";
 import LayoutProduct from "../layouts/LayoutProduct/LayoutProduct";
+=======
+import ChatForAdmin from "../pages/Admin/chatAdmin/ChatAdmin";
+import ChatForUser from "../pages/UserChat/ChatButton";
+>>>>>>> 96a00e66fbac150e660eebf814de3d25b5da5a7e
 
 export default function MainRoutes() {
   const location = useLocation();
@@ -51,15 +56,25 @@ export default function MainRoutes() {
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="products" element={<ProductsGrid />} />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 96a00e66fbac150e660eebf814de3d25b5da5a7e
           <Route path="teamPage" element={<TeamManage />} />
           <Route path="brandPage" element={<Brand />} />
           <Route path="categoryPage" element={<Category />} />
           <Route path="categoryTitlePage" element={<CategoryTitle />} />
           <Route path="blog" element={<BlogManage />} />
+<<<<<<< HEAD
         </Route>
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/quiz" element={<QuizPopup />} />
+=======
+          <Route path="chatAdmin" element={<ChatForAdmin />} />
+        </Route>
+        
+        <Route path="/product/:productId" element={<ProductDetail />} />
+>>>>>>> 96a00e66fbac150e660eebf814de3d25b5da5a7e
         {/* Uncomment to handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
         <Route path="/productFull" element={<ProductFull />} />
@@ -67,6 +82,7 @@ export default function MainRoutes() {
       </Routes>
 
       <GeminiChat />
+      <ChatForUser />
       {!hideFooter && <FooterComponent />}
     </>
   );

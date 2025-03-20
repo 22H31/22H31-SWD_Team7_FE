@@ -24,7 +24,7 @@ export default function BannerBlog() {
 
   useEffect(() => {
     axios
-      .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
+      .get("https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs")
       .then((response) => {
         // Xáo trộn mảng và lấy 4 bài blog ngẫu nhiên
         const shuffledBlogs = response.data.sort(() => Math.random() - 0.5).slice(0, 4);

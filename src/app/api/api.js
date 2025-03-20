@@ -37,8 +37,11 @@ export const APIPutUserId = (values, userId) =>
     address: values.address,
     dateOfBirth: values.dateOfBirth,
   });
+
+//cart
 export const APIGetCategories = () => api.get("categories");
 export const APIGetProducts = () => api.get("products");
+<<<<<<< HEAD
 export const APIGetProductById = (productId) =>
   api.get(`products/${productId}`);
 export const APIGetSkintestQuestion = () =>
@@ -47,3 +50,24 @@ export const APIGetSkintestResult = (id, answers) =>
   api.post("Skin_Test_Result/create", { id: id, answerIds: answers });
 export const APIGetFullProduct =  () =>
   api.get("products");
+=======
+export const APIGetProductById = (productId) => api.get(`products/${productId}`);
+
+export const APIAddToCart = (userId, variantId, quantity) =>
+  api.post("cartitem/add", {
+    userId,
+    variantId,
+    quantity,
+  });
+
+
+export const APIGetCartItems = (userId) => api.get(`cartitem/user/${userId}`);
+
+export const APIUpdateCartItem = (cartItemId, quantity) =>
+  api.put(`cartitem/update-cartitem/${cartItemId}`, { quantity });
+
+export const APIRemoveCartItem = (cartItemId) =>
+  api.delete(`cartitem/${cartItemId}`);
+
+export default api;
+>>>>>>> 96a00e66fbac150e660eebf814de3d25b5da5a7e

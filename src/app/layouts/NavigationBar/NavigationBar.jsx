@@ -13,10 +13,18 @@ const NavigationComponent = () => {
       mode="horizontal"
       className="custom-menu"
       selectedKeys={[location.pathname]} // Đặt active dựa trên đường dẫn
-     
     >
+<<<<<<< HEAD
       <Menu.Item key="/productFull" onClick={() => navigate("/productFull")}>
         SẢN PHẨM 
+=======
+
+      <Menu.Item key="/products" onClick={() => navigate("/")}>
+        SẢN PHẨM
+>>>>>>> 96a00e66fbac150e660eebf814de3d25b5da5a7e
+      </Menu.Item>
+      <Menu.Item key="/products" onClick={() => navigate("/")}>
+        THƯƠNG HIỆU
       </Menu.Item>
       <Menu.Item key="/sale" onClick={() => navigate("/sale")}>
         KHUYẾN MÃI
@@ -24,7 +32,10 @@ const NavigationComponent = () => {
       <Menu.Item key="/blog" onClick={() => navigate("/blog")}>
         BLOG
       </Menu.Item>
-      <Menu.Item key="/customerSupport" onClick={() => navigate("/customerSupport")}>
+      <Menu.Item
+        key="/customerSupport"
+        onClick={() => navigate("/customerSupport")}
+      >
         HỖ TRỢ KHÁCH HÀNG
       </Menu.Item>
     </Menu>

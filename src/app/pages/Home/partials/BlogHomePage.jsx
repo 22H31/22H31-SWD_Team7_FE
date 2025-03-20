@@ -20,7 +20,7 @@ const BlogHomePage = () => {
 
   useEffect(() => {
     axios
-      .get("https://beteam720250214143214.azurewebsites.net/api/blogs")
+      .get("https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs")
       .then((response) => {
         setBlogs(response.data);
         setLoading(false);

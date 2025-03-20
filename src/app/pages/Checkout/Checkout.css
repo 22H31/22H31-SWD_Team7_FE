@@ -78,12 +78,12 @@ line-height: normal;
   flex: 1;
 }
 
-.save-button {
+.checkout-page .save-button {
   background-color: #d63384;
   border: none;
   color: white;
 }
-.save-button:hover {
+.checkout-page .save-button:hover {
   background-color: #b0226a !important;
 }
 
@@ -92,7 +92,7 @@ line-height: normal;
   margin-top: 10px;
 }
 
-.checkout-button {
+.checkout-page .checkout-button {
   height: 62px;
   width: 100%;
   border-radius: 8px;

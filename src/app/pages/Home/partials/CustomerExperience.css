@@ -33,7 +33,7 @@
   object-fit: cover;
 }
 
-.buy-now-button {
+.customer-experience .buy-now-button {
   display: flex;
   width: 227px;
   height: 47px;

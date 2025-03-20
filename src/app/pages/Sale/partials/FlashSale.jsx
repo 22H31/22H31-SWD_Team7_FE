@@ -1,11 +1,11 @@
-import  { useEffect, useRef, useState } from "react";
-import { LeftOutlined, RightOutlined} from "@ant-design/icons";
+import { useEffect, useRef, useState } from "react";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Row, Col, Spin } from "antd";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Thêm useNavigate để chuyển hướng
 import "./FlashSale.css";
 
 const ITEMS_PER_PAGE = 12; // Số sản phẩm hiển thị trên mỗi trang
-
 
 const FlashSale = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,13 +14,14 @@ const FlashSale = () => {
   const [loading, setLoading] = useState(true); // State để hiển thị loading
   const [error, setError] = useState(null); // State để xử lý lỗi
   const sliderRef = useRef(null);
+  const navigate = useNavigate(); // Sử dụng useNavigate để chuyển hướng
 
   // Gọi API để lấy danh sách sản phẩm
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://beteam720250214143214.azurewebsites.net/api/products",
+          "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/products",
           {
             params: {
               PageNumber: 1, // Trang hiện tại (API bắt đầu từ 1)
@@ -32,7 +33,7 @@ const FlashSale = () => {
           ...product,
           oldPrice: Math.round(product.variants[0].price * (1 + Math.random() * 0.05 + 0.25)), // Làm tròn đến số nguyên
         }));
-        
+
         setProducts(flashSaleProducts); // Cập nhật danh sách sản phẩm
         setLoading(false); // Tắt trạng thái loading
       } catch (error) {
@@ -76,6 +77,11 @@ const FlashSale = () => {
   // Chuyển slide trước đó
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + products.length - 3) % (products.length - 3));
 
+  // Hàm xử lý khi nhấn nút "Mua ngay"
+  const handleBuyNow = (productId) => {
+    navigate(`/product/${productId}`); // Chuyển hướng đến trang chi tiết sản phẩm
+  };
+
   // Hiển thị loading nếu đang tải dữ liệu
   if (loading) {
     return (
@@ -95,7 +101,9 @@ const FlashSale = () => {
       <h2>Flash Sale ⚡</h2>
       <div className="countdown">Kết Thúc Sau {formatTime(timeLeft)}</div>
       <div className="slider">
-        <button className="arrow left" onClick={prevSlide}><LeftOutlined /></button>
+        <button className="arrow left" style={{ background: "#ffc3c3" }} onClick={prevSlide}>
+          <LeftOutlined />
+        </button>
         <Row gutter={[16, 16]} className="product-list" ref={sliderRef}>
           {products.slice(currentIndex, currentIndex + 4).map((product) => (
             <Col key={product.productId} xs={24} sm={12} md={6} className="product">
@@ -116,11 +124,15 @@ const FlashSale = () => {
                 ))}
                 <span className="reviews">{product.totalFeedback} đánh giá</span>
               </div>
-              <button className="buy">Mua ngay</button>
+              <button className="buy" onClick={() => handleBuyNow(product.productId)}>
+                Mua ngay
+              </button>
             </Col>
           ))}
         </Row>
-        <button className="arrow right" onClick={nextSlide}><RightOutlined /></button>
+        <button className="arrow right" style={{ background: "#ffc3c3" }} onClick={nextSlide}>
+          <RightOutlined />
+        </button>
       </div>
     </div>
   );

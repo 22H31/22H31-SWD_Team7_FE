@@ -35,7 +35,7 @@
   align-items: center; 
 }
 
-.arrow {
+.flashsale .arrow {
   border: none;
   cursor: pointer;
   display: flex;
@@ -51,6 +51,7 @@
   fill: #ffc3c3;
   stroke-width: 4px;
   color: #c0437f;
+  background-color: unset;
 }
 
 
@@ -119,7 +120,7 @@
   margin-left: 5px;
 }
 
-.buy {
+.flashsale .buy {
   width: 200px;
   height: 36px;
   margin-top: 10px;

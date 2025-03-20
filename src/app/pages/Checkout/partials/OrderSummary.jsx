@@ -84,9 +84,8 @@ const OrderSummary = ({ onUpdateCartSummary }) => {
                 value={item.quantity}
                 onChange={(value) => updateQuantity(item.id, value)}
               />
-              <Button
-                type="text"
-                icon={<CloseOutlined style={{ color: "red" }} />}
+              <Button style={{ background: "#c0437f", marginLeft:"5px"}}
+                icon={<CloseOutlined style={{ color: "white"}} />}
                 onClick={() => removeItem(item.id)}
               />
             </div>
