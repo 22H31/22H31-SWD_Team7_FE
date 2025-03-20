@@ -14,17 +14,13 @@ const NavigationComponent = () => {
       className="custom-menu"
       selectedKeys={[location.pathname]} // Đặt active dựa trên đường dẫn
     >
-
+      <Menu.Item key="/" onClick={() => navigate("/")}>
+        TRANG CHỦ
+      </Menu.Item>
       <Menu.Item key="/productFull" onClick={() => navigate("/productFull")}>
-        SẢN PHẨM 
+        SẢN PHẨM
+      </Menu.Item>
 
-      </Menu.Item>
-      <Menu.Item key="/products" onClick={() => navigate("/")}>
-        THƯƠNG HIỆU
-      </Menu.Item>
-      <Menu.Item key="/products" onClick={() => navigate("/")}>
-        THƯƠNG HIỆU
-      </Menu.Item>
       <Menu.Item key="/sale" onClick={() => navigate("/sale")}>
         KHUYẾN MÃI
       </Menu.Item>
