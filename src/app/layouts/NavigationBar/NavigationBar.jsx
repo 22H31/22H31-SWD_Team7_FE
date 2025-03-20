@@ -14,14 +14,13 @@ const NavigationComponent = () => {
       className="custom-menu"
       selectedKeys={[location.pathname]} // Đặt active dựa trên đường dẫn
     >
-<<<<<<< HEAD
+
       <Menu.Item key="/productFull" onClick={() => navigate("/productFull")}>
         SẢN PHẨM 
-=======
 
+      </Menu.Item>
       <Menu.Item key="/products" onClick={() => navigate("/")}>
-        SẢN PHẨM
->>>>>>> 96a00e66fbac150e660eebf814de3d25b5da5a7e
+        THƯƠNG HIỆU
       </Menu.Item>
       <Menu.Item key="/products" onClick={() => navigate("/")}>
         THƯƠNG HIỆU
