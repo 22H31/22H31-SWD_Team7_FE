@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router";
 import "./SkinQuestion.css";
 
 const SkinQuestion = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="skin-question-container">
     <div className="depend-div">
@@ -16,7 +19,7 @@ const SkinQuestion = () => {
             Những câu hỏi về chăm da sẽ hình thành thói quen cho làn da của bạn
             ngày càng tươi trẻ
           </p>
-          <button className="skin-question-button">Tìm hiểu thêm</button>
+          <button onClick={()=>{navigate("/quiz")}} className="skin-question-button">Tìm hiểu thêm</button>
         </div>
       </div>
       </div>

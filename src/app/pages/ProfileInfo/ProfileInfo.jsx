@@ -1,8 +1,8 @@
-import { Button, DatePicker, Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { APIGetUserId, APIPutUserId } from "../../api/api";
-import api from "../../api/axios";
 import { SSpin } from "../../globalVariable/spin";
+import { useNavigate } from "react-router";
 
 export default function ProfileInfo() {
   const UserID = localStorage.getItem("userID");
@@ -22,6 +22,7 @@ export default function ProfileInfo() {
   //   }
   // }, []);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const onFinish = (values) => {
     SSpin.set(true);
@@ -59,6 +60,7 @@ export default function ProfileInfo() {
             phone: profile.phoneNumber,
             address: profile.address,
             dateOfBirth: profile.dateOfBirth,
+            skinType: profile.skinType,
           });
         })
         .catch((error) => {
@@ -74,11 +76,11 @@ export default function ProfileInfo() {
       console.warn("Không tìm thấy UserID trong localStorage");
     }
   };
+
   useEffect(() => {
     getData();
   }, []);
 
-  
   return (
     <div style={{ margin: "10px" }}>
       <Form form={form} onFinish={onFinish} layout="vertical">
@@ -131,6 +133,27 @@ export default function ProfileInfo() {
             <Input
               placeholder="Ngày sinh"
               // value={userData?.name || "Vui lòng cập nhật thông tin!"}
+            />
+          </Form.Item>
+        </div>
+        <div>
+          <Form.Item name="skinType" label="Loại da:">
+            <Input
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              placeholder="Loại da"
+              readOnly
+              suffix={
+                <Button
+                  style={{ backgroundColor: "#ffcccc", color: "black" }}
+                  type="primary"
+                  onClick={() => navigate("/quiz")}
+                >
+                  Cập Nhật Loại Da Của Bạn
+                </Button>
+              }
             />
           </Form.Item>
         </div>

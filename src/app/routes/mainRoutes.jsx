@@ -1,4 +1,3 @@
-// import React from "react";
 import { useLocation } from "react-router";
 import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../../app/layouts/PageNotFound/PageNotFound";
@@ -24,6 +23,9 @@ import Checkout from "../pages/Checkout";
 import CustomerSupport from "../pages/CustomerSupport";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import ProductDetail from "../pages/Home/ProductDetail/ProductDetail";
+import QuizPopup from "../QuizPopup/QuizPopup";
+import ProductFull from "../pages/Product/ProductFull";
+import LayoutProduct from "../layouts/LayoutProduct/LayoutProduct";
 import ChatForAdmin from "../pages/Admin/chatAdmin/ChatAdmin";
 import ChatForUser from "../pages/UserChat/ChatButton";
 
@@ -32,6 +34,7 @@ export default function MainRoutes() {
   const hideFooter = ["/login", "/forgotPassword", "/register", "/admin"].some(
     (path) => location.pathname.includes(path)
   );
+
   return (
     <>
       <Routes>
@@ -57,11 +60,16 @@ export default function MainRoutes() {
           <Route path="blog" element={<BlogManage />} />
           <Route path="chatAdmin" element={<ChatForAdmin />} />
         </Route>
-        
+
         <Route path="/product/:productId" element={<ProductDetail />} />
-        {/* Uncomment to handle unknown routes */}
+        <Route path="/quiz" element={<QuizPopup />} />
+        <Route path="/productFull" element={<ProductFull />} />
+        <Route path="/LayoutProduct" element={<LayoutProduct />} />
+        
+        {/* Handle unknown routes */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+
       <GeminiChat />
       <ChatForUser />
       {!hideFooter && <FooterComponent />}

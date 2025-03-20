@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://beteam720250214143214.azurewebsites.net/api/",
-  // baseURL: "http://localhost:8080/api/",
+  // baseURL: "https://beteam720250214143214.azurewebsites.net/api/",
+  baseURL: "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/",
 
   headers: {
     "Content-Type": "application/json",
