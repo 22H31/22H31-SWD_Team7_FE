@@ -25,6 +25,8 @@
 .product-card:hover {
     transform: translateX(1px) scale(1.000005);
     background-color: #9693931f;
+    cursor: pointer;
+    
 }
 
 .product-image {

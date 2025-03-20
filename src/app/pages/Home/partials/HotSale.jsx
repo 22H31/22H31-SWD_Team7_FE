@@ -36,9 +36,9 @@ const HotSale = () => {
       <h2>Sản phẩm đang hot</h2>
 
       {/* Danh sách sản phẩm */}
-      <div className="product-list">
+      <div className="product-list" >
         {displayedProducts.map((product) => (
-          <div key={product.productId} className="product">
+          <div key={product.productId} className="product" onClick={() => handleBuyNow(product.productId)}>
             <img src={product.avartarImageUrl} alt={product.name} />
             <h3>{product.productName}</h3>
             <p className="price">
