@@ -1,168 +1,170 @@
 .OnSale {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    /* background-color: #ffecec; */
-    width: 1400px;
-    margin: 0 auto;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  /* background-color: #ffecec; */
+  width: 1400px;
+  margin: 0 auto;
 }
 
 .OnSale h2 {
-    color: var(--en-t, #44353F);
-    text-align: center;
-    font-family: Inter;
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 60px; /* 166.667% */
+  color: var(--en-t, #44353f);
+  text-align: center;
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 60px; /* 166.667% */
 }
 
-.OnSale .product-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 10px;
-    justify-content: center;
-    width: 100%;
+.OnSale .OnSale-product-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
 }
 
 /* Sản phẩm */
-.OnSale .product {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.OnSale .OnSale-product {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.OnSale .product:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 4px 10px rgba(132, 1, 82, 0.2);
+.OnSale .OnSale-product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 10px rgba(132, 1, 82, 0.2);
 }
 
 /* Hình ảnh sản phẩm */
-.OnSale .product img {
-    width: 306px;
-    height: 312px;
-    flex-shrink: 0;
-    border-radius: var(--Corner-Extra-large, 28px);
-    background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+.OnSale .OnSale-product img {
+  width: 306px;
+  height: 312px;
+  flex-shrink: 0;
+  border-radius: var(--Corner-Extra-large, 28px);
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
 
-/* Tiêu đề sản phẩm */
-.OnSale .product h3 {
-    font-size: 16px;
-    color: #333;
-    margin: 10px 0;
+.OnSale .OnSale-product h3 {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: clip; /* Đảm bảo không có dấu ... */
 }
 
 /* Giá tiền */
-.OnSale .product .price {
-    font-size: 18px;
-    color: #e74c3c;
-    font-weight: bold;
+.OnSale .OnSale-product .OnSale-price {
+  font-size: 18px;
+  color: #e74c3c;
+  font-weight: bold;
 }
 
-.OnSale .product del {
-    font-size: 14px;
-    color: #999;
-    margin-left: 10px;
+.OnSale .OnSale-product del {
+  font-size: 14px;
+  color: #999;
+  margin-left: 10px;
 }
 
 /* Đánh giá sao */
-.OnSale .rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0;
+.OnSale .OnSale-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
 }
 
-.OnSale .star {
-    color: #ffcc00;
-    margin: 0 2px;
+.OnSale .OnSale-star {
+  color: #ffcc00;
+  margin: 0 2px;
 }
 
-.OnSale .reviews {
-    font-size: 14px;
-    color: #666;
-    margin-left: 5px;
+.OnSale .OnSale-reviews {
+  font-size: 14px;
+  color: #666;
+  margin-left: 5px;
 }
 
 /* Nút mua hàng */
-.OnSale .buy {
-    width: 200px;
-    height: 36px;
-    margin-top: 10px;
-    background: #c0437f;
-    color: white; /* Thêm màu chữ để dễ đọc */
-    font-size: 14px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
+.OnSale .OnSale-buy {
+  width: 200px;
+  height: 36px;
+  margin-top: 10px;
+  background: #c0437f;
+  color: white; /* Thêm màu chữ để dễ đọc */
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
 }
 
-.OnSale .buy:hover {
-    background: #a83266 !important;
+.OnSale .OnSale-buy:hover {
+  background: #a83266 !important;
 }
 
 /* Pagination */
-.OnSale .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
+.OnSale .OnSale-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }
-.OnSale .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-}
-
-.OnSale .pagination .page-number {
-    width: 30px;
-    height: 30px;
-    margin: 0 5px;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease-in-out;
+.OnSale .OnSale-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }
 
-.OnSale .pagination .page-number.active {
-    background-color: #c0437f;
-    color: white;
-    font-weight: bold;
+.OnSale .OnSale-pagination .page-number {
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease-in-out;
 }
 
+.OnSale .OnSale-pagination .page-number.active {
+  background-color: #c0437f;
+  color: white;
+  font-weight: bold;
+}
 
 /* Bộ lọc danh mục */
 .OnSale .filters {
-    display: flex;
-    width: 1350px;
-    height: 23px;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 10px 0;
+  display: flex;
+  width: 1350px;
+  height: 23px;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px 0;
 }
 
 .OnSale .filter-button {
-    color: #333;
-    background-color: #ffffff;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer; 
-    transition: background 0.3s;
-    font-size: 14px;
-    font-weight: 500;
+  color: #333;
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .OnSale .filter-button:hover,
 .OnSale .filter-button.active {
-   
-    color: red;
+  color: red;
 }

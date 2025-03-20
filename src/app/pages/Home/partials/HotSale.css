@@ -1,165 +1,143 @@
-.OnSale {
+.HotSale {
     font-family: Arial, sans-serif;
     padding: 20px;
+    /* background-color: #ffecec; */
     width: 1400px;
     margin: 0 auto;
-}
-
-.OnSale h2 {
-    color: var(--en-t, #44353F);
+  }
+  
+  .HotSale h2 {
+    color: var(--en-t, #44353f);
     text-align: center;
-    font-family: Inter, sans-serif;
+    font-family: Inter;
     font-size: 36px;
+    font-style: normal;
     font-weight: 700;
-    line-height: 60px;
-}
-
-/* Grid giữ nguyên kích thước */
-.OnSale .product-list {
+    line-height: 60px; /* 166.667% */
+  }
+  
+  .HotSale .HotSale-product-list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    width: 100%;
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
     justify-content: center;
-}
-
-/* Giữ nguyên kích thước sản phẩm */
-.OnSale .product {
-    width: 330px;
-    height: 480px; /* Tăng chiều cao để cân đối */
-    border: 1px solid #1a1a1a;
+    width: 100%;
+  }
+  
+  /* Sản phẩm */
+  .HotSale .HotSale-product {
     background-color: #ffffff;
     border-radius: 8px;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between; /* Cân đối nội dung */
-}
-
-.OnSale .product:hover {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 1px solid #ede2e7;
+  }
+  
+  .HotSale .HotSale-product:hover {
     transform: translateY(-5px);
     box-shadow: 0px 4px 10px rgba(132, 1, 82, 0.2);
-    cursor: pointer;
-}
-
-/* Giữ nguyên kích thước hình ảnh */
-.OnSale .product img {
-    width: 280px;
-    height: 280px; /* Cân đối lại kích thước */
-    border-radius: 20px;
-    object-fit: cover;
-}
-
-/* Giữ nguyên độ dài tiêu đề sản phẩm */
-.OnSale .product h3 {
-    font-size: 16px;
+  }
+  
+  /* Hình ảnh sản phẩm */
+  .HotSale .HotSale-product img {
+    width: 306px;
+    height: 312px;
+    flex-shrink: 0;
+    border-radius: var(--Corner-Extra-large, 28px);
+    background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+  }
+  
+  .HotSale .HotSale-product h3 {
+    font-size: 14px;
     color: #333;
     margin: 10px 0;
-    height: 40px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Giá tiền */
-.OnSale .product .price {
+    text-overflow: clip; /* Đảm bảo không có dấu ... */
+  }
+  
+  /* Giá tiền */
+  .HotSale-product .HotSale-price {
     font-size: 18px;
     color: #e74c3c;
     font-weight: bold;
-    margin: 5px 0;
-}
-
-.OnSale .product del {
+  }
+  
+  .HotSale .HotSale-product del {
     font-size: 14px;
     color: #999;
     margin-left: 10px;
-}
-
-/* Đánh giá sao */
-.OnSale .rating {
+  }
+  
+  /* Đánh giá sao */
+  .HotSale .HotSale-rating {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 3px;
-    margin: 5px 0;
-}
-
-.OnSale .star {
+    margin: 10px 0;
+  }
+  
+  .HotSale .HotSale-star {
     color: #ffcc00;
-}
-
-/* Giữ nguyên kích thước nút mua hàng */
-.OnSale .buy {
+    margin: 0 2px;
+  }
+  
+  .HotSale .HotSale-reviews {
+    font-size: 14px;
+    color: #666;
+    margin-left: 5px;
+  }
+  
+  /* Nút mua hàng */
+  .HotSale .HotSale-buy {
     width: 200px;
-    height: 40px;
+    height: 36px;
     margin-top: 10px;
     background: #c0437f;
-    color: white;
+    color: white; /* Thêm màu chữ để dễ đọc */
     font-size: 14px;
     font-weight: bold;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
-}
-
-.buy:hover {
-    background: #c97418;
-}
-
-/* Pagination */
-.OnSale .pagination {
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .HotSale .HotSale-buy:hover {
+    background: #a83266 !important;
+  }
+  
+  /* Pagination */
+  .HotSale .HotSale-pagination {
     display: flex;
     justify-content: center;
     margin-top: 15px;
-}
-
-.OnSale .pagination .page-number {
-    width: 35px;
-    height: 35px;
+  }
+  .HotSale .HotSale-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  
+  .HotSale .HotSale-pagination .page-number {
+    width: 30px;
+    height: 30px;
     margin: 0 5px;
     background-color: #f0f0f0;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    transition: background 0.3s;
-}
-
-.OnSale .pagination .page-number.active {
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .HotSale .HotSale-pagination .page-number.active {
     background-color: #c0437f;
     color: white;
     font-weight: bold;
-}
-
-/* Bộ lọc */
-.OnSale .filters {
-    display: flex;
-    width: 100%;
-    max-width: 1350px;
-    height: 40px;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px auto;
-}
-
-.OnSale .filter-button {
-    color: #333;
-    background-color: #ffffff;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    cursor: pointer; 
-    transition: background 0.3s;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 5px 15px;
-}
-
-.OnSale .filter-button:hover,
-.OnSale .filter-button.active {
-    color: red;
-    border-color: red;
-}
+  }
+  

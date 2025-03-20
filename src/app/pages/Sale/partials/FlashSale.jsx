@@ -104,27 +104,27 @@ const FlashSale = () => {
         <button className="arrow left" style={{ background: "#ffc3c3" }} onClick={prevSlide}>
           <LeftOutlined />
         </button>
-        <Row gutter={[16, 16]} className="product-list" ref={sliderRef}>
+        <Row gutter={[16, 16]} className="product-list-flashsale" ref={sliderRef}>
           {products.slice(currentIndex, currentIndex + 4).map((product) => (
-            <Col key={product.productId} xs={24} sm={12} md={6} className="product">
+            <Col key={product.productId} xs={24} sm={12} md={6} className="product-flashsale">
               <img
                 src={product.avartarImageUrl || "https://via.placeholder.com/200"}
                 alt={product.productName}
               />
               <h3>{product.productName}</h3>
               <p>
-                <span className="price">{product.variants[0].price.toLocaleString()} đ</span>
+                <span className="price-flashsale">{product.variants[0].price.toLocaleString()} đ</span>
                 <del>{product.oldPrice.toLocaleString()} đ</del>
               </p>
-              <div className="rating">
+              <div className="rating-flashsale">
                 {Array.from({ length: Math.floor(product.averageRating) }, (_, i) => (
-                  <span key={i} className="star">
+                  <span key={i} className="star-flashsale">
                     ⭐
                   </span>
                 ))}
-                <span className="reviews">{product.totalFeedback} đánh giá</span>
+                <span className="reviews-flashsale">{product.totalFeedback} đánh giá</span>
               </div>
-              <button className="buy" onClick={() => handleBuyNow(product.productId)}>
+              <button className="buy-flashsale" onClick={() => handleBuyNow(product.productId)}>
                 Mua ngay
               </button>
             </Col>

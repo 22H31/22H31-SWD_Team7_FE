@@ -109,27 +109,27 @@ const OnSale = () => {
       </div>
 
       {/* Danh sách sản phẩm */}
-      <div className="product-list">
+      <div className="OnSale-product-list">
         {displayedProducts.map((product) => (
-          <div key={product.productId} className="product">
+          <div key={product.productId} className="OnSale-product">
             <img
               src={product.avartarImageUrl || "https://via.placeholder.com/200"}
               alt={product.productName}
             />
             <h3>{product.productName}</h3>
-            <p className="price">
+            <p className="OnSale-price">
               {product.variants[0].price.toLocaleString("vi-VN")} đ{" "}
               <del>{product.oldPrice.toLocaleString("vi-VN")} đ</del>
             </p>
-            <div className="rating">
+            <div className="OnSale-rating">
               {Array.from({ length: Math.floor(product.averageRating) }, (_, i) => (
-                <span key={i} className="star">
+                <span key={i} className="OnSale-star">
                   ⭐
                 </span>
               ))}
-              <span className="reviews">{product.totalFeedback} Đánh giá</span>
+              <span className="OnSale-reviews">{product.totalFeedback} Đánh giá</span>
             </div>
-            <button className="buy" onClick={() => handleBuyNow(product.productId)}>
+            <button className="OnSale-buy" onClick={() => handleBuyNow(product.productId)}>
               Mua ngay
             </button>
           </div>
@@ -138,7 +138,7 @@ const OnSale = () => {
 
       {/* Phân trang */}
       {totalPages > 1 && (
-        <div className="pagination">
+        <div className="OnSale-pagination">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}

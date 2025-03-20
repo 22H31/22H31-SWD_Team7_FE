@@ -13,26 +13,26 @@
 }
 
 .countdown {
-    text-align: center; /* Căn giữa chữ theo chiều ngang */
-    font-size: 18px;
-    color: #686565;
-    font-weight: bold;
-    margin-bottom: 20px;
-    width: 612px;
-    height: 73px; /* Sửa lại thành số nguyên */
-    flex-shrink: 0;
-    border-radius: 24px;
-    background: #FFC3C3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto; /* Căn giữa theo chiều ngang */
-  }
-  
+  text-align: center; /* Căn giữa chữ theo chiều ngang */
+  font-size: 18px;
+  color: #686565;
+  font-weight: bold;
+  margin-bottom: 20px;
+  width: 612px;
+  height: 73px; /* Sửa lại thành số nguyên */
+  flex-shrink: 0;
+  border-radius: 24px;
+  background: #ffc3c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* Căn giữa theo chiều ngang */
+}
+
 .slider {
   position: relative;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .flashsale .arrow {
@@ -40,7 +40,7 @@
   cursor: pointer;
   display: flex;
   width: 57px;
-  height: 104px; 
+  height: 104px;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -54,29 +54,26 @@
   background-color: unset;
 }
 
-
 /* .arrow:hover {
   background-color: #ffecec;
 } */
 
-.product-list {
+.product-list-flashsale {
   display: flex;
   overflow: hidden;
   flex: 1;
 }
 
-.product {
+.product-flashsale {
   background-color: #ffecec;
   border-radius: 8px;
   padding: 10px;
   text-align: center;
   /* margin: 0 0px; */
   flex: 0 0 calc(25% - 16px);
-
-
 }
 
-.product img {
+.product-flashsale img {
   width: 300px;
   height: 312px;
   flex-shrink: 0;
@@ -84,43 +81,48 @@
   background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
 
-.product h3 {
+.product-flashsale h3 {
   font-size: 16px;
   color: #333;
   margin: 10px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: clip; /* Đảm bảo không có dấu ... */
 }
 
-.product .price {
+.product-flashsale .price-flashsale {
   font-size: 18px;
   color: #e74c3c;
   font-weight: bold;
 }
 
-.product del {
+.product-flashsale del {
   font-size: 14px;
   color: #999;
   margin-left: 10px;
 }
 
-.rating {
+.rating-flashsale {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 10px 0;
 }
 
-.star {
+.star-flashsale {
   color: #ffcc00;
   margin: 0 2px;
 }
 
-.reviews {
+.reviews-flashsale {
   font-size: 14px;
   color: #666;
   margin-left: 5px;
 }
 
-.flashsale .buy {
+.flashsale .buy-flashsale {
   width: 200px;
   height: 36px;
   margin-top: 10px;
