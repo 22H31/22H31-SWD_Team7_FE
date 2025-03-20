@@ -43,7 +43,7 @@ const ProductList = () => {
           );
 
           return (
-            <div key={product.productId} className="product-card">
+            <div key={product.productId} className="product-card"  onClick={() => handleBuyNow(product.productId)}>
               <img
                 src={product?.avartarImageUrl}
                 alt={product.productName}

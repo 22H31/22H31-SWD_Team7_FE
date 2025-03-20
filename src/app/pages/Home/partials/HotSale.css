@@ -27,7 +27,7 @@
 .OnSale .product {
     width: 330px;
     height: 480px; /* Tăng chiều cao để cân đối */
-    border: 1px solid #1a1a1a53;
+    border: 1px solid #1a1a1a;
     background-color: #ffffff;
     border-radius: 8px;
     padding: 15px;
@@ -42,6 +42,7 @@
 .OnSale .product:hover {
     transform: translateY(-5px);
     box-shadow: 0px 4px 10px rgba(132, 1, 82, 0.2);
+    cursor: pointer;
 }
 
 /* Giữ nguyên kích thước hình ảnh */
@@ -105,8 +106,8 @@
     transition: background 0.3s;
 }
 
-.OnSale .buy:hover {
-    background: #a83266;
+.buy:hover {
+    background: #c97418;
 }
 
 /* Pagination */
