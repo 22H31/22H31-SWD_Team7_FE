@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { APIAddToCart, APIGetProductById } from "../../../api/api";
 import PageLayOut from "../../../layouts/PageLayOut/PageLayOut";
 import "./ProductDetail.css";
+import { cartLenght } from "../../../globalVariable/cart";
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const { productId } = useParams(); // Get productId from URL
@@ -34,6 +35,7 @@ const ProductDetail = () => {
       const response = await APIAddToCart(userId, variantId, 1); // Default quantity is 1
 
       if (response.status === 200) {
+        // cartLenght.set(cartLenght.value +1)
         message.success("Thêm sản phẩm vào giỏ hàng thành công!");
       }
     } catch (error) {

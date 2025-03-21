@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  FlagOutlined,
   GlobalOutlined,
   LoginOutlined,
   SearchOutlined,
@@ -12,22 +13,21 @@ import logo from "../../assets/logo.png";
 import "./index.css";
 import NavigationComponent from "../NavigationBar/NavigationBar";
 import { APIGetUserId, APILogOut } from "../../api/api";
+import {cartLenght} from "../../globalVariable/cart"
 
 const { Header } = Layout;
 const { Search } = Input;
 
 const HeaderComponent = () => {
   const navigate = useNavigate();
-
+ 
   // Quản lý trạng thái đăng nhập
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
-
+  const cartItemsLength = cartLenght.use()
   // Quản lý trạng thái giỏ hàng
-  const [cartItemsLength, setCartItemsLength] = useState(
-    parseInt(localStorage.getItem("cartItemsLength")) || 0
-  );
+ 
 
   // Lắng nghe thay đổi trong localStorage để cập nhật trạng thái đăng nhập
   // useEffect(() => {
@@ -45,16 +45,7 @@ const HeaderComponent = () => {
   // }, []);
 
   // Cập nhật giỏ hàng vào localStorage khi có thay đổi
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setCartItemsLength(parseInt(localStorage.getItem("cartItemsLength")) || 0);
-    };
-  
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+
   
   const onSearch = (value) => {
     console.log("Search:", value);
@@ -122,8 +113,8 @@ const HeaderComponent = () => {
             <div className="header-icons">
               <Space size="large">
                 <div className="location">
-                  <GlobalOutlined />
-                  <span>TP. HCM</span>
+                <FlagOutlined />
+                  <span>Việt Nam</span>
                 </div>
                 <UserOutlined
                   onClick={handleUserClick}

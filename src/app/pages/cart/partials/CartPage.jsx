@@ -9,6 +9,7 @@ import {
   APIUpdateCartItem,
 } from "../../../api/api"; // Import API functions
 import "./CartPage.css";
+import { cartLenght } from "../../../globalVariable/cart";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const CartPage = () => {
   
       // Cập nhật số lượng sản phẩm trong localStorage
       const newCartLength = cartItems.length + 1;
+      cartLenght.set(newCartLength)
       localStorage.setItem("cartItemsLength", newCartLength);
       window.dispatchEvent(new Event("storage")); // Phát sự kiện để cập nhật Header
     } catch (error) {
@@ -146,6 +148,7 @@ const CartPage = () => {
     }
   }, [userId]);
   useEffect(() => {
+    cartLenght.set(cartItems.length)
     localStorage.setItem("cartItemsLength", cartItems.length);
   }, [cartItems.length]); // Chỉ cập nhật khi số lượng sản phẩm thay đổi
 
