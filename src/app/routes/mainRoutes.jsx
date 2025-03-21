@@ -1,4 +1,4 @@
-import { useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../../app/layouts/PageNotFound/PageNotFound";
 import Blog from "../../app/pages/Blog/Blog";
@@ -28,12 +28,22 @@ import ProductFull from "../pages/Product/ProductFull";
 import LayoutProduct from "../layouts/LayoutProduct/LayoutProduct";
 import ChatForAdmin from "../pages/Admin/chatAdmin/ChatAdmin";
 import ChatForUser from "../pages/UserChat/ChatButton";
+import Page401 from "../layouts/pageNotFound/401";
 
 export default function MainRoutes() {
   const location = useLocation();
   const hideFooter = ["/login", "/forgotPassword", "/register", "/admin"].some(
     (path) => location.pathname.includes(path)
   );
+  const ProtectedRoute = ({ children, allowedRoles }) => {
+    const Role = localStorage.getItem("Role");
+    // const userRole='admin2'
+    console.log(Role);
+    if (!allowedRoles.includes(Role)) {
+      return <Navigate to="/401" replace />;
+    }
+    return children;
+  };
 
   return (
     <>
@@ -51,7 +61,14 @@ export default function MainRoutes() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/paymentSuccess" element={<PaymentSuccess />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["Admin", "Staff", "StaffSale"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="products" element={<ProductsGrid />} />
           <Route path="teamPage" element={<TeamManage />} />
           <Route path="brandPage" element={<Brand />} />
@@ -65,8 +82,9 @@ export default function MainRoutes() {
         <Route path="/quiz" element={<QuizPopup />} />
         <Route path="/productFull" element={<ProductFull />} />
         <Route path="/LayoutProduct" element={<LayoutProduct />} />
-        
+
         {/* Handle unknown routes */}
+        <Route path="/401" element={<Page401 />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 

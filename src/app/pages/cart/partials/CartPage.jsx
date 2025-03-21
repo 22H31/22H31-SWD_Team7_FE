@@ -1,7 +1,4 @@
-import {
-  DeleteOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Card, Input, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +15,6 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [discountCode, setDiscountCode] = useState("");
   const userId = localStorage.getItem("userID"); // Get userId from localStorage
-
   // Fetch cart items
   const fetchCartItems = async () => {
     try {
@@ -31,28 +27,33 @@ const CartPage = () => {
   };
 
   // Add item to cart
-  const handleAddToCart = async (variantId, quantity) => {
-    try {
-      await APIAddToCart(userId, variantId, quantity).then((rs)=>{
-        console.log(rs)
-      });
-      message.success("Thêm sản phẩm vào giỏ hàng thành công!");
-      fetchCartItems(); // Refresh cart items
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      message.error("Thêm sản phẩm vào giỏ hàng thất bại.");
-    }
-  };
+  // const handleAddToCart = async (variantId, quantity) => {
+  //   try {
+  //     await APIAddToCart(userId, variantId, quantity).then((rs) => {
+  //       console.log(rs);
+  //     });
+  //     message.success("Thêm sản phẩm vào giỏ hàng thành công!");
+  //     fetchCartItems(); // Refresh cart items
+  //   } catch (error) {
+  //     console.error("Error adding to cart:", error);
+  //     message.error("Thêm sản phẩm vào giỏ hàng thất bại.");
+  //   }
+  // };
 
   // Update item quantity
   const handleQuantityChange = async (cartItemId, quantity) => {
     try {
-      await APIUpdateCartItem(cartItemId, quantity);
-      message.success("Cập nhật số lượng thành công!");
-      fetchCartItems(); // Refresh cart items
+      await APIAddToCart(userId, cartItemId, quantity);
+      message.success("Thêm sản phẩm vào giỏ hàng thành công!");
+      await fetchCartItems(); // Lấy lại danh sách giỏ hàng
+  
+      // Cập nhật số lượng sản phẩm trong localStorage
+      const newCartLength = cartItems.length + 1;
+      localStorage.setItem("cartItemsLength", newCartLength);
+      window.dispatchEvent(new Event("storage")); // Phát sự kiện để cập nhật Header
     } catch (error) {
-      console.error("Error updating quantity:", error);
-      message.error("Cập nhật số lượng thất bại.");
+      console.error("Error adding to cart:", error);
+      message.error("Thêm sản phẩm vào giỏ hàng thất bại.");
     }
   };
 
@@ -89,7 +90,11 @@ const CartPage = () => {
       key: "productName",
       render: (text, record) => (
         <div className="cart-item">
-          <img src={record.productAvatarImage} alt={text} className="cart-item-image" />
+          <img
+            src={record.productAvatarImage}
+            alt={text}
+            className="cart-item-image"
+          />
 
           <div>
             <p>{text}</p>
@@ -125,7 +130,9 @@ const CartPage = () => {
       key: "price",
       render: (text, record) => (
         <span>
-          {new Intl.NumberFormat("vi-VN").format(record.price * record.quantity)}{" "}
+          {new Intl.NumberFormat("vi-VN").format(
+            record.price * record.quantity
+          )}{" "}
           vnđ
         </span>
       ),
@@ -138,6 +145,9 @@ const CartPage = () => {
       fetchCartItems();
     }
   }, [userId]);
+  useEffect(() => {
+    localStorage.setItem("cartItemsLength", cartItems.length);
+  }, [cartItems.length]); // Chỉ cập nhật khi số lượng sản phẩm thay đổi
 
   return (
     <div className="cart-container">

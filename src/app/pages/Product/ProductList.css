@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
+    /* justify-content: center; */
     font-family: "Epilogue", sans-serif;
 }
 
@@ -116,20 +116,20 @@
 }
 
 .page-number {
-    padding: 8px 12px;
+    padding: 5px 10px;
     border: 1px solid #ddd;
-    background: #fff;
+    background: #ca7e7e8d;
     cursor: pointer;
     transition: 0.3s;
     border-radius: 5px;
 }
 
 .page-number.active {
-    background: #ff4d4f;
-    color: white;
+    background: #ff0004;
+    color: black;
     border: none;
 }
 
 .page-number:hover {
-    background: #f1f1f1;
+    background: #f42b2b;
 }
