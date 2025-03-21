@@ -19,35 +19,49 @@ const { Search } = Input;
 const HeaderComponent = () => {
   const navigate = useNavigate();
 
-  // Sử dụng useState để quản lý trạng thái đăng nhập
+  // Quản lý trạng thái đăng nhập
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
 
-  // Lắng nghe thay đổi của localStorage để cập nhật trạng thái đăng nhập
+  // Quản lý trạng thái giỏ hàng
+  const [cartItemsLength, setCartItemsLength] = useState(
+    parseInt(localStorage.getItem("cartItemsLength")) || 0
+  );
+
+  // Lắng nghe thay đổi trong localStorage để cập nhật trạng thái đăng nhập
+  // useEffect(() => {
+  //   const handleStorageChange = () => {
+  //     setIsAuthenticated(!!localStorage.getItem("token"));
+  //     setCartItemsLength(
+  //       parseInt(localStorage.getItem("cartItemsLength")) || 0
+  //     );
+  //   };
+
+  //   window.addEventListener("storage", handleStorageChange);
+  //   return () => {
+  //     window.removeEventListener("storage", handleStorageChange);
+  //   };
+  // }, []);
+
+  // Cập nhật giỏ hàng vào localStorage khi có thay đổi
   useEffect(() => {
     const handleStorageChange = () => {
-      setIsAuthenticated(!!localStorage.getItem("token"));
+      setCartItemsLength(parseInt(localStorage.getItem("cartItemsLength")) || 0);
     };
-
+  
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
+  
   const onSearch = (value) => {
     console.log("Search:", value);
   };
 
   const handleUserClick = () => {
-    const userID = localStorage.getItem("userID");
-    if (!userID) {
-      console.error("Không tìm thấy userID!");
-      return;
-    }
-    console.log(userID);
-    if (userID) {
+    if (isAuthenticated) {
       navigate("/profile");
     } else {
       navigate("/login");
@@ -59,9 +73,9 @@ const HeaderComponent = () => {
       .then((rs) => {
         if (rs.status === 200) {
           console.log("Đăng xuất thành công");
-          localStorage.removeItem("token"); // Xóa token khỏi localStorage
-          setIsAuthenticated(false); // Cập nhật trạng thái đăng nhập
-          navigate("/"); // Điều hướng về trang chủ
+          localStorage.removeItem("token");
+          setIsAuthenticated(false);
+          navigate("/");
           message.success("Đăng xuất thành công!");
         }
       })
@@ -70,6 +84,7 @@ const HeaderComponent = () => {
         message.error("Đăng xuất thất bại!");
       });
   };
+
   return (
     <>
       <Header style={{ padding: 0 }} className="custom-header">
@@ -102,7 +117,7 @@ const HeaderComponent = () => {
             />
           </div>
 
-          {/* Kiểm tra trạng thái đăng nhập để hiển thị icon hoặc nút đăng nhập */}
+          {/* Kiểm tra trạng thái đăng nhập */}
           {isAuthenticated ? (
             <div className="header-icons">
               <Space size="large">
@@ -114,8 +129,14 @@ const HeaderComponent = () => {
                   onClick={handleUserClick}
                   style={{ cursor: "pointer" }}
                 />
-                <Badge count={0} showZero>
-                  <ShoppingCartOutlined onClick={() => navigate("/Cart")} />
+                <Badge count={cartItemsLength} showZero>
+                  <ShoppingCartOutlined
+                    onClick={() => {
+                     
+                      navigate("/Cart");
+                      window.location.reload();
+                    }}
+                  />
                 </Badge>
                 <Badge>
                   <LoginOutlined

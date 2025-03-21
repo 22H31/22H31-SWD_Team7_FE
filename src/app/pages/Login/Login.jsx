@@ -21,17 +21,12 @@ export default function Login() {
           localStorage.setItem("token", rs.data.jwtToken); // Lưu token vào localStorage
           localStorage.setItem("user", JSON.stringify(rs.data));
           localStorage.setItem("userID", rs.data.id);
-          // localStorage.setItem("user", JSON.stringify({ email: "test@example.com", firstName: "A", lastName: "B" }));
+          localStorage.setItem("Role", rs.data.roles[0]);
           console.log(localStorage.getItem("user"));
           console.log(localStorage.getItem("userID"));
           console.log(localStorage.getItem("token"));
-
-          // const information = JSON.parse(localStorage.getItem("user"));
-          navigate("/");
-          // if (user) {
-
-          //   console.log("Email:", information.email);
-          // }
+          console.log(localStorage.getItem("Role"));
+          rs.data.roles[0] === "StaffSale" ? navigate("/admin") : navigate("/");
         }
       })
       .catch((error) => {
@@ -83,7 +78,7 @@ export default function Login() {
               { required: true, message: "Vui lòng nhập tên đăng nhập!" },
             ]}
           >
-            <Input  prefix={<UserOutlined />} placeholder="Tên đăng nhập" />
+            <Input prefix={<UserOutlined />} placeholder="Tên đăng nhập" />
           </Form.Item>
 
           <Form.Item
