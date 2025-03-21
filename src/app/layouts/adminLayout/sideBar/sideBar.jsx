@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./Sidebar.module.css";
 import {
@@ -18,6 +18,8 @@ import {
   SettingOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import { APILogOut } from "../../../api/api";
+import { message } from "antd";
 
 // Danh sách icon với key-value
 const icons = {
@@ -36,18 +38,25 @@ const icons = {
   logout: <LogoutOutlined className={styles.icon} />,
 };
 
-const NavItem = ({ icon, text, path }) => {
+const NavItem = ({ icon, text, path, onClick }) => {
   return (
-    <li className={styles.navItem}>
-      <NavLink
-        to={path}
-        className={({ isActive }) =>
-          isActive ? `${styles.navItemActive} ${styles.navLink}` : styles.navLink
-        }
-      >
-        {icons[icon]}
-        <span className={styles.navText}>{text}</span>
-      </NavLink>
+    <li className={styles.navItem} onClick={onClick}>
+      {path ? (
+        <NavLink
+          to={path}
+          className={({ isActive }) =>
+            isActive ? `${styles.navItemActive} ${styles.navLink}` : styles.navLink
+          }
+        >
+          {icons[icon]}
+          <span className={styles.navText}>{text}</span>
+        </NavLink>
+      ) : (
+        <div className={styles.navLink}>
+          {icons[icon]}
+          <span className={styles.navText}>{text}</span>
+        </div>
+      )}
     </li>
   );
 };
@@ -55,10 +64,34 @@ const NavItem = ({ icon, text, path }) => {
 NavItem.propTypes = {
   icon: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
+  path: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 const Sidebar = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    APILogOut()
+      .then((rs) => {
+        console.log(rs.status, "check");
+        if (rs.status === 200) {
+          console.log("Đăng xuất thành công");
+          localStorage.removeItem("token");
+          setIsAuthenticated(false);
+          message.success("Đăng xuất thành công!");
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        message.error("Đăng xuất thất bại!");
+      });
+  };
+
   return (
     <aside className={styles.sidebar}>
       {/* Logo */}
@@ -91,7 +124,7 @@ const Sidebar = () => {
       {/* Settings & Logout luôn nằm dưới cùng */}
       <div className={styles.bottomNav}>
         <NavItem icon="settings" text="Settings" path="/admin/settings" />
-        <NavItem icon="logout" text="Logout" path="/logout" />
+        <NavItem icon="logout" text="Logout" onClick={handleLogout} />
       </div>
     </aside>
   );
