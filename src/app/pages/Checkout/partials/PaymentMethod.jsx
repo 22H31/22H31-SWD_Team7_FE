@@ -1,28 +1,70 @@
 import { BankOutlined, CreditCardOutlined } from "@ant-design/icons";
-import { Card, Form, Input, Radio, Space, Button } from "antd";
+import { Card, Form, Input, Radio, Space, Button, message } from "antd";
 import { useState } from "react";
-import { FaPaypal, FaGooglePay } from "react-icons/fa";
+import { FaPaypal } from "react-icons/fa";
 
-const PaymentMethod = () => {
-  const [paymentMethod, setPaymentMethod] = useState("credit_card");
+const PaymentMethod = ({ onSavePaymentMethod }) => {
+  const [paymentMethod, setPaymentMethod] = useState("vnpay"); // Mặc định là VNPay
+  const [loading, setLoading] = useState(false); // State để hiển thị loading khi lưu
+
+  // Hàm xử lý khi nhấn nút "Lưu"
+  const handleSave = async () => {
+    setLoading(true); // Bật trạng thái loading
+    try {
+      // Gọi hàm callback từ component cha để lưu phương thức thanh toán
+      await onSavePaymentMethod(paymentMethod);
+      message.success("Lưu phương thức thanh toán thành công!");
+    } catch (error) {
+      console.error("Lỗi khi lưu phương thức thanh toán:", error);
+      message.error("Lưu phương thức thanh toán thất bại.");
+    } finally {
+      setLoading(false); // Tắt trạng thái loading
+    }
+  };
 
   return (
     <div className="payment-container">
       <h2 className="payment-title">Phương thức thanh toán</h2>
       <Card className="payment-card">
         <Form layout="vertical">
-          {/* Chọn phương thức thanh toán */}
           <Form.Item label={<strong>Chọn Phương Thức Thanh Toán:</strong>}>
-            <Radio.Group value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+            <Radio.Group
+              value={paymentMethod}
+              onChange={(e) => {
+                const selectedMethod = e.target.value;
+                setPaymentMethod(selectedMethod);
+
+                // Hiển thị thông báo ngay khi chọn phương thức chưa hỗ trợ
+                if (
+                  selectedMethod === "credit_card" ||
+                  selectedMethod === "paypal"
+                ) {
+                  message.info("Chức năng đang được phát triển.");
+                }
+              }}
+            >
               <Space direction="vertical">
+                <Radio value="vnpay">
+                  <img
+                    src="https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg"
+                    alt="VNPay"
+                    width="30"
+                  />{" "}
+                  VNPay
+                </Radio>
                 <Radio value="credit_card">
                   <CreditCardOutlined /> Credit Card &nbsp;
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Mastercard-logo.png/50px-Mastercard-logo.png" alt="Mastercard" width="30"/>
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Mastercard-logo.png/50px-Mastercard-logo.png"
+                    alt="Mastercard"
+                    width="30"
+                  />
                   &nbsp;
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Visa_Logo.png/50px-Visa_Logo.png" alt="Visa" width="30"/>
-                </Radio>
-                <Radio value="gpay">
-                  <FaGooglePay size={20} /> G Pay
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Visa_Logo.png/50px-Visa_Logo.png"
+                    alt="Visa"
+                    width="30"
+                  />
                 </Radio>
                 <Radio value="paypal">
                   <FaPaypal size={20} /> PayPal
@@ -54,9 +96,16 @@ const PaymentMethod = () => {
             </>
           )}
 
-          {/* Nút Save */}
+          {/* Nút Lưu */}
           <div className="checkout-button-container">
-            <Button type="primary" className="save-button">Lưu</Button>
+            <Button
+              type="primary"
+              style={{ backgroundColor: "#ff69b4", borderColor: "#ff69b4" }} // Màu hồng
+              onClick={handleSave}
+              loading={loading} // Hiển thị loading khi đang xử lý
+            >
+              Lưu
+            </Button>
           </div>
         </Form>
       </Card>

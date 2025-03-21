@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { Row, Col, Spin } from "antd";
+import { Col, Row, Spin } from "antd";
 import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Thêm useNavigate để chuyển hướng
 import "./FlashSale.css";
 

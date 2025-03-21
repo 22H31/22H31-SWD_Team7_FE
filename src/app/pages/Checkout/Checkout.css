@@ -7,16 +7,16 @@
   margin-top: 120px;
   width: 100%;
   max-width: 1400px;
-  background: #FAF6F6;
+  background: #faf6f6;
 }
 
-.shipping-title{
-  color: var(--en-t, #44353F);
-font-family: Inter;
-font-size: 40px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
+.shipping-title {
+  color: var(--en-t, #44353f);
+  font-family: Inter;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 /* Custom Card Style */
 .custom-card,
@@ -43,8 +43,8 @@ line-height: normal;
 .ant-input,
 .ant-select-selector {
   border-radius: 8px;
-  border: 1px solid #DFE1E3; 
-  background: #FFF;
+  border: 1px solid #dfe1e3;
+  background: #fff;
 }
 
 /* Payment Method */
@@ -89,7 +89,7 @@ line-height: normal;
 
 /* checkout buttonbutton */
 .checkout-button-container {
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .checkout-page .checkout-button {
@@ -98,9 +98,9 @@ line-height: normal;
   border-radius: 8px;
   border: none;
   background: var(--mu-nhn, #c0437f);
-  color: #FFF;
+  color: #fff;
 }
 .checkout-button:hover {
   background-color: #c0437f !important;
-  color: #FFF !important;
+  color: #fff !important;
 }
