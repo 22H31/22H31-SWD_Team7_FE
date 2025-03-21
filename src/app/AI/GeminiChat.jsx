@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Card, Input, Button, Spin, Space } from "antd";
-import { MessageOutlined, CloseOutlined } from "@ant-design/icons";
+import { MessageOutlined, CloseOutlined, RobotOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { marked } from "marked";
 
@@ -97,7 +97,7 @@ export default function GeminiChat() {
             }}
             title={
               <span style={{ fontWeight: "bold", color: "#333" }}>
-                💬 Chatbox
+                Hỗ trợ với AI{" "}
               </span>
             }
             extra={
@@ -170,12 +170,12 @@ export default function GeminiChat() {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Nhập tin nhắn..."
                     onPressEnter={sendMessage}
-                    style={{ padding: "15px 25px",height:"30px" }}
+                    style={{ padding: "15px 25px", height: "30px" }}
                   />
                   <Button
                     type="primary"
                     onClick={sendMessage}
-                    style={{ padding: "15px 25px",height:"30px" }}
+                    style={{ padding: "15px 25px", height: "30px" }}
                   >
                     Gửi
                   </Button>
@@ -188,7 +188,7 @@ export default function GeminiChat() {
       <Button
         type="primary"
         shape="circle"
-        icon={<MessageOutlined />}
+        icon={<RobotOutlined />}
         size="large"
         onClick={handleOpen}
         style={{

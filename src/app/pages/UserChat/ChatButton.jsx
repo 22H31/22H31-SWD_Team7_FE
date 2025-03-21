@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import { UserOutlined } from '@ant-design/icons';  // Sử dụng MessageOutlined từ Ant Design
 import ChatUser from "../UserChat/ChatUser";
+import { calc } from "antd/es/theme/internal";
 
-const ChatButton = () => {
+const   ChatButton = () => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -15,9 +16,9 @@ const ChatButton = () => {
         size="large"
         style={{
           position: "fixed",
-          bottom: 1010,  // Điều chỉnh để nhích nút lên
-          right: 23,
-          zIndex: 1000,
+          bottom: "10%",  // Điều chỉnh để nhích nút lên
+          right: 20,
+          zIndex: 900,
           backgroundColor: "#0084ff", // Màu giống Messenger
           color: "white",
           border: "none",
@@ -26,7 +27,7 @@ const ChatButton = () => {
       />
 
       <Modal
-        title="Hỗ Trợ Tư Vấn"
+        title="Hỗ Trợ Tư Vấn Viên"
         open={visible}
         onCancel={() => setVisible(false)}
         footer={null}
