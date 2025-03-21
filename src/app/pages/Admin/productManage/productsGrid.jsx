@@ -202,7 +202,7 @@ function ProductsGrid() {
             <ProductCard
               name={product.productName}
               price={product.variants?.[0]?.price || "N/A"}
-              avatarImageURL={product.avatarImageURL}
+              avatarImageURL={product.avartarImageURL}
               productId={product.productId}
               variants={product.variants}
               onEditProduct={() => handleEditProduct(product)}

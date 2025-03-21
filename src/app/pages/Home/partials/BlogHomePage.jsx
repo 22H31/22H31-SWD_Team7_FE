@@ -67,8 +67,8 @@ const BlogHomePage = () => {
                 >
                   {post.title}
                 </h2>
-                <h3 className="Bloglist-subtitle">
-                  {post.subtitle || "Subtitle mẫu để kiểm tra giao diện"}
+                <h3 style={{marginBottom:"10px"}} className="Bloglist-subtitle">
+                  {post.subTitle || "Subtitle mẫu để kiểm tra giao diện"}
                 </h3>
                 <p className="Bloglist-description">{removeMarkdown(post.content1).split(" ").slice(0, 110).join(" ")}...</p>
                 <div className="Bloglist-tags">

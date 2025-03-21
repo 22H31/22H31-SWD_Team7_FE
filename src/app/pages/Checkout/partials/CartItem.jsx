@@ -9,17 +9,17 @@ const CartItem = ({ cartSummary }) => {
           Tổng sản phẩm đã chọn <span>{cartSummary.totalItems}</span>
         </p>
         <p>
-          Tạm tính <span className="bold">{cartSummary.subtotal.toLocaleString()} vnd</span>
+          Tạm tính <span className="bold">{cartSummary.subtotal.toLocaleString()} đ</span>
         </p>
         <p>
-          Mã giảm giá <span>{cartSummary.discount} vnd</span>
+          Mã giảm giá <span>{cartSummary.discount.toLocaleString()} đ</span>
         </p>
         <p>
-          Phí giao hàng <span>{cartSummary.shippingFee} vnd</span>
+          Phí giao hàng <span>{cartSummary.shippingFee.toLocaleString()} đ</span>
         </p>
         <hr />
         <p className="total">
-          Tổng thanh toán <span>{cartSummary.total.toLocaleString()} vnd</span>
+          Tổng thanh toán <span>{cartSummary.total.toLocaleString()} đ</span>
         </p>
         <p className="vat-note">(Đã bao gồm VAT)</p>
       </div>
