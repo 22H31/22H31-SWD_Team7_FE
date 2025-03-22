@@ -28,6 +28,8 @@ import ProductFull from "../pages/Product/ProductFull";
 import LayoutProduct from "../layouts/LayoutProduct/LayoutProduct";
 import ChatForAdmin from "../pages/Admin/chatAdmin/ChatAdmin";
 import ChatForUser from "../pages/UserChat/ChatButton";
+import VoucherManagement from "../pages/Admin/voucherManage/VoucherManagement";
+import PromotionManagement from "../pages/Admin/promotionManage/PromotionManagement";
 import Page401 from "../layouts/pageNotFound/401";
 
 export default function MainRoutes() {
@@ -76,6 +78,8 @@ export default function MainRoutes() {
           <Route path="categoryTitlePage" element={<CategoryTitle />} />
           <Route path="blog" element={<BlogManage />} />
           <Route path="chatAdmin" element={<ChatForAdmin />} />
+          <Route path="vouchers" element={<VoucherManagement />} />
+          <Route path="promotions" element={<PromotionManagement />} />
         </Route>
 
         <Route path="/product/:productId" element={<ProductDetail />} />
