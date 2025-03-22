@@ -23,6 +23,8 @@ export const APIChangePassword = (values) =>
     newPasswordConfirmation: values.newPasswordConfirmation,
   });
 
+// ================= User APIs =================
+
 export const APIGetUserId = (userId) => api.get(`User/${userId}`);
 export const APILogOut = () => api.post("account/logout");
 export const APIPutUserId = (values, userId) =>
@@ -32,6 +34,8 @@ export const APIPutUserId = (values, userId) =>
     address: values.address,
     dateOfBirth: values.dateOfBirth,
   });
+
+// ================= Cart APIs =================
 
 //cart
 export const APIGetCategories = () => api.get("categories");
@@ -53,6 +57,34 @@ export const APIUpdateCartItem = (cartItemId, quantity) =>
 export const APIRemoveCartItem = (cartItemId) =>
   api.delete(`cartitem/${cartItemId}`);
 
+// ================= Feedback APIs =================
+
+// API để lấy danh sách Feedback
+export const APIGetFeedbacks = () => api.get("feedback");
+
+// API để thêm Feedback mới
+export const APISubmitFeedback = (id, productId, rating, comment) =>
+  api.post("feedback", {
+    id: id, // userId
+    productId: productId,
+    rating: rating,
+    comment: comment,
+  });
+
+// API để cập nhật Feedback
+export const APIUpdateFeedback = (feedbackId, rating, comment) =>
+  api.put(`feedback/${feedbackId}`, {
+    rating: rating,
+    comment: comment,
+  });
+
+// API để xóa Feedback
+export const APIDeleteFeedback = (feedbackId) =>
+  api.delete(`feedback/${feedbackId}`);
+
+
+// ================= Voucher APIs =================
+
 // Base URL cho API voucher
 const API_VOUCHER_BASE_URL = "voucher";
 const API_PROMOTION_BASE_URL = "promotion";
@@ -73,6 +105,5 @@ export const APIUpdatePromotion = (id, data) =>
   api.put(`${API_PROMOTION_BASE_URL}/update/${id}`, data);
 export const APIDeletePromotion = (id) =>
   api.delete(`${API_PROMOTION_BASE_URL}/delete/${id}`);
-
 
 export default api;

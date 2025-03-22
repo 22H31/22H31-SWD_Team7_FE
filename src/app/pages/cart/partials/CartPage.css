@@ -106,7 +106,7 @@
 }
 
 /* Style cho nút xóa */
-.remove-button {
+/* .remove-button {
   background-color: #c0437f;
   border: none;
   color: white;
@@ -115,11 +115,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
-.remove-button:hover {
+/* .remove-button:hover {
   background-color: #b02a6c !important;
-}
+} */
 
 /* Bỏ các border của table, chỉ giữ lại border bottom */
 .custom-table .ant-table {
