@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, message } from "antd";
+import { Row, Col, Button, message, Pagination } from "antd";
 import ProductCard from "./ProductCard";
 import EditProductPopup from "./EditProductPopup";
 import UploadProductImages from "./UploadProductImages";
@@ -16,6 +16,9 @@ function ProductsGrid() {
   const [step, setStep] = useState(1);
   const [productId, setProductId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+  const [pageSize, setPageSize] = useState(8); // Số sản phẩm trên mỗi trang
 
   const initialFormData = {
     productName: "",
@@ -183,6 +186,11 @@ function ProductsGrid() {
     setPopupOpen(true);
   };
 
+  const paginatedProducts = products.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
   return (
     <>
       <Row justify="space-between" align="middle" style={{ marginBottom: 16 }}>
@@ -197,7 +205,7 @@ function ProductsGrid() {
       </Row>
 
       <Row gutter={[16, 16]}>
-        {products.map((product) => (
+        {paginatedProducts.map((product) => (
           <Col key={product.productId} xs={24} sm={12} md={8} lg={6}>
             <ProductCard
               name={product.productName}
@@ -211,6 +219,17 @@ function ProductsGrid() {
           </Col>
         ))}
       </Row>
+
+      <Pagination
+        current={currentPage}
+        pageSize={pageSize}
+        total={products.length}
+        onChange={(page, size) => {
+          setCurrentPage(page);
+          setPageSize(size);
+        }}
+        style={{ marginTop: 16, textAlign: "center" }}
+      />
 
       <EditProductPopup
         isEditing={isEditing}

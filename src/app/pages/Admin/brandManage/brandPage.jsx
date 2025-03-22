@@ -16,11 +16,15 @@ const BrandPage = () => {
   const [imageUploadBrandId, setImageUploadBrandId] = useState("");
 
   // Fetch brand list from API
-  useEffect(() => {
+  const fetchBrands = () => {
     fetch(API_URL)
       .then((res) => res.json())
       .then((data) => setBrands(data))
       .catch((err) => console.error("Error fetching data:", err));
+  };
+
+  useEffect(() => {
+    fetchBrands();
   }, []);
 
   // Fetch brand details by ID
@@ -31,7 +35,7 @@ const BrandPage = () => {
         setFormData({
           brandName: data.brandName,
           brandDescription: data.brandDescription,
-          brandImg: data.avatarBrandUrl,
+          avatarBrandUrl: data.avatarBrandUrl,
         });
       })
       .catch((err) => console.error("Error fetching brand details:", err));
@@ -50,8 +54,8 @@ const BrandPage = () => {
       body: JSON.stringify(formData),
     })
       .then((res) => res.json())
-      .then((newBrand) => {
-        setBrands([...brands, newBrand]);
+      .then(() => {
+        fetchBrands(); // Cập nhật danh sách brand
         setPopupOpen(false);
         message.success("Brand added successfully!");
       })
@@ -69,11 +73,7 @@ const BrandPage = () => {
       body: JSON.stringify(formData),
     })
       .then(() => {
-        setBrands(
-          brands.map((item) =>
-            item.brandId === editId ? { ...item, ...formData } : item
-          )
-        );
+        fetchBrands(); // Cập nhật danh sách brand
         setPopupOpen(false);
         message.success("Brand updated successfully!");
       })
@@ -87,7 +87,7 @@ const BrandPage = () => {
   const handleDelete = (id) => {
     fetch(`${API_URL}/${id}`, { method: "DELETE" })
       .then(() => {
-        setBrands(brands.filter((item) => item.brandId !== id));
+        fetchBrands(); // Cập nhật danh sách brand
         message.success("Brand deleted successfully!");
       })
       .catch((err) => {
@@ -112,7 +112,7 @@ const BrandPage = () => {
     }
 
     const formData = new FormData();
-    formData.append("fileDtos", file); // Ensure the key matches the expected parameter name
+    formData.append("fileDtos", file);
 
     fetch(`${API_URL}/${imageUploadBrandId}/brand_avartar_images`, {
       method: "POST",
@@ -122,20 +122,13 @@ const BrandPage = () => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }
-        return res.text(); // Use res.text() instead of res.json() to handle non-JSON responses
+        return res.text();
       })
-      .then((text) => {
-        try {
-          const data = JSON.parse(text); // Try to parse the response as JSON
-          setImageUploadOpen(false);
-          message.success("Image uploaded successfully!");
-          onSuccess("ok");
-        } catch (err) {
-          // Handle non-JSON response
-          setImageUploadOpen(false);
-          message.success("Image uploaded successfully!");
-          onSuccess("ok");
-        }
+      .then(() => {
+        fetchBrands(); // Cập nhật danh sách brand
+        setImageUploadOpen(false);
+        message.success("Image uploaded successfully!");
+        onSuccess("ok");
       })
       .catch((err) => {
         console.error("Error uploading image:", err);
@@ -157,9 +150,11 @@ const BrandPage = () => {
     },
     {
       title: "Logo",
-      dataIndex: "brandImg",
-      key: "brandImg",
-      render: (text) => <img src={text} alt="Brand Logo" style={{ width: 50 }} />,
+      dataIndex: "avartarBrandUrl",
+      key: "avartarBrandUrl",
+      render: (text) => (
+        text ? <img src={text} alt="Brand Logo" style={{ width: 50, height: 50, objectFit: "cover" }} /> : "No Image"
+      ),
     },
     {
       title: "Actions",

@@ -17,6 +17,7 @@ import {
   TeamOutlined,
   SettingOutlined,
   LogoutOutlined,
+  GiftOutlined,
 } from "@ant-design/icons";
 import { APILogOut } from "../../../api/api";
 import { message } from "antd";
@@ -36,6 +37,7 @@ const icons = {
   team: <TeamOutlined className={styles.icon} />,
   settings: <SettingOutlined className={styles.icon} />,
   logout: <LogoutOutlined className={styles.icon} />,
+  promotion: <GiftOutlined className={styles.icon} />,
 };
 
 const NavItem = ({ icon, text, path, onClick }) => {
@@ -117,6 +119,8 @@ const Sidebar = () => {
           <NavItem icon="brand" text="Brand" path="brandPage" />
           <NavItem icon="category" text="Category" path="categoryPage" />
           <NavItem icon="categoryTitle" text="Category Title" path="categoryTitlePage" />
+          <NavItem icon="pricing" text="Voucher Management" path="vouchers" />
+          <NavItem icon="promotion" text="Promotion Management" path="promotions" /> {/* Sử dụng icon mới */}
           <NavItem icon="team" text="Team" path="teamPage" />
         </ul>
       </nav>
