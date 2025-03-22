@@ -3,19 +3,19 @@ import { Button, Card, Input, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  APIAddToCart,
   APIGetCartItems,
   APIRemoveCartItem,
   APIUpdateCartItem,
-} from "../../../api/api"; // Import API functions
-import "./CartPage.css";
+} from "../../../api/api";
 import { cartLenght } from "../../../globalVariable/cart";
+import "./CartPage.css";
 
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [discountCode, setDiscountCode] = useState("");
-  const userId = localStorage.getItem("userID"); // Get userId from localStorage
+  const userId = localStorage.getItem("userID");
+
   // Fetch cart items
   const fetchCartItems = async () => {
     try {
@@ -23,39 +23,26 @@ const CartPage = () => {
       setCartItems(response.data);
     } catch (error) {
       console.error("Error fetching cart items:", error);
-      message.error("Không thể lấy danh sách sản phẩm trong giỏ hàng.");
+      // message.error("Không thể lấy danh sách sản phẩm trong giỏ hàng.");
     }
   };
 
-  // Add item to cart
-  // const handleAddToCart = async (variantId, quantity) => {
-  //   try {
-  //     await APIAddToCart(userId, variantId, quantity).then((rs) => {
-  //       console.log(rs);
-  //     });
-  //     message.success("Thêm sản phẩm vào giỏ hàng thành công!");
-  //     fetchCartItems(); // Refresh cart items
-  //   } catch (error) {
-  //     console.error("Error adding to cart:", error);
-  //     message.error("Thêm sản phẩm vào giỏ hàng thất bại.");
-  //   }
-  // };
-
   // Update item quantity
   const handleQuantityChange = async (cartItemId, quantity) => {
+    if (quantity < 1) return;
+
     try {
-      await APIAddToCart(userId, cartItemId, quantity);
-      message.success("Thêm sản phẩm vào giỏ hàng thành công!");
-      await fetchCartItems(); // Lấy lại danh sách giỏ hàng
-  
-      // Cập nhật số lượng sản phẩm trong localStorage
-      const newCartLength = cartItems.length + 1;
-      cartLenght.set(newCartLength)
-      localStorage.setItem("cartItemsLength", newCartLength);
-      window.dispatchEvent(new Event("storage")); // Phát sự kiện để cập nhật Header
+      await APIUpdateCartItem(cartItemId, quantity);
+
+      const updatedCartItems = cartItems.map((item) =>
+        item.cartItemId === cartItemId ? { ...item, quantity } : item
+      );
+      setCartItems(updatedCartItems);
+
+      message.success("Cập nhật số lượng thành công!");
     } catch (error) {
-      console.error("Error adding to cart:", error);
-      message.error("Thêm sản phẩm vào giỏ hàng thất bại.");
+      console.error("Error updating quantity:", error);
+      message.error("Cập nhật số lượng thất bại.");
     }
   };
 
@@ -63,8 +50,19 @@ const CartPage = () => {
   const handleRemoveItem = async (cartItemId) => {
     try {
       await APIRemoveCartItem(cartItemId);
+
+      const updatedCartItems = cartItems.filter(
+        (item) => item.cartItemId !== cartItemId
+      );
+      setCartItems(updatedCartItems);
+
+      // Update cart length
+      const newCartLength = updatedCartItems.length;
+      cartLenght.set(newCartLength);
+      localStorage.setItem("cartItemsLength", newCartLength);
+      window.dispatchEvent(new Event("storage"));
+
       message.success("Xóa sản phẩm khỏi giỏ hàng thành công!");
-      fetchCartItems(); // Refresh cart items
     } catch (error) {
       console.error("Error removing item:", error);
       message.error("Xóa sản phẩm khỏi giỏ hàng thất bại.");
@@ -72,17 +70,12 @@ const CartPage = () => {
   };
 
   // Format currency
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("vi-VN").format(amount) + " đ";
-  };
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("vi-VN").format(amount) + " đ";
 
   // Calculate total price
-  const getTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
+  const getTotalPrice = () =>
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   // Table columns
   const columns = [
@@ -97,12 +90,11 @@ const CartPage = () => {
             alt={text}
             className="cart-item-image"
           />
-
           <div>
             <p>{text}</p>
             <div className="cart-actions">
               <DeleteOutlined
-                className="cart-icon"
+                className="remove-button"
                 onClick={() => handleRemoveItem(record.cartItemId)}
               />
             </div>
@@ -130,27 +122,25 @@ const CartPage = () => {
       title: "Tạm tính",
       dataIndex: "price",
       key: "price",
+      width: 140,
       render: (text, record) => (
-        <span>
-          {new Intl.NumberFormat("vi-VN").format(
-            record.price * record.quantity
-          )}{" "}
-          vnđ
-        </span>
+        <span>{formatCurrency(record.price * record.quantity)}</span>
       ),
     },
   ];
 
-  // Fetch cart items on component mount
+  // Fetch items on mount
   useEffect(() => {
     if (userId) {
       fetchCartItems();
     }
   }, [userId]);
+
+  // Update cart length
   useEffect(() => {
-    cartLenght.set(cartItems.length)
+    cartLenght.set(cartItems.length);
     localStorage.setItem("cartItemsLength", cartItems.length);
-  }, [cartItems.length]); // Chỉ cập nhật khi số lượng sản phẩm thay đổi
+  }, [cartItems.length]);
 
   return (
     <div className="cart-container">
@@ -158,7 +148,13 @@ const CartPage = () => {
         title={`Giỏ hàng (${cartItems.length} sản phẩm)`}
         className="cart-card"
       >
-        <Table columns={columns} dataSource={cartItems} pagination={false} />
+        <Table
+          columns={columns}
+          dataSource={cartItems}
+          pagination={false}
+          className="custom-table"
+          rowKey="cartItemId"
+        />
       </Card>
 
       <Card title="Thông tin đơn hàng" className="summary-card">
@@ -168,12 +164,14 @@ const CartPage = () => {
         <p>
           <b>Tổng thanh toán: {formatCurrency(getTotalPrice())}</b>
         </p>
+
         <div className="my-discount">
           <Button className="discount-button" type="default">
             <span className="discount-text">Ưu đãi của tôi</span>
             <RightOutlined className="arrow-icon" />
           </Button>
         </div>
+
         <div className="discount-space">
           <h3>Mã giảm giá</h3>
           <div className="discount-section">
@@ -187,6 +185,7 @@ const CartPage = () => {
             </Button>
           </div>
         </div>
+
         <Button
           block
           size="large"

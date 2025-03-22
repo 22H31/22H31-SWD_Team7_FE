@@ -53,4 +53,28 @@ export const APIUpdateCartItem = (cartItemId, quantity) =>
 export const APIRemoveCartItem = (cartItemId) =>
   api.delete(`cartitem/${cartItemId}`);
 
+
+// API để lấy danh sách Feedback
+export const APIGetFeedbacks = () => api.get("feedback");
+
+// API để thêm Feedback mới
+export const APISubmitFeedback = (id, productId, rating, comment) =>
+  api.post("feedback", {
+    id: id, // userId
+    productId: productId,
+    rating: rating,
+    comment: comment,
+  });
+
+// API để cập nhật Feedback
+export const APIUpdateFeedback = (feedbackId, rating, comment) =>
+  api.put(`feedback/${feedbackId}`, {
+    rating: rating,
+    comment: comment,
+  });
+
+// API để xóa Feedback
+export const APIDeleteFeedback = (feedbackId) =>
+  api.delete(`feedback/${feedbackId}`);
+
 export default api;

@@ -94,50 +94,106 @@ td {
   font-size: 18px;
 }
 
+/* Container for product reviews */
 .product-reviews {
-  margin-top: 50px;
-  background: #fff3f3;
-  padding: 25px;
+  margin-top: 4rem;
+  padding: 1rem;
+  background-color: #FFF9FB;
   border-radius: 8px;
 }
 
+/* Review summary section */
 .review-summary {
+  /* display: flex; */
+  align-items: center;
   text-align: center;
-  margin-bottom: 15px;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .rating-score {
-  font-size: 42px;
+  font-size: 4rem;
   font-weight: bold;
-  color: #f4a900;
+  color: #ffc107; /* Màu vàng cho rating */
 }
 
+.stars {
+  font-size: 2.5rem;
+  color: #ffc107; /* Màu vàng cho sao */
+}
+
+.review-summary p {
+  margin: 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Review list */
 .review-list {
-  margin-top: 15px;
+  margin-top: 1rem;
 }
 
 .review-item {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .review-user {
+  font-size: 1.1rem;
   font-weight: bold;
-  font-size: 18px;
+  color: #333;
+  margin: 0;
 }
 
 .review-stars {
-  color: #f4a900;
+  font-size: 1rem;
+  color: #ffc107; /* Màu vàng cho sao */
 }
 
+.review-text {
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+}
+
+/* Buttons for update and delete */
+.review-item div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.review-item button {
+  background-color: pink ;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333 !important;
+  transition: background-color 0.3s ease;
+}
+
+.review-item button:hover {
+  background-color: rgb(196, 123, 135) !important ;
+}
+
+
 .write-review {
-  background-color: #d10024;
-  color: white;
+  background-color: #c0437f !important;
+  color: white !important;
   padding: 12px 20px;
   border: none;
   cursor: pointer;
   display: block;
   width: 220px;
+  height: 50px;
   margin: 25px auto 0;
   font-size: 18px;
   border-radius: 6px;
@@ -157,4 +213,70 @@ td {
 .original-price {
   color: gray;
   font-size: 18px;
+}
+
+
+
+
+/* Modal container */
+.ant-modal {
+  border-radius: 8px;
+}
+
+/* Modal header */
+.ant-modal-header {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  border-radius: 8px 8px 0 0;
+}
+
+.ant-modal-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Modal body */
+.ant-modal-body {
+  padding: 1.5rem;
+}
+
+/* Form items */
+.ant-form-item {
+  margin-bottom: 1rem;
+}
+
+.ant-form-item-label label {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Rate component */
+.ant-rate {
+  font-size: 1.5rem;
+  color: #ffc107; 
+}
+
+/* Textarea for comments */
+.ant-input-textarea {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Submit button */
+.ant-btn-primary {
+  background-color: #c0437f;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.ant-btn-primary:hover {
+  background-color: #c72d78 !important;
 }
