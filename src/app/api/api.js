@@ -106,4 +106,35 @@ export const APIUpdatePromotion = (id, data) =>
 export const APIDeletePromotion = (id) =>
   api.delete(`${API_PROMOTION_BASE_URL}/delete/${id}`);
 
+// ================= ShippingInfo APIs =================
+
+// get danh sach dia chi
+export const APIGetShippingInfosByUserId = (userId) =>
+  api.get(`shippingInfo/user/${userId}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+
+// c
+  export const APICreateShippingInfo = (data) =>
+    api.post("shippingInfo", data, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+// u
+export const APIUpdateShippingInfo = (shippingInfoId, data) =>
+  api.put(`shippingInfo/${shippingInfoId}`, data, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+
+// d
+export const APIDeleteShippingInfo = (shippingInfoId) =>
+  api.delete(`shippingInfo/${shippingInfoId}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+
+// Đặt địa chỉ mặc định
+export const APISetDefaultShippingInfo = (userId, shippingInfoId) =>
+  api.put(`shippingInfo/default/${userId}/${shippingInfoId}`, null, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+
 export default api;
