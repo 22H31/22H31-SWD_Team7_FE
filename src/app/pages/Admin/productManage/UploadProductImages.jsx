@@ -71,35 +71,53 @@ const UploadProductImages = ({ productId, isPopupOpen, setPopupOpen }) => {
       onCancel={() => setPopupOpen(false)}
       footer={null}
     >
-      <div className={styles.uploadContainer}>
-        <div className={styles.uploadSection}>
-          <h3>Upload Avatar Image</h3>
+      <div className={styles["upload-container"]}>
+        {/* Upload Avatar Section */}
+        <div className={styles["upload-container__section"]}>
+          <h3 className={styles["upload-container__section-title"]}>Upload Avatar Image</h3>
           <Upload
             accept="image/*"
             multiple
             fileList={avatarFiles}
             onChange={handleAvatarChange}
             beforeUpload={() => false} // Prevent automatic upload
+            className={styles["upload-container__file-input"]}
           >
-            <Button icon={<UploadOutlined />}>Select Avatar Image</Button>
+            <Button icon={<UploadOutlined />} className={styles["upload-container__button"]}>
+              Select Avatar Image
+            </Button>
           </Upload>
-          <Button type="primary" onClick={handleUploadAvatar} style={{ marginTop: 16 }}>
+          <Button
+            type="primary"
+            onClick={handleUploadAvatar}
+            className={styles["upload-container__button"]}
+            style={{ marginTop: 16 }}
+          >
             Upload Avatar
           </Button>
         </div>
 
-        <div className={styles.uploadSection}>
-          <h3>Upload Product Images</h3>
+        {/* Upload Product Images Section */}
+        <div className={styles["upload-container__section"]}>
+          <h3 className={styles["upload-container__section-title"]}>Upload Product Images</h3>
           <Upload
             accept="image/*"
             multiple
             fileList={productImages}
             onChange={handleProductImagesChange}
             beforeUpload={() => false} // Prevent automatic upload
+            className={styles["upload-container__file-input"]}
           >
-            <Button icon={<UploadOutlined />}>Select Product Images</Button>
+            <Button icon={<UploadOutlined />} className={styles["upload-container__button"]}>
+              Select Product Images
+            </Button>
           </Upload>
-          <Button type="primary" onClick={handleUploadProductImages} style={{ marginTop: 16 }}>
+          <Button
+            type="primary"
+            onClick={handleUploadProductImages}
+            className={styles["upload-container__button"]}
+            style={{ marginTop: 16 }}
+          >
             Upload Product Images
           </Button>
         </div>

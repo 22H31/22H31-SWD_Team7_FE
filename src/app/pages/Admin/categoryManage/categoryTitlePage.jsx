@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Input, Modal, Form, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import styles from "./categoryTitlePage.module.css";
 
 const API_URL = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/categoryTitle";
 
@@ -133,6 +134,7 @@ const CategoryTitlePage = () => {
             type="primary"
             icon={<EditOutlined />}
             onClick={() => handleEditClick(record)}
+            className={styles["category-title-page__table-button--edit"]}
             style={{ marginRight: 8 }}
           />
           <Button
@@ -140,6 +142,7 @@ const CategoryTitlePage = () => {
             danger
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record.categoryTitleId)}
+            className={styles["category-title-page__table-button--delete"]}
           />
         </>
       ),
@@ -147,14 +150,14 @@ const CategoryTitlePage = () => {
   ];
 
   return (
-    <>
-      <h1>Category Title Management</h1>
-      <div style={{ marginBottom: 16, display: "flex", gap: "8px" }}>
+    <div className={styles["category-title-page__container"]}>
+      <h1 className={styles["category-title-page__title"]}>Category Title Management</h1>
+      <div className={styles["category-title-page__controls"]}>
         <Input
           placeholder="🔍 Search Category Title"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ width: 200 }}
+          className={styles["category-title-page__controls-input"]}
         />
         <Button
           type="primary"
@@ -164,6 +167,7 @@ const CategoryTitlePage = () => {
             setIsEditing(false);
             setFormData({ categoryTitleName: "", categoryTitleIcon: "" });
           }}
+          className={styles["category-title-page__controls-button"]}
         >
           Add New Title
         </Button>
@@ -175,6 +179,7 @@ const CategoryTitlePage = () => {
         )}
         columns={columns}
         rowKey="categoryTitleId"
+        className={styles["category-title-page__table"]}
       />
 
       <Modal
@@ -182,30 +187,44 @@ const CategoryTitlePage = () => {
         visible={isPopupOpen}
         onCancel={() => setPopupOpen(false)}
         footer={null}
+        className={styles["category-title-page__popup"]}
       >
         <Form layout="vertical" onFinish={isEditing ? handleEdit : handleAdd}>
-          <Form.Item label="Category Title Name" required>
+          <Form.Item
+            label="Category Title Name"
+            required
+            className={styles["category-title-page__form-group"]}
+          >
             <Input
               name="categoryTitleName"
               value={formData.categoryTitleName}
               onChange={handleChange}
+              className={styles["category-title-page__form-input"]}
             />
           </Form.Item>
-          <Form.Item label="Category Title Icon">
+          <Form.Item
+            label="Category Title Icon"
+            className={styles["category-title-page__form-group"]}
+          >
             <Input
               name="categoryTitleIcon"
               value={formData.categoryTitleIcon}
               onChange={handleChange}
+              className={styles["category-title-page__form-input"]}
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles["category-title-page__submit-btn"]}
+            >
               {isEditing ? "Update" : "Add"}
             </Button>
           </Form.Item>
         </Form>
       </Modal>
-    </>
+    </div>
   );
 };
 

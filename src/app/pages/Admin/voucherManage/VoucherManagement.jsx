@@ -18,8 +18,9 @@ const VoucherManagement = () => {
     setLoading(true);
     try {
       const { data } = await APIGetVouchers();
-      setVouchers(data);
+      setVouchers(data); // Lưu danh sách voucher từ API
     } catch (error) {
+      console.error("Lỗi khi lấy danh sách voucher:", error.response?.data || error.message);
       message.error("Failed to fetch vouchers!");
     } finally {
       setLoading(false);
@@ -32,44 +33,48 @@ const VoucherManagement = () => {
   };
 
   const handleEdit = (record) => {
-    setEditingVoucher(record);
-    setIsModalOpen(true);
+    console.log("Voucher cần chỉnh sửa:", record); // Log dữ liệu voucher để kiểm tra
+    setEditingVoucher(record); // Lưu voucher hiện tại để chỉnh sửa
+    setIsModalOpen(true); // Mở modal chỉnh sửa
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (voucherId) => {
+    console.log("Voucher ID cần xóa:", voucherId); // Log voucherId để kiểm tra
+    if (!voucherId) {
+      message.error("Voucher ID không hợp lệ!");
+      return;
+    }
+
     try {
-      await APIDeleteVoucher(id);
+      await APIDeleteVoucher(voucherId); // Gọi API xóa voucher
       message.success("Voucher deleted successfully!");
-      fetchVouchers();
+      fetchVouchers(); // Cập nhật danh sách voucher sau khi xóa
     } catch (error) {
-      message.error("Failed to delete voucher!");
+      console.error("Lỗi khi xóa voucher:", error.response?.data || error.message);
+      message.error(
+        error.response?.data?.message || "Failed to delete voucher!"
+      );
     }
   };
 
   const handleSubmit = async (values) => {
     try {
       if (editingVoucher) {
-        await APIUpdateVoucher(editingVoucher.id, values);
+        // Cập nhật voucher
+        await APIUpdateVoucher(editingVoucher.voucherId, values);
         message.success("Voucher updated successfully!");
       } else {
+        // Tạo mới voucher
         await APICreateVoucher(values);
         message.success("Voucher created successfully!");
       }
-      setIsModalOpen(false);
-      fetchVouchers();
+      setIsModalOpen(false); // Đóng modal
+      fetchVouchers(); // Cập nhật danh sách voucher
     } catch (error) {
-      message.error("Failed to save voucher!");
-    }
-  };
-
-  const handleGetVouchersByProductIds = async () => {
-    const productIds = ["3fa85f64-5717-4562-b3fc-2c963f66afa6"]; // Thay bằng danh sách productIds thực tế
-    try {
-      const { data } = await APIGetVouchersByProductIds(productIds);
-      console.log("Vouchers for products:", data);
-      message.success("Fetched vouchers successfully!");
-    } catch (error) {
-      message.error("Failed to fetch vouchers for products!");
+      console.error("Lỗi khi lưu voucher:", error.response?.data || error.message);
+      message.error(
+        error.response?.data?.message || "Failed to save voucher!"
+      );
     }
   };
 
@@ -90,8 +95,8 @@ const VoucherManagement = () => {
     },
     {
       title: "Quantity",
-      dataIndex: "voucherQuantity",
-      key: "voucherQuantity",
+      dataIndex: "quantity",
+      key: "quantity",
     },
     {
       title: "Actions",
@@ -103,16 +108,12 @@ const VoucherManagement = () => {
           </Button>
           <Popconfirm
             title="Are you sure to delete this voucher?"
-            onConfirm={() => handleDelete(record.id)}
+            onConfirm={() => handleDelete(record.voucherId)} // Truyền voucherId vào hàm xóa
           >
             <Button type="link" danger>
               Delete
             </Button>
           </Popconfirm>
-          {/* Xóa nút Apply */}
-          {/* <Button type="link" onClick={() => handleApplyVoucher(record.id)}>
-            Apply
-          </Button> */}
         </>
       ),
     },
@@ -124,14 +125,6 @@ const VoucherManagement = () => {
       <Button type="primary" onClick={handleAdd} style={{ marginBottom: 16 }}>
         Add Voucher
       </Button>
-      {/* Xóa nút này */}
-      {/* <Button
-        type="default"
-        onClick={handleGetVouchersByProductIds}
-        style={{ marginBottom: 16, marginLeft: 8 }}
-      >
-        Get Vouchers by Product IDs
-      </Button> */}
       <Table
         dataSource={vouchers}
         columns={columns}
@@ -145,7 +138,7 @@ const VoucherManagement = () => {
         onCancel={() => setIsModalOpen(false)}
       >
         <VoucherForm
-          initialValues={editingVoucher}
+          initialValues={editingVoucher} // Truyền dữ liệu voucher hiện tại vào form
           onSubmit={handleSubmit}
           onCancel={() => setIsModalOpen(false)}
         />

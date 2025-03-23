@@ -152,3 +152,166 @@ h1 {
 .submitBtn:hover {
   background-color: #218838;
 }
+
+/* Container tổng thể */
+.category-title-page__container {
+  width: 100%;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề */
+.category-title-page__title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Controls (Thanh tìm kiếm và nút thêm) */
+.category-title-page__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.category-title-page__controls-input {
+  padding: 10px;
+  font-size: 16px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.category-title-page__controls-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.category-title-page__controls-button:hover {
+  background-color: #0056b3;
+}
+
+/* Bảng hiển thị danh mục */
+.category-title-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.category-title-page__table th,
+.category-title-page__table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.category-title-page__table th {
+  background-color: #f4f4f4;
+}
+
+.category-title-page__table-button {
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.category-title-page__table-button--edit {
+  background-color: #ffc107;
+}
+
+.category-title-page__table-button--edit:hover {
+  background-color: #e0a800;
+}
+
+.category-title-page__table-button--delete {
+  background-color: #dc3545;
+}
+
+.category-title-page__table-button--delete:hover {
+  background-color: #c82333;
+}
+
+/* Overlay cho popup */
+.category-title-page__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Popup */
+.category-title-page__popup {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  position: relative;
+}
+
+.category-title-page__popup-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.category-title-page__popup-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Form trong popup */
+.category-title-page__form-group {
+  margin-bottom: 20px;
+}
+
+.category-title-page__form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.category-title-page__form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Nút submit */
+.category-title-page__submit-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.category-title-page__submit-btn:hover {
+  background-color: #218838;
+}

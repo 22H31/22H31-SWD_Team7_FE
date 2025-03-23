@@ -151,41 +151,51 @@ const ProductCard = ({ name, price, avatarImageURL, productId, variants, onEditP
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <Card
-        hoverable
-        cover={<img alt={name} src={avatarImageURL} className={styles.image} />}
-        actions={[
-          <Row gutter={[8, 8]} justify="center">
-            <Col>
-              <Button type="primary" onClick={handleEditProductClick}>
-                Edit Product
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={() => onUploadImages(productId)}>Upload Images</Button>
-            </Col>
-            <Col>
-              <Button onClick={handleAddVariantClick}>Add Variant</Button>
-            </Col>
-            <Col>
-              <Button danger onClick={handleDeleteClick}>
-                Delete
-              </Button>
-            </Col>
-          </Row>,
-        ]}
-      >
-        <Card.Meta title={name} description={`${price} VND`} />
-        {productVariants.map((variant) => (
-          <Card key={variant.variantId} className={styles.variant}>
-            <p>Variant ID: {variant.variantId}</p>
-            <p>Stock: {variant.stockQuantity}</p>
-            <Button type="primary" onClick={() => handleEditVariantClick(variant.variantId)}>Edit Variant</Button>
-            <Button danger onClick={() => handleDeleteVariantClick(variant.variantId)}>Delete Variant</Button>
-          </Card>
-        ))}
-      </Card>
+    <div className={styles["product-card"]}>
+      {/* Hình ảnh sản phẩm */}
+      <img src={avatarImageURL} alt={name} className={styles["product-card__image"]} />
+
+      {/* Chi tiết sản phẩm */}
+      <div className={styles["product-card__details"]}>
+        <h3 className={styles["product-card__name"]}>{name}</h3>
+        <p className={styles["product-card__price"]}>{price} VND</p>
+      </div>
+
+      {/* Biến thể sản phẩm */}
+      {productVariants.map((variant) => (
+        <div key={variant.variantId} className={styles["product-card__variant"]}>
+          <p>Variant ID: {variant.variantId}</p>
+          <p>Stock: {variant.stockQuantity}</p>
+          <button
+            className={styles["product-card__edit-button"]}
+            onClick={() => handleEditVariantClick(variant.variantId)}
+          >
+            Edit Variant
+          </button>
+          <button
+            className={styles["product-card__delete-button"]}
+            onClick={() => handleDeleteVariantClick(variant.variantId)}
+          >
+            Delete Variant
+          </button>
+        </div>
+      ))}
+
+      {/* Hành động */}
+      <div className={styles["product-card__actions"]}>
+        <button className={styles["product-card__edit-button"]} onClick={handleEditProductClick}>
+          Edit Product
+        </button>
+        <button className={styles["product-card__delete-button"]} onClick={handleDeleteClick}>
+          Delete Product
+        </button>
+        <button className={styles["product-card__edit-button"]} onClick={() => onUploadImages(productId)}>
+          Upload Images
+        </button>
+        <button className={styles["product-card__edit-button"]} onClick={handleAddVariantClick}>
+          Add Variant
+        </button>
+      </div>
 
       <Modal
         title={variantIdInput ? "Edit Variant" : "Add Variant"}
