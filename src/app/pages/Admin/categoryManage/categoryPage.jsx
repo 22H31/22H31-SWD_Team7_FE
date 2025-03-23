@@ -154,6 +154,7 @@ const CategoryPage = () => {
             type="primary"
             icon={<EditOutlined />}
             onClick={() => handleEditClick(record)}
+            className={styles["category-page__table-button--edit"]}
             style={{ marginRight: 8 }}
           />
           <Button
@@ -161,6 +162,7 @@ const CategoryPage = () => {
             danger
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record.categoryId)}
+            className={styles["category-page__table-button--delete"]}
           />
         </>
       ),
@@ -168,14 +170,14 @@ const CategoryPage = () => {
   ];
 
   return (
-    <>
-      <h1>Category Management</h1>
-      <div className={styles.controls}>
+    <div className={styles["category-page__container"]}>
+      <h1 className={styles["category-page__title"]}>Category Management</h1>
+      <div className={styles["category-page__controls"]}>
         <Input
           placeholder="🔍 Search Category"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ width: 200, marginRight: 8 }}
+          className={styles["category-page__controls-input"]}
         />
         <Button
           type="primary"
@@ -185,6 +187,7 @@ const CategoryPage = () => {
             setIsEditing(false);
             setFormData({ categoryTitleId: "", categoryName: "", description: "" });
           }}
+          className={styles["category-page__controls-button"]}
         >
           Add New Category
         </Button>
@@ -196,7 +199,7 @@ const CategoryPage = () => {
         )}
         columns={columns}
         rowKey="categoryId"
-        className={styles.table}
+        className={styles["category-page__table"]}
       />
 
       <Modal
@@ -204,6 +207,7 @@ const CategoryPage = () => {
         visible={isPopupOpen}
         onCancel={() => setPopupOpen(false)}
         footer={null}
+        className={styles["category-page__popup"]}
       >
         <Form layout="vertical" onFinish={isEditing ? handleEdit : handleAdd}>
           <Form.Item label="Category Title">
@@ -211,6 +215,7 @@ const CategoryPage = () => {
               name="categoryTitleId"
               value={formData.categoryTitleId}
               onChange={(value) => setFormData({ ...formData, categoryTitleId: value })}
+              className={styles["category-page__form-select"]}
             >
               <Select.Option value="">Select Category Title</Select.Option>
               {categoryTitles.map((title) => (
@@ -226,6 +231,7 @@ const CategoryPage = () => {
               value={formData.categoryName}
               onChange={handleChange}
               required
+              className={styles["category-page__form-input"]}
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -234,16 +240,21 @@ const CategoryPage = () => {
               value={formData.description}
               onChange={handleChange}
               required
+              className={styles["category-page__form-input"]}
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles["category-page__submit-btn"]}
+            >
               {isEditing ? "Update" : "Add"}
             </Button>
           </Form.Item>
         </Form>
       </Modal>
-    </>
+    </div>
   );
 };
 

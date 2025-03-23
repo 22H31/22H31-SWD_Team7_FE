@@ -1,89 +1,79 @@
 import React from "react";
-import { Form, Input, InputNumber, Button, DatePicker } from "antd";
-import dayjs from "dayjs";
+import { Form, Input, InputNumber, DatePicker, Button } from "antd";
 
 const { RangePicker } = DatePicker;
 
 const VoucherForm = ({ initialValues, onSubmit, onCancel }) => {
   const [form] = Form.useForm();
 
+  // Khi mở form, đặt giá trị ban đầu
+  React.useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue(initialValues); // Đặt giá trị ban đầu từ initialValues
+    } else {
+      form.resetFields(); // Reset form nếu không có initialValues
+    }
+  }, [initialValues, form]);
+
   const handleFinish = (values) => {
-    const formattedValues = {
-      ...values,
-      voucherStartDate: values.voucherDateRange
-        ? values.voucherDateRange[0].toISOString()
-        : null,
-      voucherEndDate: values.voucherDateRange
-        ? values.voucherDateRange[1].toISOString()
-        : null,
-    };
-    delete formattedValues.voucherDateRange;
-    onSubmit(formattedValues);
+    onSubmit(values); // Gửi dữ liệu khi submit
   };
 
   return (
     <Form
       form={form}
       layout="vertical"
-      initialValues={{
-        ...initialValues,
-        voucherDateRange: initialValues?.voucherStartDate
-          ? [
-              dayjs(initialValues.voucherStartDate),
-              dayjs(initialValues.voucherEndDate),
-            ]
-          : null,
-      }}
       onFinish={handleFinish}
+      initialValues={initialValues} // Đặt giá trị ban đầu
     >
       <Form.Item
-        name="voucherName"
         label="Voucher Name"
-        rules={[{ required: true, message: "Please enter the voucher name!" }]}
+        name="voucherName"
+        rules={[{ required: true, message: "Please enter voucher name!" }]}
       >
         <Input />
       </Form.Item>
+
       <Form.Item
-        name="voucherDescription"
         label="Description"
-        rules={[{ required: true, message: "Please enter the description!" }]}
+        name="voucherDescription"
+        rules={[{ required: true, message: "Please enter description!" }]}
       >
-        <Input.TextArea rows={3} />
+        <Input.TextArea />
       </Form.Item>
+
       <Form.Item
-        name="voucherRate"
         label="Discount Rate (%)"
+        name="voucherRate"
         rules={[
-          { required: true, message: "Please enter the discount rate!" },
+          { required: true, message: "Please enter discount rate!" },
           { type: "number", min: 0, max: 100, message: "Rate must be between 0 and 100!" },
         ]}
       >
-        <InputNumber min={0} max={100} />
+        <InputNumber style={{ width: "100%" }} />
       </Form.Item>
+
       <Form.Item
-        name="voucherQuantity"
         label="Quantity"
-        rules={[
-          { required: true, message: "Please enter the quantity!" },
-          { type: "number", min: 1, message: "Quantity must be at least 1!" },
-        ]}
+        name="quantity"
+        rules={[{ required: true, message: "Please enter quantity!" }]}
       >
-        <InputNumber min={1} />
+        <InputNumber style={{ width: "100%" }} />
       </Form.Item>
+
       <Form.Item
-        name="voucherDateRange"
         label="Voucher Validity Period"
-        rules={[{ required: true, message: "Please select the date range!" }]}
+        name="voucherValidityPeriod"
+        rules={[{ required: true, message: "Please select validity period!" }]}
       >
         <RangePicker showTime />
       </Form.Item>
+
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}>
           Submit
         </Button>
-        <Button style={{ marginLeft: "10px" }} onClick={onCancel}>
-          Cancel
-        </Button>
+        <Button onClick={onCancel}>Cancel</Button>
       </Form.Item>
     </Form>
   );

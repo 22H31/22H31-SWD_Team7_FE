@@ -1,27 +1,26 @@
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+/* Container tổng thể */
+.products-grid__container {
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.header {
+/* Header của Products Grid */
+.products-grid__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.sectionTitle {
+.products-grid__title {
   font-size: 24px;
   font-weight: bold;
   color: #333;
 }
 
-.addButton {
+.products-grid__add-button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -32,17 +31,21 @@
   transition: background 0.3s;
 }
 
-.addButton:hover {
+.products-grid__add-button:hover {
   background-color: #0056b3;
 }
 
-.productsGrid {
+/* Grid hiển thị các Product Card */
+.products-grid__list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Tự động điều chỉnh số cột */
+  gap: 16px; /* Khoảng cách giữa các Product Card */
+  padding: 16px;
+  background-color: #f9f9f9;
 }
 
-.overlay {
+/* Overlay cho popup */
+.products-grid__overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -54,7 +57,8 @@
   justify-content: center;
 }
 
-.popup {
+/* Popup */
+.products-grid__popup {
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -66,14 +70,14 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.popup h2 {
+.products-grid__popup-title {
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
   color: #333;
 }
 
-.closeBtn {
+.products-grid__popup-close-btn {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -84,18 +88,19 @@
   color: #333;
 }
 
-.closeBtn:hover {
+.products-grid__popup-close-btn:hover {
   color: #000;
 }
 
-.formGrid {
+/* Form Grid */
+.products-grid__form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   margin-bottom: 20px;
 }
 
-fieldset {
+.products-grid__fieldset {
   border: 1px solid #ddd;
   padding: 15px;
   border-radius: 8px;
@@ -103,15 +108,16 @@ fieldset {
   margin-bottom: 10px;
 }
 
-legend {
+.products-grid__legend {
   font-weight: bold;
   color: #0056b3;
   padding: 0 5px;
 }
 
-input,
-textarea,
-select {
+/* Input, textarea, select */
+.products-grid__input,
+.products-grid__textarea,
+.products-grid__select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -121,27 +127,29 @@ select {
   transition: border-color 0.3s;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+.products-grid__input:focus,
+.products-grid__textarea:focus,
+.products-grid__select:focus {
   border-color: #007bff;
   outline: none;
 }
 
-textarea {
+.products-grid__textarea {
   resize: vertical;
 }
 
-.rowInputs {
+/* Row Inputs */
+.products-grid__row-inputs {
   display: flex;
   gap: 10px;
 }
 
-.rowInputs input {
+.products-grid__row-inputs input {
   flex: 1;
 }
 
-.submitBtn {
+/* Submit Button */
+.products-grid__submit-btn {
   background-color: #28a745;
   color: white;
   border: none;
@@ -154,18 +162,19 @@ textarea {
   transition: background 0.3s;
 }
 
-.submitBtn:hover {
+.products-grid__submit-btn:hover {
   background-color: #218838;
 }
 
-.navigationButtons {
+/* Navigation Buttons */
+.products-grid__navigation-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
 
-.backBtn,
-.nextBtn {
+.products-grid__back-btn,
+.products-grid__next-btn {
   padding: 10px 15px;
   font-size: 16px;
   border: none;
@@ -174,25 +183,26 @@ textarea {
   transition: background 0.3s;
 }
 
-.backBtn {
+.products-grid__back-btn {
   background-color: #6c757d;
   color: white;
 }
 
-.backBtn:hover {
+.products-grid__back-btn:hover {
   background-color: #5a6268;
 }
 
-.nextBtn {
+.products-grid__next-btn {
   background-color: #007bff;
   color: white;
 }
 
-.nextBtn:hover {
+.products-grid__next-btn:hover {
   background-color: #0056b3;
 }
 
-.noProducts {
+/* No Products Message */
+.products-grid__no-products {
   text-align: center;
   font-size: 18px;
   color: #777;

@@ -1,27 +1,29 @@
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Container tổng thể */
+.category-page__container {
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
   padding: 20px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+/* Tiêu đề */
+.category-page__title {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.controls {
+/* Controls (Thanh tìm kiếm và nút thêm) */
+.category-page__controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.controls input {
+.category-page__controls-input {
   padding: 10px;
   font-size: 16px;
   width: 300px;
@@ -29,7 +31,7 @@ h1 {
   border-radius: 4px;
 }
 
-.controls button {
+.category-page__controls-button {
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
@@ -39,27 +41,29 @@ h1 {
   cursor: pointer;
 }
 
-.controls button:hover {
+.category-page__controls-button:hover {
   background-color: #0056b3;
 }
 
-.table {
+/* Bảng hiển thị danh mục */
+.category-page__table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-.table th, .table td {
+.category-page__table th,
+.category-page__table td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
 }
 
-.table th {
+.category-page__table th {
   background-color: #f4f4f4;
 }
 
-.table button {
+.category-page__table-button {
   padding: 5px 10px;
   font-size: 14px;
   color: #fff;
@@ -69,23 +73,24 @@ h1 {
   margin-right: 5px;
 }
 
-.table button.edit {
+.category-page__table-button--edit {
   background-color: #ffc107;
 }
 
-.table button.edit:hover {
+.category-page__table-button--edit:hover {
   background-color: #e0a800;
 }
 
-.table button.delete {
+.category-page__table-button--delete {
   background-color: #dc3545;
 }
 
-.table button.delete:hover {
+.category-page__table-button--delete:hover {
   background-color: #c82333;
 }
 
-.overlay {
+/* Overlay cho popup */
+.category-page__overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -97,7 +102,8 @@ h1 {
   align-items: center;
 }
 
-.popup {
+/* Popup */
+.category-page__popup {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -106,12 +112,12 @@ h1 {
   position: relative;
 }
 
-.popup h2 {
+.category-page__popup-title {
   margin-top: 0;
   margin-bottom: 20px;
 }
 
-.closeBtn {
+.category-page__popup-close-btn {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -121,17 +127,19 @@ h1 {
   cursor: pointer;
 }
 
-.formGroup {
+/* Form trong popup */
+.category-page__form-group {
   margin-bottom: 20px;
 }
 
-.formGroup label {
+.category-page__form-label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
 
-.formGroup input, .formGroup select {
+.category-page__form-input,
+.category-page__form-select {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -139,7 +147,8 @@ h1 {
   border-radius: 4px;
 }
 
-.submitBtn {
+/* Nút submit */
+.category-page__submit-btn {
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
@@ -149,6 +158,6 @@ h1 {
   cursor: pointer;
 }
 
-.submitBtn:hover {
+.category-page__submit-btn:hover {
   background-color: #218838;
 }
