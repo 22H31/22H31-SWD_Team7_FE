@@ -24,6 +24,7 @@ const CartItem = ({ cartSummary }) => {
         <p className="vat-note">(Đã bao gồm VAT)</p>
       </div>
     </div>
+    // <h1>Cart Item</h1>
   );
 };
 

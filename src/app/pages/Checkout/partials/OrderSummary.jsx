@@ -1,7 +1,11 @@
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Card, InputNumber, List, Typography, message } from "antd";
 import { useEffect, useState } from "react";
-import { APIGetCartItems, APIRemoveCartItem, APIUpdateCartItem } from "../../../api/api";
+import {
+  APIGetCartItems,
+  APIRemoveCartItem,
+  APIUpdateCartItem,
+} from "../../../api/api";
 
 const { Title, Text } = Typography;
 
@@ -38,18 +42,18 @@ const OrderSummary = ({ onUpdateCart }) => {
   };
 
   // Xóa sản phẩm
-  const removeItem = async (id) => {
-    try {
-      await APIRemoveCartItem(id);
-      const updatedCart = cart.filter((item) => item.cartItemId !== id);
-      setCart(updatedCart);
-      onUpdateCart(updatedCart); // Truyền cart mới!
-      message.success("Xóa sản phẩm thành công!");
-    } catch (error) {
-      console.error("Error removing item:", error);
-      message.error("Xóa sản phẩm thất bại.");
-    }
-  };
+  // const removeItem = async (id) => {
+  //   try {
+  //     await APIRemoveCartItem(id);
+  //     const updatedCart = cart.filter((item) => item.cartItemId !== id);
+  //     setCart(updatedCart);
+  //     onUpdateCart(updatedCart); // Truyền cart mới!
+  //     message.success("Xóa sản phẩm thành công!");
+  //   } catch (error) {
+  //     console.error("Error removing item:", error);
+  //     message.error("Xóa sản phẩm thất bại.");
+  //   }
+  // };
 
   useEffect(() => {
     fetchCartItems();
@@ -61,34 +65,47 @@ const OrderSummary = ({ onUpdateCart }) => {
         Thông tin đơn hàng
       </Title>
       <List
+        header={
+          <div
+            style={{
+              display: "flex",
+              fontWeight: "bold",
+              padding: "10px 0",
+              borderBottom: "2px solid #ddd",
+            }}
+          >
+            <span style={{ flex: 2 }}>Tên sản phẩm</span>
+            <span style={{ flex: 1, textAlign: "right" }}>Giá</span>
+            <span style={{ flex: 1, textAlign: "center" }}>Số lượng</span>
+
+            <span style={{ flex: 1, textAlign: "right" }}>Thành tiền</span>
+          </div>
+        }
         dataSource={cart}
         renderItem={(item) => (
-          <List.Item style={{ alignItems: "center" }}>
-            <img
-              src={item.productAvatarImage}
-              alt={item.productName}
-              style={{ width: 100, height: 100, marginRight: 5 }}
-            />
-            <div className="order-summary-detail">
-              <div style={{ flex: 1 }}>
-                <Text strong>{item.productName}</Text>
-                <br />
-                <Text>{item.price.toLocaleString()} VND</Text>
-              </div>
-              <InputNumber
-                min={1}
-                value={item.quantity}
-                onChange={(value) => updateQuantity(item.cartItemId, value)}
+          <List.Item style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ flex: 2, display: "flex", alignItems: "center" }}>
+              <img
+                src={item.productAvatarImage}
+                alt={item.productName}
+                style={{ width: 60, height: 60, marginRight: 10 }}
               />
-              <Button
-                style={{ background: "#c0437f", marginLeft: "5px" }}
-                icon={<CloseOutlined style={{ color: "white" }} />}
-                onClick={() => removeItem(item.cartItemId)}
-              />
+              <Text strong>{item.productName}</Text>
+            </div>
+            <div style={{ flex: 1, textAlign: "right" }}>
+              <Text>{item.price.toLocaleString()} VND</Text>
+            </div>
+            <div style={{ flex: 1, textAlign: "center" }}>
+              <Text>{item.quantity}</Text>
+            </div>
+           
+            <div style={{ flex: 1, textAlign: "right" }}>
+              <Text>{(item.price * item.quantity).toLocaleString()} VND</Text>
             </div>
           </List.Item>
         )}
       />
+
       <div
         style={{
           display: "flex",
@@ -103,10 +120,14 @@ const OrderSummary = ({ onUpdateCart }) => {
           Tổng tiền:
         </Title>
         <Title level={4} style={{ margin: 0 }}>
-          {cart.reduce((total, item) => total + item.price * item.quantity, 0).toLocaleString()} VND
+          {cart
+            .reduce((total, item) => total + item.price * item.quantity, 0)
+            .toLocaleString()}{" "}
+          VND
         </Title>
       </div>
     </Card>
+    // <h1>Order Summary</h1>
   );
 };
 

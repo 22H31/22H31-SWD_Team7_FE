@@ -1,4 +1,4 @@
-import  { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -28,8 +28,11 @@ const Checkout = () => {
     setCartItems(updatedCartItems);
 
     const totalItems = CartItem.length;
-    const subtotal = updatedCartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    const shippingFee = (subtotal > 400000 || subtotal === 0) ? 0 : 15000;
+    const subtotal = updatedCartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    const shippingFee = subtotal > 400000 || subtotal === 0 ? 0 : 15000;
     const total = subtotal + shippingFee;
 
     setCartSummary({
@@ -42,18 +45,20 @@ const Checkout = () => {
   }, []);
 
   // Lưu phương thức thanh toán & hiển thị thông báo nếu cần
-  const handleSavePaymentMethod = useCallback((paymentMethod) => {
-    setSelectedPaymentMethod(paymentMethod);
+  // const handleSavePaymentMethod = useCallback((paymentMethod) => {
+  //   setSelectedPaymentMethod(paymentMethod);
 
-    if (paymentMethod === "credit_card" || paymentMethod === "paypal") {
-      message.info("Chức năng đang được phát triển.");
-    }
-  }, []);
+  //   if (paymentMethod === "credit_card" || paymentMethod === "paypal") {
+  //     message.info("Chức năng đang được phát triển.");
+  //   }
+  // }, []);
 
   // Xử lý thanh toán
   const handleCheckout = useCallback(async () => {
     if (!selectedPaymentMethod) {
-      message.warning("Vui lòng chọn phương thức thanh toán trước khi thanh toán.");
+      message.warning(
+        "Vui lòng chọn phương thức thanh toán trước khi thanh toán."
+      );
       return;
     }
 
@@ -98,21 +103,27 @@ const Checkout = () => {
   return (
     <CartLayOut>
       <div className="checkout-page">
-        <h2 className="shipping-title">Thông tin giao hàng</h2>
-        <div></div>
-        <ShippingInfo />
-        <OrderSummary onUpdateCart={handleUpdateCart} />
-        <PaymentMethod onSavePaymentMethod={handleSavePaymentMethod} />
         <div>
-        <CodeDiscount/>
-        <CartItem cartSummary={cartSummary} cartItems={cartItems} />
+          <h2 className="shipping-title">Thông tin giao hàng</h2>
         </div>
-        <div></div>
-        <div className="checkout-button-container">
-          <Button className="checkout-button" onClick={handleCheckout}>
-            Thanh Toán
-          </Button>
+        <div>
+          <div>
+            <ShippingInfo />
+          </div>
+          <OrderSummary onUpdateCart={handleUpdateCart} />
+          {/* <PaymentMethod onSavePaymentMethod={handleSavePaymentMethod} /> */}
+          <div>
+            <CodeDiscount />
+            <CartItem cartSummary={cartSummary} cartItems={cartItems} />
+          </div>
+          <div></div>
+          <div className="checkout-button-container">
+            <Button className="checkout-button" onClick={handleCheckout}>
+              Thanh Toán
+            </Button>
+          </div>
         </div>
+        {/* <div></div> */}
       </div>
     </CartLayOut>
   );

@@ -1,6 +1,6 @@
 /* Checkout Page Styles */
 .checkout-page {
-  display: grid;
+  /* display: grid; */
   grid-template-columns: 2fr 1fr;
   gap: 20px;
   padding: 20px;
