@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Modal, Input, Form, InputNumber, message, Row, Col } from "antd";
+import { Card, Button, Modal, Input, Form, InputNumber, message } from "antd";
 import styles from "../productManage/ProductCard.module.css";
 
 const API_URL = "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api";
@@ -49,18 +49,6 @@ const ProductCard = ({ name, price, avatarImageURL, productId, variants, onEditP
     setPopupOpen(true); // Mở modal
   };
 
-  const handleEditProductClick = async () => {
-    try {
-      const res = await fetch(`${API_URL}/products/${productId}`);
-      if (!res.ok) throw new Error("Lỗi khi lấy thông tin sản phẩm!");
-      const data = await res.json();
-      onEditProduct(data);
-    } catch (err) {
-      console.error("Lỗi khi lấy thông tin sản phẩm:", err);
-      message.error("Lỗi khi lấy thông tin sản phẩm!");
-    }
-  };
-
   const handleEditVariantClick = async (variantId) => {
     try {
       const res = await fetch(`${API_URL}/productVariant/${variantId}`);
@@ -86,10 +74,27 @@ const ProductCard = ({ name, price, avatarImageURL, productId, variants, onEditP
 
       if (!res.ok) throw new Error("Lỗi khi xóa biến thể!");
       message.success("Biến thể đã được xóa thành công!");
-      setProductVariants(productVariants.filter(variant => variant.variantId !== variantId));
+      setProductVariants(productVariants.filter((variant) => variant.variantId !== variantId));
     } catch (err) {
       console.error("Lỗi khi xóa biến thể:", err);
       message.error("Lỗi khi xóa biến thể!");
+    }
+  };
+
+  const handleDeleteProductClick = async () => {
+    if (!window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
+
+    try {
+      const res = await fetch(`${API_URL}/products/${productId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Lỗi khi xóa sản phẩm!");
+      message.success("Sản phẩm đã được xóa thành công!");
+      // Bạn có thể thêm logic để cập nhật danh sách sản phẩm tại đây nếu cần
+    } catch (err) {
+      console.error("Lỗi khi xóa sản phẩm:", err);
+      message.error("Lỗi khi xóa sản phẩm!");
     }
   };
 
@@ -132,24 +137,6 @@ const ProductCard = ({ name, price, avatarImageURL, productId, variants, onEditP
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDeleteClick = async () => {
-    if (!window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
-
-    try {
-      const res = await fetch(`${API_URL}/products/${productId}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Lỗi khi xóa sản phẩm!");
-      message.success("Sản phẩm đã được xóa thành công!");
-      // Handle delete logic here
-      console.log("Deleted product:", productId);
-    } catch (err) {
-      console.error("Lỗi khi xóa sản phẩm:", err);
-      message.error("Lỗi khi xóa sản phẩm!");
-    }
-  };
-
   return (
     <div className={styles["product-card"]}>
       {/* Hình ảnh sản phẩm */}
@@ -167,7 +154,7 @@ const ProductCard = ({ name, price, avatarImageURL, productId, variants, onEditP
           <p>Variant ID: {variant.variantId}</p>
           <p>Stock: {variant.stockQuantity}</p>
           <button
-            className={styles["product-card__edit-button"]}
+            className={styles["product-card__action-button"]}
             onClick={() => handleEditVariantClick(variant.variantId)}
           >
             Edit Variant
@@ -183,23 +170,24 @@ const ProductCard = ({ name, price, avatarImageURL, productId, variants, onEditP
 
       {/* Hành động */}
       <div className={styles["product-card__actions"]}>
-        <button className={styles["product-card__edit-button"]} onClick={handleEditProductClick}>
+        <button className={styles["product-card__action-button"]} onClick={onEditProduct}>
           Edit Product
         </button>
-        <button className={styles["product-card__delete-button"]} onClick={handleDeleteClick}>
+        <button className={styles["product-card__delete-button"]} onClick={handleDeleteProductClick}>
           Delete Product
         </button>
         <button className={styles["product-card__edit-button"]} onClick={() => onUploadImages(productId)}>
           Upload Images
         </button>
-        <button className={styles["product-card__edit-button"]} onClick={handleAddVariantClick}>
+        <button className={styles["product-card__action-button"]} onClick={handleAddVariantClick}>
           Add Variant
         </button>
       </div>
 
+      {/* Modal thêm hoặc chỉnh sửa biến thể */}
       <Modal
         title={variantIdInput ? "Edit Variant" : "Add Variant"}
-        visible={isPopupOpen}
+        open={isPopupOpen}
         onCancel={() => setPopupOpen(false)}
         footer={null}
       >

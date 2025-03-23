@@ -60,7 +60,7 @@
   border-radius: 4px;
   background-color: #f9f9f9;
 }
-
+.product-card__action-button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -71,11 +71,21 @@
   transition: background-color 0.3s;
 }
 
-.product-card__edit-button:hover {
-  background-color: #0056b3;
-} */
+.product-card__edit-button {
+  background-color: #007bff; /* Màu nền */
+  color: #fff; /* Màu chữ */
+  border: none; /* Không viền */
+  padding: 8px 16px; /* Khoảng cách bên trong */
+  margin: 8px 4px; /* Khoảng cách bên ngoài */
+  cursor: pointer; /* Con trỏ chuột */
+  border-radius: 4px; /* Bo góc */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+}
 
-/* Nút xóa */
+.product-card__edit-button:hover {
+  background-color: #0056b3; /* Màu nền khi hover */
+}
+
 .product-card__delete-button {
   background-color: #dc3545;
   color: #fff;
