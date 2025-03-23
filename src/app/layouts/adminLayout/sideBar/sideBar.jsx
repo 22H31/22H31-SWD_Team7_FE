@@ -4,11 +4,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./Sidebar.module.css";
 import {
-  DashboardOutlined,
   AppstoreOutlined,
   FileTextOutlined,
   InboxOutlined,
-  UnorderedListOutlined,
   BoxPlotOutlined,
   DollarOutlined,
   TagsOutlined,
@@ -24,11 +22,9 @@ import { message } from "antd";
 
 // Danh sách icon với key-value
 const icons = {
-  dashboard: <DashboardOutlined className={styles.icon} />,
   products: <AppstoreOutlined className={styles.icon} />,
   blog: <FileTextOutlined className={styles.icon} />,
   inbox: <InboxOutlined className={styles.icon} />,
-  orders: <UnorderedListOutlined className={styles.icon} />,
   stock: <BoxPlotOutlined className={styles.icon} />,
   pricing: <DollarOutlined className={styles.icon} />,
   brand: <TagsOutlined className={styles.icon} />,
@@ -108,14 +104,9 @@ const Sidebar = () => {
       {/* Navigation Menu */}
       <nav>
         <ul className={styles.navItems}>
-          <NavItem icon="dashboard" text="Dashboard" path="dashboard" />
           <NavItem icon="products" text="Products & Stocks" path="products" />
           <NavItem icon="blog" text="Blog" path="blog" />
           <NavItem icon="inbox" text="Inbox" path="chatAdmin" />
-          <NavItem icon="orders" text="Order Lists" path="/admin/orders" />
-
-          <li className={styles.divider}></li>
-
           <NavItem icon="brand" text="Brand" path="brandPage" />
           <NavItem icon="category" text="Category" path="categoryPage" />
           <NavItem icon="categoryTitle" text="Category Title" path="categoryTitlePage" />
