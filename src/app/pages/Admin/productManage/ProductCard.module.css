@@ -61,8 +61,6 @@
   background-color: #f9f9f9;
 }
 
-/* Nút chỉnh sửa */
-.product-card__edit-button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -75,7 +73,7 @@
 
 .product-card__edit-button:hover {
   background-color: #0056b3;
-}
+} */
 
 /* Nút xóa */
 .product-card__delete-button {

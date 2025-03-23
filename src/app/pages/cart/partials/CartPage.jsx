@@ -1,5 +1,5 @@
 import { DeleteOutlined, RightOutlined } from "@ant-design/icons";
-import { Button, Card, Input, Table, message } from "antd";
+import { Button, Card, Checkbox, Input, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../../api/api";
 import { cartLenght } from "../../../globalVariable/cart";
 import "./CartPage.css";
+import CartItem from "../../Checkout/partials/CartItem";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -68,17 +69,35 @@ const CartPage = () => {
       message.error("Xóa sản phẩm khỏi giỏ hàng thất bại.");
     }
   };
-
+  const [selectedItems, setSelectedItems] = useState([]);
   // Format currency
   const formatCurrency = (amount) =>
     new Intl.NumberFormat("vi-VN").format(amount) + " đ";
-
+  const handleSelectItem = (cartItemId) => {
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(cartItemId)
+        ? prevSelected.filter((id) => id !== cartItemId)
+        : [...prevSelected, cartItemId]
+    );
+  };
   // Calculate total price
   const getTotalPrice = () =>
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   // Table columns
   const columns = [
+    {
+      title: "",
+      dataIndex: "select",
+      key: "select",
+      render: (_, record) => (
+        <Checkbox
+          checked={selectedItems.includes(record.cartItemId)}
+          onChange={() => handleSelectItem(record.cartItemId)}
+        />
+      ),
+      width: 50,
+    },
     {
       title: "Sản phẩm",
       dataIndex: "productName",
@@ -158,13 +177,34 @@ const CartPage = () => {
       </Card>
 
       <Card title="Thông tin đơn hàng" className="summary-card">
-        <p>Tổng sản phẩm: {cartItems.length}</p>
+        {/* <p>Tổng sản phẩm: {cartItems.length}</p>
         <p>Tạm tính: {formatCurrency(getTotalPrice())}</p>
         <p>Mã giảm giá: {formatCurrency(0)}</p>
         <p>
           <b>Tổng thanh toán: {formatCurrency(getTotalPrice())}</b>
-        </p>
-
+        </p> */}
+        <div className="cart-item-checkout">
+          <h2>Thông tin đơn hàng</h2>
+          <div className="cart-detail">
+            <p>
+              Tổng sản phẩm đã chọn <span>{cartItems.length}</span>
+            </p>
+            <p>
+              Tạm tính{" "}
+              <span className="bold">{formatCurrency(getTotalPrice())}</span>
+            </p>
+            <p>{/* Mã giảm giá <span>{formatCurrency(0)} </span> */}</p>
+            {/* <p>
+          Phí giao hàng <span>{cartSummary.shippingFee.toLocaleString()} đ</span>
+        </p> */}
+            <hr />
+            <p className="total">
+              Tổng thanh toán <span>{formatCurrency(getTotalPrice())} </span>
+            </p>
+            <p className="vat-note">(Đã bao gồm VAT)</p>
+          </div>
+        </div>
+        {/* 
         <div className="my-discount">
           <Button className="discount-button" type="default">
             <span className="discount-text">Ưu đãi của tôi</span>
@@ -184,7 +224,7 @@ const CartPage = () => {
               Áp dụng
             </Button>
           </div>
-        </div>
+        </div> */}
 
         <Button
           block

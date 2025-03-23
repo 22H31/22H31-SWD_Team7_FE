@@ -1,8 +1,78 @@
 .shipping-info {
-  width: 827px;
-  height: 597px;
-  flex-shrink: 0;
-  border-radius: 20px;
-  background: #fff;
-  
+  margin-bottom: 16px;
+  height: 100%;
+}
+.shipping-info-container {
+  /* border: 1px solid #ddd; */
+  display: flex;
+
+  justify-content: space-between;
+  border-radius: 4px;
+  font-family: "Roboto", sans-serif;
+  align-items: center;
+}
+
+.shipping-info-title {
+  color: #f30; /* Màu cam Shopee */
+  display: flex;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.shipping-info-name-phone {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.shipping-info-name {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.shipping-info-phone {
+  color: #333;
+}
+
+.shipping-info-address {
+  margin-bottom: 12px;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.shipping-info-badge {
+  display: inline-block; /* Giúp phần tử co theo nội dung */
+  border: 1px solid #ee4d2d; /* Viền màu đỏ */
+  border-radius: 4px; /* Bo góc nhẹ */
+  color: #ee4d2d; /* Màu chữ */
+  font-size: 10px; /* Kích thước chữ nhỏ */
+  padding: 2px 6px; /* Thêm khoảng cách bên trong để viền không bị sát chữ */
+  text-transform: capitalize; /* Viết hoa chữ cái đầu */
+  background-color: #fff5f0; /* Nền nhạt để nổi bật hơn */
+}
+
+.dIzOca {
+  display: inline-block;
+  border: 1px solid #ee4d2d; 
+  border-radius: 4px; 
+  color: #ee4d2d; 
+  font-size: 10px; 
+  padding: 2px 6px; 
+  background-color: #fff5f0; 
+  line-height: 1; 
+  height: auto; 
+  text-align: center; /* Căn giữa nội dung */
+}
+.shipping-info-edit-button {
+  background-color: transparent;
+  color: rgb(210, 30, 105);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 12px;
+}
+.shipping-info-edit-button:hover {
+  text-decoration: underline;
+  background-color: none;
+  z-index: 1000000;
 }

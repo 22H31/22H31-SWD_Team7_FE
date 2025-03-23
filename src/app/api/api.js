@@ -40,8 +40,10 @@ export const APIPutUserId = (values, userId) =>
 //cart
 export const APIGetCategories = () => api.get("categories");
 export const APIGetProducts = () => api.get("products");
-export const APIGetProductById = (productId) => api.get(`products/${productId}`);
-export const APIGetSkintestQuestion = () => api.get("skintest-question/questions");
+export const APIGetProductById = (productId) =>
+  api.get(`products/${productId}`);
+export const APIGetSkintestQuestion = () =>
+  api.get("skintest-question/questions");
 export const APIGetSkintestResult = (id, answers) =>
   api.post("Skin_Test_Result/create", { id: id, answerIds: answers });
 export const APIGetFullProduct = () => api.get("products");
@@ -82,7 +84,6 @@ export const APIUpdateFeedback = (feedbackId, rating, comment) =>
 export const APIDeleteFeedback = (feedbackId) =>
   api.delete(`feedback/${feedbackId}`);
 
-
 // ================= Voucher APIs =================
 
 // Base URL cho API voucher
@@ -110,15 +111,13 @@ export const APIDeletePromotion = (id) =>
 
 // get danh sach dia chi
 export const APIGetShippingInfosByUserId = (userId) =>
-  api.get(`shippingInfo/user/${userId}`, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
+  api.get(`shippingInfo/user/${userId}`);
 
 // c
-  export const APICreateShippingInfo = (data) =>
-    api.post("shippingInfo", data, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
+export const APICreateShippingInfo = (data) =>
+  api.post("shippingInfo", data, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
 // u
 export const APIUpdateShippingInfo = (shippingInfoId, data) =>
   api.put(`shippingInfo/${shippingInfoId}`, data, {

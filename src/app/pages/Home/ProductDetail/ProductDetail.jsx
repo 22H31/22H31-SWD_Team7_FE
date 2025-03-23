@@ -12,6 +12,7 @@ import {
 } from "../../../api/api";
 import PageLayOut from "../../../layouts/PageLayOut/PageLayOut";
 import "./ProductDetail.css";
+import { cartLenght } from "../../../globalVariable/cart";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -79,7 +80,7 @@ const ProductDetail = () => {
     try {
       const response = await APIAddToCart(userId, variantId, 1);
       if (response.status === 200) {
-        // cartLenght.set(cartLenght.value +1)
+        cartLenght.set(cartLenght.value +1)
         message.success("Thêm sản phẩm vào giỏ hàng thành công!");
       }
     } catch (error) {
