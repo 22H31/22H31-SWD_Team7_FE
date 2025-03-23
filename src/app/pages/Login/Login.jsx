@@ -26,7 +26,7 @@ export default function Login() {
           console.log(localStorage.getItem("userID"));
           console.log(localStorage.getItem("token"));
           console.log(localStorage.getItem("Role"));
-          rs.data.roles[0] === "StaffSale" ? navigate("/admin") : navigate("/");
+          rs.data.roles[0] === "StaffSale" || rs.data.roles[0] === "Staff" ? navigate("/admin") : navigate("/");
         }
       })
       .catch((error) => {

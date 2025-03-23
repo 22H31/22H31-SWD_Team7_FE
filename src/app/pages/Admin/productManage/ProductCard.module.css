@@ -51,7 +51,7 @@
   background-color: #f9f9f9;
 }
 
-button {
+/* button {
   display: inline-block;
   padding: 8px 16px;
   border: none;
@@ -64,7 +64,7 @@ button {
 
 button:hover {
   background-color: #0056b3;
-}
+} */
 
 .deleteButton {
   background-color: #dc3545;
