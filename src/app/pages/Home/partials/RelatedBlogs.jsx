@@ -1,42 +1,34 @@
-import { Spin } from "antd"; // Thêm Spin từ Ant Design
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Thêm useNavigate để điều hướng
+import { useNavigate } from "react-router-dom";
+import { Spin } from "antd";
+import { APIGetAllBlogs } from "../../../api/api"; 
 import "./RelatedBlog.css";
 
 const removeMarkdown = (text) => {
-  if (!text) return ""; // Trả về chuỗi rỗng nếu text là null hoặc undefined
+  if (!text) return "";
   return text
-    .replace(/#|\*|`|\[|\]|\(|\)/g, "") // Loại bỏ các ký tự Markdown
-    .replace(/\s+/g, " ") // Loại bỏ khoảng trắng thừa
-    .trim(); // Loại bỏ khoảng trắng ở đầu và cuối
+    // Remove headings, emphasis, links, blockquotes
+    .replace(/[#>*`_~\-]/g, "") // Remove markdown syntax chars
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Remove links but keep text
+    .replace(/\s+/g, " ") // Remove extra spaces
+    .trim();
 };
+
+
 const RelatedBlogs = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // Thêm trạng thái loading
-  const navigate = useNavigate(); // Sử dụng hook useNavigate
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Lấy ngẫu nhiên 3 bài viết
-        const shuffled = data.sort(() => 0.5 - Math.random()).slice(0, 3);
+    APIGetAllBlogs()
+      .then((response) => {
+        const shuffled = response.data.sort(() => 0.5 - Math.random()).slice(0, 3);
         setPosts(shuffled);
       })
       .catch((error) => console.error("Error fetching blogs:", error))
-      .finally(() => setLoading(false)); // Kết thúc loading
+      .finally(() => setLoading(false));
   }, []);
-
-  // Hàm xử lý khi nhấn nút "Xem thêm"
-  const handleViewMore = () => {
-    navigate("/blog"); // Điều hướng đến trang /blog
-    window.scrollTo(0, 0); // Cuộn lên đầu trang
-  };
 
   if (loading) {
     return (
@@ -53,19 +45,21 @@ const RelatedBlogs = () => {
           <div key={index} className="relatedblogs-card">
             <div className="relatedblogs-image-container">
               <img
-                src={post.avartarBlogUrl || "https://via.placeholder.com/300"} // Thêm fallback image
+                src={post.avartarBlogUrl || "https://via.placeholder.com/300"}
                 alt={post.title}
                 className="relatedblogs-image"
                 onClick={() => {
                   navigate(`/blog/${post.blogId}`);
-                  window.scrollTo(0, 0); // Cuộn lên đầu trang
+                  window.scrollTo(0, 0);
                 }}
                 style={{ cursor: "pointer" }}
               />
             </div>
             <div className="relatedblogs-content">
               <h3 className="relatedblogs-post-title">{post.title}</h3>
-              <p className="relatedblogs-description">{removeMarkdown(post.content1).split(" ").slice(0, 110).join(" ")}...</p>
+              <p className="relatedblogs-description">
+                {removeMarkdown(post.content1).split(" ").slice(0, 110).join(" ")}...
+              </p>
               <div className="relatedblogs-footer">
                 <span className="relatedblogs-date">
                   {new Date(post.blogCreatedAt).toLocaleDateString("vi-VN")}
@@ -76,7 +70,10 @@ const RelatedBlogs = () => {
         ))}
       </div>
       <div className="relatedblogs-more">
-        <button className="relatedblogs-button" onClick={handleViewMore}>
+        <button className="relatedblogs-button" onClick={() => {
+          navigate("/blog");
+          window.scrollTo(0, 0);
+        }}>
           Xem thêm
         </button>
       </div>

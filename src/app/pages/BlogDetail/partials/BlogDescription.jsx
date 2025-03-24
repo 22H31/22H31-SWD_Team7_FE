@@ -1,5 +1,4 @@
-import { Card, Col, Image, List, Row, Spin, Typography } from "antd"; // Thêm Spin
-import axios from "axios";
+import { Card, Col, Image, List, Row, Spin, Typography } from "antd";
 import { useEffect, useState } from "react";
 import {
   FaFacebookF,
@@ -9,7 +8,11 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import { Link, useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown"; // Thêm react-markdown
+import ReactMarkdown from "react-markdown";
+import {
+  APIGetAllBlogs,
+  APIGetBlogById,
+} from "../../../api/api"; // Import API
 import "./BlogDescription.css";
 
 const { Title, Text } = Typography;
@@ -21,10 +24,10 @@ const BlogDescription = () => {
   const [blogList, setBlogList] = useState([]);
 
   const formatDate = (date) => {
-    if (!date) return ""; // Trả về chuỗi rỗng nếu không có ngày
+    if (!date) return "";
     const parsedDate = new Date(date);
     if (isNaN(parsedDate.getTime()) || parsedDate.getFullYear() < 1900) {
-      return ""; // Trả về chuỗi rỗng nếu ngày không hợp lệ
+      return "";
     }
     return parsedDate.toLocaleDateString("vi-VN", {
       day: "2-digit",
@@ -33,27 +36,22 @@ const BlogDescription = () => {
     });
   };
 
-  const getImageUrl = (url) => {
-    return url && url.startsWith("http")
-      ? url
-      : "https://via.placeholder.com/600";
-  };
+  const getImageUrl = (url) =>
+    url && url.startsWith("http") ? url : "https://via.placeholder.com/600";
 
+  // Get blog by ID
   useEffect(() => {
     if (!blogId) return;
     setLoading(true);
-    axios
-      .get(
-        `https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs/${blogId}`
-      )
+    APIGetBlogById(blogId)
       .then((response) => setBlogData(response.data))
       .catch((error) => console.error("Lỗi tải bài viết:", error))
       .finally(() => setLoading(false));
   }, [blogId]);
 
+  // Get blog list
   useEffect(() => {
-    axios
-      .get("https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs")
+    APIGetAllBlogs()
       .then((response) => setBlogList(response.data))
       .catch((error) => console.error("Lỗi tải danh sách blog:", error));
   }, []);
@@ -88,9 +86,10 @@ const BlogDescription = () => {
                   Blog {">"} Chăm sóc da | {formatDate(blogData.blogCreatedAt)}
                 </Text>
               )}
-
               <div className="author-info">
-                <Text className="blog-path">By {blogData.author || "Beauty Love"}</Text>
+                <Text className="blog-path">
+                  By {blogData.author || "Beauty Love"}
+                </Text>
               </div>
             </div>
 
@@ -101,7 +100,6 @@ const BlogDescription = () => {
               className="main-image"
             />
 
-            {/* Hiển thị content1 với react-markdown */}
             <div className="blog-text">
               <ReactMarkdown>{blogData.content1}</ReactMarkdown>
             </div>
@@ -123,7 +121,6 @@ const BlogDescription = () => {
                       />
                     ))}
 
-                    {/* Hiển thị content2 với react-markdown */}
                     <div className="blog-text content2">
                       <ReactMarkdown>{blogData.content2}</ReactMarkdown>
                     </div>
@@ -161,7 +158,7 @@ const BlogDescription = () => {
                   <Link
                     to={`/blog/${post.blogId}`}
                     className="blog-link"
-                    onClick={() => console.log(post.blogId)}
+                    onClick={() => window.scrollTo(0, 0)}
                   >
                     {post.subTitle}
                   </Link>

@@ -135,5 +135,16 @@ export const APISetDefaultShippingInfo = (userId, shippingInfoId) =>
   api.put(`shippingInfo/default/${userId}/${shippingInfoId}`, null, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
+// =================== BLOG APIs ===================
+
+// Lấy tất cả blogs
+export const APIGetAllBlogs = () => api.get("blogs");
+
+// Lấy blog theo ID
+export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
+
+//Lấy danh sách brand
+export const APIGetBrands = () => api.get("brand");
+
 
 export default api;

@@ -31,6 +31,8 @@ import ChatForUser from "../pages/UserChat/ChatButton";
 import VoucherManagement from "../pages/Admin/voucherManage/VoucherManagement";
 import PromotionManagement from "../pages/Admin/promotionManage/PromotionManagement";
 import Page401 from "../layouts/pageNotFound/401";
+import FullBrands from "../pages/Brand";
+
 
 export default function MainRoutes() {
   const location = useLocation();
@@ -62,6 +64,7 @@ export default function MainRoutes() {
         <Route path="/customerSupport" element={<CustomerSupport />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/paymentSuccess" element={<PaymentSuccess />} />
+        <Route path="/fullBrands" element={<FullBrands/>} />
 
         <Route
           path="/admin"
