@@ -1,11 +1,13 @@
-import { Button, Form, Input, message } from "antd";
+import { Avatar, Button, Form, Input, message, Upload } from "antd";
 import React, { useEffect, useState } from "react";
-import { APIGetUserId, APIPutUserId } from "../../api/api";
+import { APIGetUserId, APIPutUserId, APIUserImg } from "../../api/api";
 import { SSpin } from "../../globalVariable/spin";
 import { useNavigate } from "react-router";
+import { UploadOutlined } from "@ant-design/icons";
 
 export default function ProfileInfo() {
   const UserID = localStorage.getItem("userID");
+  const [profile, setProfile] = useState([]);
   // const [user, setUser] = useState(null);
 
   // useEffect(() => {
@@ -24,6 +26,7 @@ export default function ProfileInfo() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+    
   const onFinish = (values) => {
     SSpin.set(true);
     APIPutUserId(values, UserID)
@@ -47,14 +50,16 @@ export default function ProfileInfo() {
       SSpin.set(true);
       APIGetUserId(UserID)
         .then((response) => {
-          console.log(response);
+          console.log(response, "hi");
           if (!response || !response.data) {
             console.error("API không trả về dữ liệu hợp lệ:", response);
             return;
           }
+          setProfile(response.data);
           const profile = response.data;
           console.log(profile, "1");
           form.setFieldsValue({
+            avatar: profile.avatar,
             email: profile.email,
             name: profile.name,
             phone: profile.phoneNumber,
@@ -76,21 +81,69 @@ export default function ProfileInfo() {
       console.warn("Không tìm thấy UserID trong localStorage");
     }
   };
-
+  
+  
   useEffect(() => {
     getData();
   }, []);
 
+  
+  
+  const handleUpload = async (file) => {
+    if (!file) {
+      message.error("Vui lòng chọn ảnh!");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("fileDtos", file); // Thử đổi từ "file" thành "fileDtos"
+  
+    console.log("Uploading file:", file);
+    console.log("FormData content:", formData);
+  
+    try {
+      const response = await APIUserImg(UserID, formData);
+      if (response?.status === 200) {
+        message.success("Tải ảnh lên thành công!");
+        getData(); // Cập nhật avatar
+      } else {
+        message.error("Có lỗi xảy ra khi tải ảnh!");
+      }
+    } catch (error) {
+      console.error("Lỗi khi upload ảnh:", error.response?.data || error.message);
+      message.error(error.response?.data?.message || "Upload ảnh thất bại!");
+    }
+  };
+  
+  
+  
+  
+  
+  
+  
+
+  
+
   return (
     <div style={{ margin: "10px" }}>
       <Form form={form} onFinish={onFinish} layout="vertical">
-        <Form.Item name="email" label="Email:">
-          <Input
-            placeholder="Email"
-            // value={userData?.email || "Vui lòng cập nhật thông tin!"} // Dùng optional chaining để tránh lỗi
-            readOnly
-          />
-        </Form.Item>
+      <Form.Item label="Ảnh đại diện:">
+  <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+    <Avatar size={100} src={profile.avatar} />
+    <Upload
+  showUploadList={false}
+  beforeUpload={(file) => {
+    handleUpload(file);
+    return false; // Ngăn Ant Design tự động upload
+  }}
+>
+  <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+</Upload>
+
+
+
+  </div>
+</Form.Item>
 
         <div
           style={{
