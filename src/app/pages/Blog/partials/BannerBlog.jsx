@@ -1,20 +1,20 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Spin } from "antd"; // Thêm Spin từ Ant Design
+import { Spin } from "antd";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { APIGetAllBlogs } from "../../../api/api"; // Import API
 import "./BannerBlog.css";
 
 // Hàm loại bỏ các ký tự Markdown
 const removeMarkdown = (text) => {
-  if (!text) return ""; // Trả về chuỗi rỗng nếu text là null hoặc undefined
+  if (!text) return "";
   return text
-    .replace(/#|\*|`|\[|\]|\(|\)/g, "") // Loại bỏ các ký tự Markdown
-    .replace(/\s+/g, " ") // Loại bỏ khoảng trắng thừa
-    .trim(); // Loại bỏ khoảng trắng ở đầu và cuối
+    .replace(/#|\*|`|\[|\]|\(|\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 };
 
 export default function BannerBlog() {
@@ -23,16 +23,17 @@ export default function BannerBlog() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/blogs")
+    APIGetAllBlogs()
       .then((response) => {
-        // Xáo trộn mảng và lấy 4 bài blog ngẫu nhiên
-        const shuffledBlogs = response.data.sort(() => Math.random() - 0.5).slice(0, 4);
+        // Xáo trộn và lấy 4 bài blog ngẫu nhiên
+        const shuffledBlogs = response.data
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 4);
         setBlogs(shuffledBlogs);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching blogs:", error);
+        console.error("Lỗi tải blogs:", error);
         setLoading(false);
       });
   }, []);

@@ -151,4 +151,16 @@ export const APISetDefaultShippingInfo = (userId, shippingInfoId) =>
 export const APIGetShippingInfosByShippingInfo = (shippingInfoId) =>
   api.get(`shippingInfo/${shippingInfoId} `);
 
+// =================== BLOG APIs ===================
+
+// Lấy tất cả blogs
+export const APIGetAllBlogs = () => api.get("blogs");
+
+// Lấy blog theo ID
+export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
+
+//Lấy danh sách brand
+export const APIGetBrands = () => api.get("brand");
+
+
 export default api;
