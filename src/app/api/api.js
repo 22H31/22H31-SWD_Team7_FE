@@ -116,24 +116,39 @@ export const APIGetShippingInfosByUserId = (userId) =>
 // c
 export const APICreateShippingInfo = (data) =>
   api.post("shippingInfo", data, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    id: data.userId,
+    addressType: "string",
+
+    firstName: data.FirstName,
+    lastName: data.LastName,
+    shippingPhoneNumber: data.phone,
+    province: data.selectedProvince?.Name,
+    district: data.selectedDistrict?.Name,
+    commune: data.selectedWard?.Name,
+    addressDetail: data.address,
+    shippingNote: "string",
   });
 // u
 export const APIUpdateShippingInfo = (shippingInfoId, data) =>
-  api.put(`shippingInfo/${shippingInfoId}`, data, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  api.put(`shippingInfo/${shippingInfoId}`, {
+    addressType: data.addressType || "HOME", // ✅ Default value phù hợp
+    lastName: data.lastName,
+    firstName: data.firstName,
+    shippingPhoneNumber: data.phone,
+    province: data.selectedProvince?.Name || data.province || "",
+    district: data.selectedDistrict?.Name || data.district || "",
+    commune: data.selectedWard?.Name || data.ward || "",
+    addressDetail: data.addressDetail,
+    shippingNote: data.shippingNote || "", // ✅ Lấy từ data hoặc để trống
   });
-
 // d
 export const APIDeleteShippingInfo = (shippingInfoId) =>
-  api.delete(`shippingInfo/${shippingInfoId}`, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
+  api.delete(`shippingInfo/${shippingInfoId}`);
 
 // Đặt địa chỉ mặc định
 export const APISetDefaultShippingInfo = (userId, shippingInfoId) =>
-  api.put(`shippingInfo/default/${userId}/${shippingInfoId}`, null, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
+  api.put(`shippingInfo/default/${userId}/${shippingInfoId}`);
+export const APIGetShippingInfosByShippingInfo = (shippingInfoId) =>
+  api.get(`shippingInfo/${shippingInfoId} `);
 
 export default api;
