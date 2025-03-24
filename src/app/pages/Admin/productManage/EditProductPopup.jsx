@@ -16,12 +16,18 @@ const EditProductPopup = ({
   setPopupOpen,
   productId,
   isPopupOpen,
+  deleteProduct, // Nhận hàm deleteProduct
 }) => {
   return (
     <Modal
       title={isEditing ? "Chỉnh sửa sản phẩm" : "Thêm Sản Phẩm Mới"}
       visible={isPopupOpen}
-      onCancel={() => setPopupOpen(false)}
+      onCancel={async () => {
+        if (step === 4 && !isEditing) {
+          await deleteProduct(productId); // Xóa sản phẩm nếu đang ở bước thêm biến thể
+        }
+        setPopupOpen(false);
+      }}
       footer={null}
       width="80%"
     >
