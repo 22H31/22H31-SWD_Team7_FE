@@ -8,7 +8,7 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Badge, Button, Input, Layout, message, Space } from "antd";
+import { Badge, Button, Input, Layout, message, Space, Avatar } from "antd";
 import logo from "../../assets/logo.png";
 import "./index.css";
 import NavigationComponent from "../NavigationBar/NavigationBar";
@@ -26,6 +26,8 @@ const HeaderComponent = () => {
     !!localStorage.getItem("token")
   );
   const cartItemsLength = cartLenght.use();
+  const userId = localStorage.getItem("userID");
+  const [userAvatar, setUserAvatar] = useState("");
   // Quản lý trạng thái giỏ hàng
 
   // Lắng nghe thay đổi trong localStorage để cập nhật trạng thái đăng nhập
@@ -44,6 +46,23 @@ const HeaderComponent = () => {
   // }, []);
 
   // Cập nhật giỏ hàng vào localStorage khi có thay đổi
+
+  const fetchUserData = async () => {
+    if (!userId) return;
+    try {
+      const res = await APIGetUserId(userId);
+      if (res.status === 200) {
+        setUserAvatar(res.data.avatar || "https://via.placeholder.com/40");
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy avatar:", error);
+      setUserAvatar("https://via.placeholder.com/40");
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const onSearch = (value) => {
     console.log("Search:", value);
@@ -120,9 +139,12 @@ const HeaderComponent = () => {
                   <FlagOutlined />
                   <span>Việt Nam</span>
                 </div>
-                <UserOutlined
-                  onClick={handleUserClick}
+                <Avatar
+                  src={userAvatar}
+                  size={40}
+                  onClick={() => navigate("/profile")}
                   style={{ cursor: "pointer" }}
+                  icon={<UserOutlined />}
                 />
                 <Badge count={cartItemsLength} showZero>
                   <ShoppingCartOutlined
