@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "antd/es/layout/layout";
-import { APIGetShippingInfosByUserId } from "../../../api/api";
-import { EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Modal, Radio } from "antd";
+import {
+  APIDeleteShippingInfo,
+  APIGetShippingInfosByShippingInfo,
+  APIGetShippingInfosByUserId,
+} from "../../../api/api";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, message, Modal, Radio } from "antd";
 import "./ShippingInfo.css";
-
+import AddAddressModal from "./AddAddressModal/AddAddressModal";
+import { useCallback } from "react";
+import ChangeInforAddressFol from "./ChangeInforAddress/ChangeInforAddressFol";
 const ShippingAddress = () => {
   const headerStyle = {
     paddingInline: 48,
@@ -15,20 +21,29 @@ const ShippingAddress = () => {
     border: "1px solid #ddd",
     borderRadius: 5,
   };
-
+  //  const [address, setAddress] = useState([]);
   const [shippingInfos, setShippingInfos] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalChange, setModalChange] = useState(false);
   const userId = localStorage.getItem("userID");
+  const [ShippingInfosByShippingInfo, SetShippingInfosByShippingInfo] =
+    useState([]);
+   
+  const fetchAddresses = useCallback(() => {
+    APIGetShippingInfosByUserId(userId)
+      .then((rs) => {
+        setShippingInfos(rs.data.data);
+        console.log(rs.data.data, "12");
+      })
+      .catch((err) => {
+        console.error("Lỗi khi tải danh sách địa chỉ:", err);
+      });
+  }, [userId]);
 
   useEffect(() => {
-    APIGetShippingInfosByUserId(userId).then((rs) => {
-      console.log("Full API Response:", rs);
-      console.log("res.data:", rs.data.data);
-      setShippingInfos(rs.data.data);
-    });
-  }, []);
-
+    fetchAddresses();
+  }, [fetchAddresses]);
   // Địa chỉ mặc định
   const defaultInfo = shippingInfos.find(
     (info) => info.defaultAddress === true
@@ -42,7 +57,12 @@ const ShippingAddress = () => {
   const showModal = () => {
     setIsModalOpen(true);
   };
-
+  const showModalChange = () => {
+    setModalChange(true);
+  };
+  const closeModalChange = () => {
+    setModalChange(false);
+  };
   const handleOk = () => {
     const selectedInfo = shippingInfos.find(
       (info) => info.shippingInfoId === selectedAddress
@@ -58,6 +78,30 @@ const ShippingAddress = () => {
     (a, b) => b.defaultAddress - a.defaultAddress
   );
 
+  const DeleteshippingInfoId = (id) => {
+    APIDeleteShippingInfo(id).then((rs) => {
+      console.log(rs);
+      message.success("Xóa địa chỉ thành công!");
+      fetchAddresses();
+    });
+  };
+  const ChangeInforAddress = (id) => {
+    console.log(id, "Hello from ChangeInforAddress");
+   
+    APIGetShippingInfosByShippingInfo(id)
+      .then((rs) => {
+        // localStorage.setItem("shippingInfoId", id)
+        console.log("Thông tin địa chỉ:", rs.data);
+        SetShippingInfosByShippingInfo(rs.data);6
+        console.log(ShippingInfosByShippingInfo,"ShippingInfosByShippingInfo");
+
+
+      })
+      .catch((err) => {
+        console.error("Lỗi khi lấy thông tin địa chỉ:", err);
+        message.error("Không thể lấy thông tin địa chỉ!");
+      });
+  };
   return (
     <div>
       <Header style={headerStyle}>
@@ -78,8 +122,8 @@ const ShippingAddress = () => {
                 </div>
 
                 <div className="shipping-info-address">
-                  {defaultInfo.addressDetail}, {defaultInfo.commune},{" "}
-                  {defaultInfo.district}, {defaultInfo.province}
+                  {defaultInfo.addressDetail}, {defaultInfo.district},{" "}
+                  {defaultInfo.province}
                 </div>
 
                 <div className="shipping-info-action">
@@ -97,10 +141,11 @@ const ShippingAddress = () => {
             </div>
           </>
         ) : (
-          <Button>
-            <PlusOutlined />
-            Thêm địa chỉ giao hàng
-          </Button>
+          // <Button>
+          //   <PlusOutlined />
+          //   Thêm địa chỉ giao hàng
+          // </Button>
+          <AddAddressModal />
         )}
 
         {/* Modal chọn địa chỉ */}
@@ -161,25 +206,40 @@ const ShippingAddress = () => {
                 </Radio>
                 <Button
                   type="text"
-                  icon={<EditOutlined />}
-                  onClick={() =>
-                    console.log("Thay đổi địa chỉ", info.shippingInfoId)
-                  }
+                  icon={<DeleteOutlined />}
+                  onClick={() => DeleteshippingInfoId(info.shippingInfoId)}
                   style={{ color: "#1890ff", fontWeight: "bold" }}
-                >
-                  Thay đổi
-                </Button>
+                ></Button>
+                <Button
+                  type="text"
+                  icon={<EditOutlined />}
+                  onClick={() => {
+                    ChangeInforAddress(info.shippingInfoId);
+                    showModalChange();
+                  }}
+                  style={{ color: "#1890ff", fontWeight: "bold" }}
+                ></Button>
               </div>
             ))}
           </Radio.Group>
-          <Button 
-        type="dashed" 
-        icon={<PlusOutlined />} 
-        // onClick={onAddAddress} 
-        style={{ width: '100%', marginTop: '12px' }}
-      >
-        Thêm Địa Chỉ Mới
-      </Button>
+          <AddAddressModal />
+        </Modal>
+        <Modal
+          title={<h2 style={{ marginBottom: 0 }}>Địa Chỉ Của Tôi</h2>}
+          open={isModalChange}
+          onOk={() => closeModalChange()}
+          onCancel={() => closeModalChange(false)}
+          okText="Xác nhận"
+          cancelText="Hủy"
+          footer={null}
+        >
+          {ShippingInfosByShippingInfo ? (
+            <>
+             <ChangeInforAddressFol onClose={closeModalChange} addressData={ShippingInfosByShippingInfo}/>
+            </>
+          ) : (
+            <p>Đang tải dữ liệu...</p>
+          )}
         </Modal>
       </Header>
     </div>

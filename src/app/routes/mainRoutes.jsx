@@ -30,6 +30,7 @@ import ChatForAdmin from "../pages/Admin/chatAdmin/ChatAdmin";
 import ChatForUser from "../pages/UserChat/ChatButton";
 import VoucherManagement from "../pages/Admin/voucherManage/VoucherManagement";
 import PromotionManagement from "../pages/Admin/promotionManage/PromotionManagement";
+import OrderList from "../pages/Admin/orderList/OrderList";
 import Page401 from "../layouts/pageNotFound/401";
 import FullBrands from "../pages/Brand";
 
@@ -83,6 +84,7 @@ export default function MainRoutes() {
           <Route path="chatAdmin" element={<ChatForAdmin />} />
           <Route path="vouchers" element={<VoucherManagement />} />
           <Route path="promotions" element={<PromotionManagement />} />
+          <Route path="orders" element={<OrderList />} />
         </Route>
 
         <Route path="/product/:productId" element={<ProductDetail />} />

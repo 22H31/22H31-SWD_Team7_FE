@@ -280,3 +280,131 @@ td {
 .ant-btn-primary:hover {
   background-color: #c72d78 !important;
 }
+
+
+
+
+
+.compare-container {
+  overflow-x: auto; /* Hỗ trợ cuộn nếu bảng quá rộng */
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+  table-layout: fixed; /* Quan trọng: Cố định kích thước cột */
+}
+
+.compare-table th, 
+.compare-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left; /* Căn lề trái để dễ đọc */
+  word-wrap: break-word; /* Cho phép chữ tự xuống dòng */
+  white-space: normal; /* Đảm bảo chữ không bị giữ trên 1 dòng */
+  vertical-align: top; /* Căn chữ lên trên cho dễ đọc */
+}
+
+.compare-table th {
+  background-color: rgb(196, 123, 135); /* Màu xanh nổi bật */
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.compare-table td {
+  background-color: #fff;
+}
+
+.compare-table tr:nth-child(even) td {
+  background-color: #f8f9fa; /* Màu xám nhạt xen kẽ */
+}
+
+.compare-table tr:hover td {
+  background-color: #e2e6ea; /* Hiệu ứng hover */
+}
+
+/* Hình ảnh sản phẩm */
+.compare-table img {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.compare-table img:hover {
+  transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+
+
+
+
+
+
+
+.compare-product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  padding: 16px;
+}
+
+.compare-product-card {
+  width: 180px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.compare-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.compare-product-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.compare-product-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.compare-product-button {
+  background:rgb(196, 123, 135);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.compare-product-button:hover {
+  background: #c72d78;
+}
+
+.no-product-message {
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+}
+
+
+

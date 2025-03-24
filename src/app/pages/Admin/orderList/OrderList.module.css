@@ -1,0 +1,28 @@
+/* Block: order-list */
+.order-list {
+  padding: 24px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* Element: title */
+.order-list__title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+/* Element: filters */
+.order-list__filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Element: table */
+.order-list__table {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
