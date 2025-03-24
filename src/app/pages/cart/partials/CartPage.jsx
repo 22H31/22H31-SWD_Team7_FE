@@ -1,34 +1,37 @@
-import { DeleteOutlined, RightOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Input, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  APICreateOrder,
   APIGetCartItems,
   APIRemoveCartItem,
   APIUpdateCartItem,
 } from "../../../api/api";
 import { cartLenght } from "../../../globalVariable/cart";
 import "./CartPage.css";
-import CartItem from "../../Checkout/partials/CartItem";
 
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
-  const [discountCode, setDiscountCode] = useState("");
   const userId = localStorage.getItem("userID");
 
-  // Fetch cart items
+  // State lưu trữ các item đã chọn dưới dạng object
+  const [selectedItems, setSelectedItems] = useState(
+    JSON.parse(localStorage.getItem("selectedItems")) || []
+  );
+
+  // Fetch giỏ hàng
   const fetchCartItems = async () => {
     try {
       const response = await APIGetCartItems(userId);
       setCartItems(response.data);
     } catch (error) {
-      console.error("Error fetching cart items:", error);
-      // message.error("Không thể lấy danh sách sản phẩm trong giỏ hàng.");
+      console.error("Lỗi khi lấy giỏ hàng:", error);
     }
   };
 
-  // Update item quantity
+  // Xử lý thay đổi số lượng
   const handleQuantityChange = async (cartItemId, quantity) => {
     if (quantity < 1) return;
 
@@ -40,53 +43,83 @@ const CartPage = () => {
       );
       setCartItems(updatedCartItems);
 
+      const updatedSelectedItems = selectedItems.map((item) =>
+        item.cartItemId === cartItemId ? { ...item, quantity } : item
+      );
+      setSelectedItems(updatedSelectedItems);
+      localStorage.setItem(
+        "selectedItems",
+        JSON.stringify(updatedSelectedItems)
+      );
+
       message.success("Cập nhật số lượng thành công!");
     } catch (error) {
-      console.error("Error updating quantity:", error);
-      message.error("Cập nhật số lượng thất bại.");
+      message.error("Cập nhật số lượng thất bại!");
     }
   };
 
-  // Remove item from cart
+  // Xóa item khỏi giỏ hàng
   const handleRemoveItem = async (cartItemId) => {
     try {
       await APIRemoveCartItem(cartItemId);
 
-      const updatedCartItems = cartItems.filter(
+      setCartItems((prev) =>
+        prev.filter((item) => item.cartItemId !== cartItemId)
+      );
+      const updatedSelectedItems = selectedItems.filter(
         (item) => item.cartItemId !== cartItemId
       );
-      setCartItems(updatedCartItems);
+      setSelectedItems(updatedSelectedItems);
+      localStorage.setItem(
+        "selectedItems",
+        JSON.stringify(updatedSelectedItems)
+      );
 
-      // Update cart length
-      const newCartLength = updatedCartItems.length;
-      cartLenght.set(newCartLength);
-      localStorage.setItem("cartItemsLength", newCartLength);
+      const newLength = cartItems.length - 1;
+      cartLenght.set(newLength);
+      localStorage.setItem("cartItemsLength", newLength);
       window.dispatchEvent(new Event("storage"));
 
-      message.success("Xóa sản phẩm khỏi giỏ hàng thành công!");
+      message.success("Xóa sản phẩm thành công!");
     } catch (error) {
-      console.error("Error removing item:", error);
-      message.error("Xóa sản phẩm khỏi giỏ hàng thất bại.");
+      message.error("Xóa sản phẩm thất bại!");
     }
   };
-  const [selectedItems, setSelectedItems] = useState([]);
-  // Format currency
+
+  // Xử lý chọn/bỏ chọn sản phẩm
+  const handleSelectItem = (cartItemId) => {
+    const targetItem = cartItems.find((item) => item.cartItemId === cartItemId);
+
+    setSelectedItems((prev) => {
+      const exists = prev.some((item) => item.cartItemId === cartItemId);
+      let updatedItems;
+      if (exists) {
+        updatedItems = prev.filter((item) => item.cartItemId !== cartItemId);
+      } else {
+        updatedItems = [
+          ...prev,
+          {
+            cartItemId: targetItem.cartItemId,
+            variantId: targetItem.variantId,
+            quantity: targetItem.quantity,
+            price: targetItem.price,
+          },
+        ];
+      }
+      localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
+      return updatedItems;
+    });
+  };
+
   const formatCurrency = (amount) =>
     new Intl.NumberFormat("vi-VN").format(amount) + " đ";
-  const handleSelectItem = (cartItemId) => {
-    setSelectedItems((prevSelected) =>
-      prevSelected.includes(cartItemId)
-        ? prevSelected.filter((id) => id !== cartItemId)
-        : [...prevSelected, cartItemId]
-    );
-  };
-  // Calculate total price
-  const getTotalPrice = () =>
-    cartItems
-      .filter((item) => selectedItems.includes(item.cartItemId))
-      .reduce((total, item) => total + item.price * item.quantity, 0);
 
-  // Table columns
+  const getTotalPrice = () =>
+    selectedItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+
   const columns = [
     {
       title: "",
@@ -94,7 +127,9 @@ const CartPage = () => {
       key: "select",
       render: (_, record) => (
         <Checkbox
-          checked={selectedItems.includes(record.cartItemId)}
+          checked={selectedItems.some(
+            (item) => item.cartItemId === record.cartItemId
+          )}
           onChange={() => handleSelectItem(record.cartItemId)}
         />
       ),
@@ -102,23 +137,20 @@ const CartPage = () => {
     },
     {
       title: "Sản phẩm",
-      dataIndex: "productName",
-      key: "productName",
-      render: (text, record) => (
+      key: "product",
+      render: (_, record) => (
         <div className="cart-item">
           <img
             src={record.productAvatarImage}
-            alt={text}
+            alt={record.productName}
             className="cart-item-image"
           />
-          <div>
-            <p>{text}</p>
-            <div className="cart-actions">
-              <DeleteOutlined
-                className="remove-button"
-                onClick={() => handleRemoveItem(record.cartItemId)}
-              />
-            </div>
+          <div className="cart-item-info">
+            <p className="product-name">{record.productName}</p>
+            <DeleteOutlined
+              className="remove-button"
+              onClick={() => handleRemoveItem(record.cartItemId)}
+            />
           </div>
         </div>
       ),
@@ -141,28 +173,51 @@ const CartPage = () => {
     },
     {
       title: "Tạm tính",
-      dataIndex: "price",
-      key: "price",
-      width: 140,
-      render: (text, record) => (
-        <span>{formatCurrency(record.price * record.quantity)}</span>
+      key: "subtotal",
+      render: (_, record) => (
+        <span className="subtotal">
+          {formatCurrency(record.price * record.quantity)}
+        </span>
       ),
     },
   ];
 
-  // Fetch items on mount
   useEffect(() => {
-    if (userId) {
-      fetchCartItems();
-    }
+    if (userId) fetchCartItems();
   }, [userId]);
 
-  // Update cart length
   useEffect(() => {
     cartLenght.set(cartItems.length);
     localStorage.setItem("cartItemsLength", cartItems.length);
   }, [cartItems.length]);
-
+  const handleSubmit = () => {
+    const orderData = {
+      id: userId,
+      totalAmount: getTotalPrice(),
+      finalAmount: getTotalPrice(),
+      items: selectedItems.map(({ variantId, quantity }) => ({
+        variantId,
+        quantity,
+      })),
+    };
+  
+    APICreateOrder(orderData)
+      .then((rs) => {
+        console.log(rs,'check');
+        if (rs.status === 200) {
+          message.success("Vui lòng làm theo hướng dẫn!");
+          localStorage.removeItem("selectedItems");
+          setSelectedItems([]);
+          localStorage.setItem("orderId", rs.data.orderId)
+          navigate("/checkout")
+          console.log(rs.data.orderId , "rs.data.orderId");
+          console.log(rs);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div className="cart-container">
       <Card
@@ -179,12 +234,6 @@ const CartPage = () => {
       </Card>
 
       <Card title="Thông tin đơn hàng" className="summary-card">
-        {/* <p>Tổng sản phẩm: {cartItems.length}</p>
-        <p>Tạm tính: {formatCurrency(getTotalPrice())}</p>
-        <p>Mã giảm giá: {formatCurrency(0)}</p>
-        <p>
-          <b>Tổng thanh toán: {formatCurrency(getTotalPrice())}</b>
-        </p> */}
         <div className="cart-item-checkout">
           <h2>Thông tin đơn hàng</h2>
           <div className="cart-detail">
@@ -195,51 +244,22 @@ const CartPage = () => {
               Tạm tính{" "}
               <span className="bold">{formatCurrency(getTotalPrice())}</span>
             </p>
-            <p className="total">
-              Tổng thanh toán <span>{formatCurrency(getTotalPrice())} </span>
-            </p>
-
-            <p>{/* Mã giảm giá <span>{formatCurrency(0)} </span> */}</p>
-            {/* <p>
-          Phí giao hàng <span>{cartSummary.shippingFee.toLocaleString()} đ</span>
-        </p> */}
             <hr />
             <p className="total">
-              Tổng thanh toán <span>{formatCurrency(getTotalPrice())} </span>
+              Tổng thanh toán <span>{formatCurrency(getTotalPrice())}</span>
             </p>
             <p className="vat-note">(Đã bao gồm VAT)</p>
           </div>
         </div>
-        {/* 
-        <div className="my-discount">
-          <Button className="discount-button" type="default">
-            <span className="discount-text">Ưu đãi của tôi</span>
-            <RightOutlined className="arrow-icon" />
-          </Button>
-        </div>
-
-        <div className="discount-space">
-          <h3>Mã giảm giá</h3>
-          <div className="discount-section">
-            <Input
-              placeholder="Nhập mã giảm giá"
-              value={discountCode}
-              onChange={(e) => setDiscountCode(e.target.value)}
-            />
-            <Button className="apply" type="primary">
-              Áp dụng
-            </Button>
-          </div>
-        </div> */}
-
         <Button
+          type="primary"
           block
           size="large"
           className="checkout-button"
           disabled={selectedItems.length === 0}
-          onClick={() => navigate("/checkout")}
+          onClick={handleSubmit}
         >
-          Đặt Hàng
+          Đặt hàng
         </Button>
       </Card>
     </div>

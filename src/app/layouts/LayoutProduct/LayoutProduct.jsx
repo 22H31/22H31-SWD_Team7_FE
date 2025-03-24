@@ -11,9 +11,7 @@ const LayoutProduct = ({ children }) => {
   {/* Bộ lọc */}
   <h3 style={{ marginTop: 20 }}>BỘ LỌC</h3>
   <Collapse defaultActiveKey={["1", "2", "3", "4", "5", "6"]} ghost>
-    <Panel header="Loại Sản Phẩm" key="1"></Panel>
-    <Panel header="Loại Khuyến Mãi" key="2"></Panel>
-    <Panel header="Loại Da" key="3">
+        <Panel header="Loại Da" key="1">
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <Checkbox>Tất cả</Checkbox>
         <Checkbox>Hỗn hợp/Dầu</Checkbox>
@@ -22,7 +20,7 @@ const LayoutProduct = ({ children }) => {
         <Checkbox>Nhạy cảm</Checkbox>
       </div>
     </Panel>
-    <Panel header="Loại Thành Phần" key="4">
+    <Panel header="Loại Thành Phần" key="2">
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <Checkbox>Tất cả</Checkbox>
         <Checkbox>BHA/AHA</Checkbox>
@@ -31,7 +29,7 @@ const LayoutProduct = ({ children }) => {
         <Checkbox>Tranexamic acid</Checkbox>
       </div>
     </Panel>
-    <Panel header="Làm Sạch Kép" key="5">
+    <Panel header="Làm Sạch Kép" key="3">
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <Checkbox>Tất cả</Checkbox>
         <Checkbox>Sữa rửa mặt</Checkbox>
@@ -40,7 +38,7 @@ const LayoutProduct = ({ children }) => {
         <Checkbox>Tẩy tế bào chết</Checkbox>
       </div>
     </Panel>
-    <Panel header="Giá" key="6">
+    <Panel header="Giá" key="4">
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <Checkbox>Dưới 500 vnđ</Checkbox>
         <Checkbox>500 vnđ - 1.000.000 vnđ</Checkbox>

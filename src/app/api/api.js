@@ -130,7 +130,7 @@ export const APICreateShippingInfo = (data) =>
   });
 
 export const APIUpdateShippingInfo = (shippingInfoId, data) =>
-  api.put(`shippingInfo/${shippingInfoId}`,data);
+  api.put(`shippingInfo/${shippingInfoId}`, data);
 // d
 export const APIDeleteShippingInfo = (shippingInfoId) =>
   api.delete(`shippingInfo/${shippingInfoId}`);
@@ -140,11 +140,10 @@ export const APISetDefaultShippingInfo = (userId, shippingInfoId) =>
   api.put(`shippingInfo/default/${userId}/${shippingInfoId}`);
 export const APIGetShippingInfosByShippingInfo = (shippingInfoId) =>
   api.get(`shippingInfo/${shippingInfoId} `);
- /// Oder
- export const APIGetOrderUser = (id) =>
-  api.get(`order/user/${id} `);
+/// Oder
+export const APIGetOrderUser = (id) => api.get(`order/user/${id} `);
 
- // =================== BLOG APIs ===================
+// =================== BLOG APIs ===================
 
 export const APIGetAllBlogs = () => api.get("blogs");
 export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
@@ -152,5 +151,11 @@ export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
 // =================== BRAND APIs ===================
 
 export const APIGetBrands = () => api.get("brand");
- 
+
+export const APICreateOrder = (data) => api.post("order/create", data);
+
+export const APIOrderOrderId = (orderId) => api.get(`order/${orderId}`);
+export const APIPromotionApply = (data) => api.post("promotion/apply", {
+  promotionCode: data
+});
 export default api;

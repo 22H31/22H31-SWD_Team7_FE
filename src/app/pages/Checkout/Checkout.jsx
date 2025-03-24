@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -54,6 +54,7 @@ const Checkout = () => {
   // }, []);
 
   // Xử lý thanh toán
+  
   const handleCheckout = useCallback(async () => {
     if (!selectedPaymentMethod) {
       message.warning(
@@ -98,6 +99,7 @@ const Checkout = () => {
       console.error("Lỗi khi thanh toán:", error);
       message.error("Có lỗi xảy ra khi thanh toán");
     }
+    
   }, [selectedPaymentMethod, cartSummary.total, token]);
 
   return (
@@ -114,7 +116,7 @@ const Checkout = () => {
           {/* <PaymentMethod onSavePaymentMethod={handleSavePaymentMethod} /> */}
           <div>
             <CodeDiscount />
-            <CartItem cartSummary={cartSummary} cartItems={cartItems} />
+            <CartItem />
           </div>
           <div></div>
           <div className="checkout-button-container">

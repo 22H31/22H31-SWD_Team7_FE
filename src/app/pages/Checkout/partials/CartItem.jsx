@@ -1,33 +1,56 @@
-import { cartLenght } from "../../../globalVariable/cart";
+import { useEffect, useState } from "react";
 import "./CartItem.css";
+import { APIOrderOrderId } from "../../../api/api";
+import { message } from "antd";
 
-const CartItem = ({ cartSummary }) => {
-    const cartItemsLength = cartLenght.use();
+const CartItem = () => {
+  const [cart, setCart] = useState([]);
+  const [finalAmount, setFinalAmount] = useState(0);
+  const [shippingFee, setshippingFee] = useState(0);
+  const orderId = localStorage.getItem("orderId");
+
+  useEffect(() => {
+    if (!orderId) {
+      message.error("Không tìm thấy ID đơn hàng!");
+      return;
+    }
+    APIOrderOrderId(orderId)
+      .then((rs) => {
+        const res = rs.data.data;
+        setshippingFee(res.shippingFee);
+        setCart(res.orderDetails || []);
+        setFinalAmount(res.finalAmount || 0);
+      })
+      .catch(() => {
+        message.error("Lỗi khi lấy dữ liệu đơn hàng!");
+      });
+  }, [orderId]);
+  const promotion =  Number(localStorage.getItem("promotion")) || 0;
+  const total = Number(finalAmount +  shippingFee - promotion)
   return (
     <div className="cart-item-checkout">
       <h2>Thông tin đơn hàng</h2>
       <div className="cart-detail">
         <p>
-          Tổng sản phẩm đã chọn <span>{cartItemsLength}</span>
-          {console.log(cartSummary, "cartSummary")}
+          Tổng sản phẩm đã chọn <span>{cart.length}</span>
         </p>
         <p>
-          Tạm tính <span className="bold">{cartSummary.subtotal.toLocaleString()} đ</span>
+          Tạm tính{" "}
+          <span className="bold"> {finalAmount.toLocaleString()} VND </span>
         </p>
         <p>
-          Mã giảm giá <span>{cartSummary.discount.toLocaleString()} đ</span>
+          Mã giảm giá <span> {promotion.toLocaleString()} VND</span>
         </p>
         <p>
-          Phí giao hàng <span>{cartSummary.shippingFee.toLocaleString()} đ</span>
+          Phí giao hàng <span>{shippingFee.toLocaleString()} VND</span>
         </p>
         <hr />
         <p className="total">
-          Tổng thanh toán <span>{cartSummary.total.toLocaleString()} đ</span>
+          Tổng thanh toán <span> {total.toLocaleString()} VND đ</span>
         </p>
         <p className="vat-note">(Đã bao gồm VAT)</p>
       </div>
     </div>
-    // <h1>Cart Item</h1>
   );
 };
 
