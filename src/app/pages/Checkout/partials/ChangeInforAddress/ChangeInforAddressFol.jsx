@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Select, Input, Button, message, Form, Checkbox } from "antd";
 import vietnamAddress from "../../../../../Json/vietnamAddress.json";
 import { SSpin } from "../../../../globalVariable/spin";
-import { APIUpdateShippingInfo } from "../../../../api/api";
+import { APISetDefaultShippingInfo, APIUpdateShippingInfo } from "../../../../api/api";
 
-export default function ChangeInforAddressFol({ addressData, onClose }) {
+export default function ChangeInforAddressFol({fetchData, addressData, onClose }) {
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [selectedWard, setSelectedWard] = useState(null);
+  const[isDefaultAdd,setIsDefaultAdd] = useState(null)
   const [form] = Form.useForm();
   const provinces = vietnamAddress || [];
 
   useEffect(() => {
     if (addressData?.data) {
       const { data } = addressData;
+      setIsDefaultAdd(data.isDefault || false);
       form.setFieldsValue({
         firstName: data.firstName || "",
         lastName: data.lastName || "",
@@ -65,15 +67,16 @@ export default function ChangeInforAddressFol({ addressData, onClose }) {
   const handleClose = () => onClose?.(false);
 
   const onFinish = async (values) => {
-    const shippingInfoIdData = addressData?.data?.shippingInfoId;
-  
+    const InforShipping = addressData?.data;
+    const shippingInfoIdData = InforShipping.shippingInfoId;
+    console.log(shippingInfoIdData);
     if (!shippingInfoIdData) {
       return message.error("Lỗi dữ liệu địa chỉ!");
     }
     if (!selectedProvince || !selectedDistrict || !selectedWard) {
       return message.error("Vui lòng chọn đầy đủ địa chỉ!");
     }
-  
+    
     const data = {
       addressType: "Home",
       firstName: values?.firstName,
@@ -86,8 +89,15 @@ export default function ChangeInforAddressFol({ addressData, onClose }) {
       shippingNote: "Delivery before 6 PM",
     };
   
-    console.log("Payload being sent:", data); // Debug log
-  
+    console.log("Payload being sent:", shippingInfoIdData,data); // Debug log
+    if(values.isDefault && !isDefaultAdd ){
+      APISetDefaultShippingInfo(InforShipping.id,InforShipping.shippingInfoId).then((data)=>{
+        console.log(data)
+        fetchData();
+        // onClose();
+        
+      }).catch(err=>console.log(err))
+    }
     try {
       SSpin.set(true);
       const response = await APIUpdateShippingInfo(shippingInfoIdData, data);

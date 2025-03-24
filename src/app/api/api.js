@@ -128,19 +128,9 @@ export const APICreateShippingInfo = (data) =>
     addressDetail: data.address,
     shippingNote: "string",
   });
-// u
+
 export const APIUpdateShippingInfo = (shippingInfoId, data) =>
-  api.put(`shippingInfo/${shippingInfoId}`, {
-    addressType: data.addressType || "HOME", // ✅ Default value phù hợp
-    lastName: data.lastName,
-    firstName: data.firstName,
-    shippingPhoneNumber: data.phone,
-    province: data.selectedProvince?.Name || data.province || "",
-    district: data.selectedDistrict?.Name || data.district || "",
-    commune: data.selectedWard?.Name || data.ward || "",
-    addressDetail: data.addressDetail,
-    shippingNote: data.shippingNote || "", // ✅ Lấy từ data hoặc để trống
-  });
+  api.put(`shippingInfo/${shippingInfoId}`,data);
 // d
 export const APIDeleteShippingInfo = (shippingInfoId) =>
   api.delete(`shippingInfo/${shippingInfoId}`);
@@ -150,17 +140,8 @@ export const APISetDefaultShippingInfo = (userId, shippingInfoId) =>
   api.put(`shippingInfo/default/${userId}/${shippingInfoId}`);
 export const APIGetShippingInfosByShippingInfo = (shippingInfoId) =>
   api.get(`shippingInfo/${shippingInfoId} `);
-
-// =================== BLOG APIs ===================
-
-// Lấy tất cả blogs
-export const APIGetAllBlogs = () => api.get("blogs");
-
-// Lấy blog theo ID
-export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
-
-//Lấy danh sách brand
-export const APIGetBrands = () => api.get("brand");
-
-
+ /// Oder
+ export const APIGetOrderUser = (id) =>
+  api.get(`order/user/${id} `);
+ 
 export default api;
