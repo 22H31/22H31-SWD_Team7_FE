@@ -82,7 +82,9 @@ const CartPage = () => {
   };
   // Calculate total price
   const getTotalPrice = () =>
-    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    cartItems
+      .filter((item) => selectedItems.includes(item.cartItemId))
+      .reduce((total, item) => total + item.price * item.quantity, 0);
 
   // Table columns
   const columns = [
@@ -187,12 +189,16 @@ const CartPage = () => {
           <h2>Thông tin đơn hàng</h2>
           <div className="cart-detail">
             <p>
-              Tổng sản phẩm đã chọn <span>{cartItems.length}</span>
+              Tổng sản phẩm đã chọn <span>{selectedItems.length}</span>
             </p>
             <p>
               Tạm tính{" "}
               <span className="bold">{formatCurrency(getTotalPrice())}</span>
             </p>
+            <p className="total">
+              Tổng thanh toán <span>{formatCurrency(getTotalPrice())} </span>
+            </p>
+
             <p>{/* Mã giảm giá <span>{formatCurrency(0)} </span> */}</p>
             {/* <p>
           Phí giao hàng <span>{cartSummary.shippingFee.toLocaleString()} đ</span>
@@ -230,6 +236,7 @@ const CartPage = () => {
           block
           size="large"
           className="checkout-button"
+          disabled={selectedItems.length === 0}
           onClick={() => navigate("/checkout")}
         >
           Đặt Hàng
