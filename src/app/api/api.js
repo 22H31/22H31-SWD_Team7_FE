@@ -27,6 +27,15 @@ export const APIChangePassword = (values) =>
 
 export const APIGetUserId = (userId) => api.get(`User/${userId}`);
 export const APILogOut = () => api.post("account/logout");
+export const APIUserImg = (id, data) => api.post(
+  `User/${id}/images`, 
+  data, 
+  { headers: { "Content-Type": "multipart/form-data" } }
+);
+
+
+
+
 export const APIPutUserId = (values, userId) =>
   api.put(`User/${userId}`, {
     name: values.name,
