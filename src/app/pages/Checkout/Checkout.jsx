@@ -9,6 +9,7 @@ import OrderSummary from "./partials/OrderSummary";
 import PaymentMethod from "./partials/PaymentMethod";
 import ShippingInfo from "./partials/ShippingInfo";
 import CodeDiscount from "./partials/CodeDiscount";
+import { APIPayment, APIUpdateVoucherPromotion } from "../../api/api";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ const Checkout = () => {
     total: 0,
   });
   const [cartItems, setCartItems] = useState([]);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const token = localStorage.getItem("token");
 
   // Cập nhật giỏ hàng từ OrderSummary
@@ -44,64 +44,42 @@ const Checkout = () => {
     });
   }, []);
 
-  // Lưu phương thức thanh toán & hiển thị thông báo nếu cần
-  // const handleSavePaymentMethod = useCallback((paymentMethod) => {
-  //   setSelectedPaymentMethod(paymentMethod);
-
-  //   if (paymentMethod === "credit_card" || paymentMethod === "paypal") {
-  //     message.info("Chức năng đang được phát triển.");
-  //   }
-  // }, []);
-
-  // Xử lý thanh toán
-  
-  const handleCheckout = useCallback(async () => {
-    if (!selectedPaymentMethod) {
-      message.warning(
-        "Vui lòng chọn phương thức thanh toán trước khi thanh toán."
-      );
-      return;
-    }
-
-    try {
-      const paymentData = {
-        orderType: "billpayment",
-        amount: cartSummary.total,
-        orderDescription: "Thanh toán đơn hàng",
-        name: "Khách hàng",
-      };
-
-      let response;
-
-      switch (selectedPaymentMethod) {
-        case "vnpay":
-          response = await axios.post(
-            "https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/payment/vnpay",
-            paymentData,
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-          if (response.data.status === "success") {
-            window.location.href = response.data.url;
-          } else {
-            message.error("Thanh toán VNPay thất bại");
-          }
-          break;
-
-        case "cod":
-          message.success("Đơn hàng sẽ được thanh toán khi nhận hàng.");
-          break;
-
-        default:
-          // Không cần message cho credit_card và paypal ở đây (đã báo lúc chọn rồi)
-          break;
+  const promotion = localStorage.getItem("promotion");
+  const shippingFee = localStorage.getItem("shippingFee");
+  const orderId = localStorage.getItem("orderId");
+  const total = localStorage.getItem("total");
+  const discountCode = localStorage.getItem("discountCode");
+  const promotionId = localStorage.getItem("promotionId");
+  const handleCheckout = () => {
+    const data = {
+      promotionId: promotionId,
+      voucherId: "",
+      voucherFee: promotion,
+      promotionCode: discountCode,
+      promotionFee: shippingFee,
+      finalAmount: total,
+      shippingFee: shippingFee,
+    };
+    APIUpdateVoucherPromotion(orderId, data).then((rs) => {
+      if (rs.data.success) {
+        console.log(rs);
+        APIPayment(orderId)
+          .then((rs) => {
+            if (rs.status === 200) {
+              console.log("oki", rs);
+            }
+          })
+          .finally(() => {
+            localStorage.removeItem("promotion");
+            localStorage.removeItem("shippingFee");
+            localStorage.removeItem("orderId");
+            localStorage.removeItem("total");
+            localStorage.removeItem("discountCode");
+            localStorage.removeItem("promotionId");
+          });
       }
-    } catch (error) {
-      console.error("Lỗi khi thanh toán:", error);
-      message.error("Có lỗi xảy ra khi thanh toán");
-    }
-    
-  }, [selectedPaymentMethod, cartSummary.total, token]);
-
+    });
+  };
   return (
     <CartLayOut>
       <div className="checkout-page">

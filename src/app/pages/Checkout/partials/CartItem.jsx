@@ -18,6 +18,7 @@ const CartItem = () => {
       .then((rs) => {
         const res = rs.data.data;
         setshippingFee(res.shippingFee);
+        localStorage.setItem("shippingFee", res.shippingFee);
         setCart(res.orderDetails || []);
         setFinalAmount(res.finalAmount || 0);
       })
@@ -25,8 +26,9 @@ const CartItem = () => {
         message.error("Lỗi khi lấy dữ liệu đơn hàng!");
       });
   }, [orderId]);
-  const promotion =  Number(localStorage.getItem("promotion")) || 0;
-  const total = Number(finalAmount +  shippingFee - promotion)
+  const promotion = Number(localStorage.getItem("promotion")) || 0;
+  const total = Number(finalAmount + shippingFee - promotion);
+  localStorage.setItem("total", total);
   return (
     <div className="cart-item-checkout">
       <h2>Thông tin đơn hàng</h2>

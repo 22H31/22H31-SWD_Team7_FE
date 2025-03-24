@@ -155,7 +155,12 @@ export const APIGetBrands = () => api.get("brand");
 export const APICreateOrder = (data) => api.post("order/create", data);
 
 export const APIOrderOrderId = (orderId) => api.get(`order/${orderId}`);
-export const APIPromotionApply = (data) => api.post("promotion/apply", {
-  promotionCode: data
-});
+export const APIPromotionApply = (data) =>
+  api.post("promotion/apply", {
+    promotionCode: data,
+  });
+export const APIUpdateVoucherPromotion = (orderId, data) =>
+  api.put(`order/update-voucher-promotion/${orderId}`, data);
+
+export const APIPayment = (orderId) => api.post(`payment/${orderId}/pay`);
 export default api;

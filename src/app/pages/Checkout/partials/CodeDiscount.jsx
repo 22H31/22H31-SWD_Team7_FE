@@ -8,17 +8,18 @@ const CodeDiscount = () => {
   const [form] = Form.useForm();
   const [promotion, setPromotion] = useState(0);
   const handleApplyDiscount = (values) => {
-    console.log(values.discountCode, "values");
     APIPromotionApply(values.discountCode).then((rs) => {
       console.log(rs.data.data, "rs");
       if (rs.data?.success) {
+        localStorage.setItem("promotionId", rs.data.data.promotionId);
+        localStorage.setItem("discountCode", values.discountCode);
         message.success("Áp mã giảm giá thành công!");
         setPromotion(rs.data.data.discountRate);
         console.log(rs.data.data.discountRate);
         console.log(promotion);
         localStorage.setItem("promotion", rs.data.data.discountRate);
-      } else{
-        message.warning("Áp mã giảm giá không thành công!")
+      } else {
+        message.warning("Áp mã giảm giá không thành công!");
       }
     });
   };
