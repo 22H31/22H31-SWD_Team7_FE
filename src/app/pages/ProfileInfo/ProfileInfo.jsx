@@ -96,16 +96,15 @@ export default function ProfileInfo() {
     }
   
     const formData = new FormData();
-    formData.append("fileDtos", file); // Thử đổi từ "file" thành "fileDtos"
-  
-    console.log("Uploading file:", file);
-    console.log("FormData content:", formData);
+    formData.append("fileDtos", file);
   
     try {
       const response = await APIUserImg(UserID, formData);
       if (response?.status === 200) {
         message.success("Tải ảnh lên thành công!");
-        getData(); // Cập nhật avatar
+        getData(); // Cập nhật profile
+        localStorage.setItem("userAvatar", response.data.avatar); // Lưu avatar vào localStorage
+        window.dispatchEvent(new Event("storage")); // Kích hoạt sự kiện cập nhật header
       } else {
         message.error("Có lỗi xảy ra khi tải ảnh!");
       }
@@ -114,6 +113,8 @@ export default function ProfileInfo() {
       message.error(error.response?.data?.message || "Upload ảnh thất bại!");
     }
   };
+  
+  
   
   
   
