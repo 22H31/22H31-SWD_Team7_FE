@@ -13,6 +13,10 @@ import {
 import PageLayOut from "../../../layouts/PageLayOut/PageLayOut";
 import "./ProductDetail.css";
 import { cartLenght } from "../../../globalVariable/cart";
+// import { useNavigate } from "react-router-dom";
+
+
+
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -21,21 +25,77 @@ const ProductDetail = () => {
   const [editingFeedback, setEditingFeedback] = useState(null);
   const { productId } = useParams();
   const userId = localStorage.getItem("userID");
+  const [compareModalVisible, setCompareModalVisible] = useState(false);
+  const [categoryProducts, setCategoryProducts] = useState([]);
+  // const navigate = useNavigate();
+  // const [productData, setProductData] = useState([]);
+  const [comparePopupVisible, setComparePopupVisible] = useState(false);
+  const [comparisonData, setComparisonData] = useState([]);
+
 
   // Fetch product details
   useEffect(() => {
     if (!productId) return;
 
-    // Fetch product details
-    APIGetProductById(productId)
-      .then((response) => {
-        setProduct(response.data);
-        console.log("Product Data:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching product:", error);
-      });
-  }, [productId]);
+    const fetchProductDetails = async () => {
+        try {
+            console.log("Gọi API với productId:", productId); // 🔍 Kiểm tra productId trước khi gọi API
+            const response = await APIGetProductById(productId);
+            console.log("Kết quả API:", response); // 🔍 Kiểm tra response có dữ liệu không
+
+            if (!response || !response.data) {
+                console.error("Error: response hoặc response.data không hợp lệ!");
+                return;
+            }
+
+            const productDetails = response.data;
+            setProduct(productDetails);
+            console.log("Product Data:", productDetails);
+
+            if (productDetails.categoryId) {
+                fetchCategoryProducts(productDetails.categoryId, productDetails.productId);
+            } else {
+                console.warn("Warning: categoryId không tồn tại!");
+            }
+        } catch (error) {
+            console.error("Error fetching product:", error);
+        }
+    };
+
+    fetchProductDetails();
+}, [productId]);
+
+
+
+  const fetchCategoryProducts = async (categoryId, currentProductId) => {
+    try {
+        const response = await fetch(
+            `https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/products/category/${categoryId}`
+        );
+        const data = await response.json();
+
+        console.log("Category Products API Response:", data);
+
+        // Kiểm tra nếu API trả về object có key `items`, thay vì mảng trực tiếp
+        const productsArray = Array.isArray(data) ? data : data.items;
+
+        if (!Array.isArray(productsArray)) {
+            console.error("Error: API không trả về mảng sản phẩm hợp lệ", data);
+            return;
+        }
+
+        // Lọc ra sản phẩm không trùng với sản phẩm hiện tại
+        const filteredProducts = productsArray.filter((p) => p.productId !== currentProductId);
+        console.log("Danh sách sản phẩm sau khi lọc:", filteredProducts);
+
+        setCategoryProducts(filteredProducts);
+    } catch (error) {
+        console.error("Error fetching category products:", error);
+    }
+};
+
+
+
 
   // Hàm để lấy thông tin người dùng
   const fetchUserInfo = async (userId) => {
@@ -163,6 +223,47 @@ const ProductDetail = () => {
     }
   };
 
+
+
+const handleCompare = async (selectedProductId) => {
+  try {
+    if (!product || !selectedProductId) {
+      alert("Lỗi: Không có dữ liệu sản phẩm.");
+      return;
+    }
+
+    // Gọi API lấy thông tin sản phẩm hiện tại
+    const responseCurrent = await fetch(
+      `https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/products/${product.productId}`
+    );
+    if (!responseCurrent.ok) throw new Error("Lỗi khi lấy sản phẩm hiện tại");
+
+    const currentProductData = await responseCurrent.json();
+
+    // Gọi API lấy thông tin sản phẩm được chọn để so sánh
+    const responseSelected = await fetch(
+      `https://swdteam7-hfgrdwa4dfhbe0ga.southeastasia-01.azurewebsites.net/api/products/${selectedProductId}`
+    );
+    if (!responseSelected.ok) throw new Error("Lỗi khi lấy sản phẩm so sánh");
+
+    const selectedProductData = await responseSelected.json();
+
+    console.log("Sản phẩm hiện tại:", currentProductData);
+    console.log("Sản phẩm so sánh:", selectedProductData);
+
+    // Cập nhật danh sách so sánh
+    setComparisonData([currentProductData, selectedProductData]);
+    setComparePopupVisible(true);
+  } catch (error) {
+    console.error("Lỗi khi lấy thông tin sản phẩm:", error);
+    alert("Lỗi khi lấy thông tin sản phẩm! Vui lòng thử lại.");
+  }
+};
+
+
+
+
+
   // Feedback form modal
   const FeedbackForm = ({ visible, onCancel, onSubmit, initialValues }) => {
     const [form] = Form.useForm();
@@ -180,6 +281,8 @@ const ProductDetail = () => {
       onSubmit(values.rating, values.comment);
       form.resetFields();
     };
+    
+    
 
     return (
       <Modal
@@ -209,7 +312,7 @@ const ProductDetail = () => {
             </Button>
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal>      
     );
   };
 
@@ -273,8 +376,133 @@ const ProductDetail = () => {
             >
               Thêm vào giỏ hàng
             </Button>
+            <Button
+              type="default"
+              className="compare-button"
+              onClick={() => setCompareModalVisible(true)}
+            >
+              SO SÁNH
+            </Button>
           </div>
         </div>
+
+        <Modal
+  title="Chọn sản phẩm để so sánh"
+  open={compareModalVisible}
+  onCancel={() => setCompareModalVisible(false)}
+  footer={null}
+>
+  {categoryProducts.length > 0 ? (
+    <div className="compare-product-list">
+      {categoryProducts.map((p) => (
+        <div key={p.productId} className="compare-product-card">
+          <img src={product.avatarImageUrl} alt={product.productName} width="150" />
+          <p className="compare-product-name">{p.productName}</p>
+          <button className="compare-product-button" onClick={() => handleCompare(p.productId, p.categoryId)}>
+            Chọn để so sánh
+          </button>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p className="no-product-message">Không có sản phẩm nào cùng danh mục.</p>
+  )}
+</Modal>
+
+
+
+
+
+
+
+<Modal
+  title="So sánh sản phẩm"
+  open={comparePopupVisible}
+  onCancel={() => setComparePopupVisible(false)}
+  footer={null}
+  width={800} // Tăng chiều rộng modal cho dễ nhìn
+>
+  {comparisonData.length === 2 ? (
+    <div className="compare-container">
+      <table className="compare-table">
+        <thead>
+          <tr>
+            <th>Thông tin</th>
+            {comparisonData.map((product) => (
+              <th key={product.productId}>{product.productName}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {/* Hình ảnh sản phẩm */}
+          <tr>
+            <td><strong>Hình ảnh</strong></td>
+            {comparisonData.map((product) => (
+              <td key={product.productId}>
+                <img src={product.avatarImageUrl} alt={product.productName} width="120" />
+              </td>
+            ))}
+          </tr>
+
+          {/* Thông tin chung */}
+          <tr>
+            <td><strong>Thương hiệu</strong></td>
+            {comparisonData.map((product) => <td key={product.productId}>{product.brandName}</td>)}
+          </tr>
+          <tr>
+            <td><strong>Danh mục</strong></td>
+            {comparisonData.map((product) => <td key={product.productId}>{product.categoryName}</td>)}
+          </tr>
+
+          {/* Lấy thông tin từ variant */}
+          {comparisonData[0].variants?.length > 0 && (
+            <>
+              <tr>
+                <td><strong>Thể tích</strong></td>
+                {comparisonData.map((product) => <td key={product.productId}>{product.variants[0].volume} ml</td>)}
+              </tr>
+              <tr>
+                <td><strong>Loại da phù hợp</strong></td>
+                {comparisonData.map((product) => <td key={product.productId}>{product.variants[0].skinType}</td>)}
+              </tr>
+              <tr>
+                <td><strong>Giá</strong></td>
+                {comparisonData.map((product) => <td key={product.productId}>{product.variants[0].price} VND</td>)}
+              </tr>
+              <tr>
+                <td><strong>Số lượng kho</strong></td>
+                {comparisonData.map((product) => <td key={product.productId}>{product.variants[0].stockQuantity}</td>)}
+              </tr>
+            </>
+          )}
+
+          {/* Thành phần */}
+          <tr>
+            <td><strong>Thành phần chính</strong></td>
+            {comparisonData.map((product) => <td key={product.productId}>{product.variants[0].mainIngredients}</td>)}
+          </tr>
+          <tr>
+            <td><strong>Thành phần đầy đủ</strong></td>
+            {comparisonData.map((product) => <td key={product.productId}>{product.variants[0].fullIngredients}</td>)}
+          </tr>
+
+          {/* Mô tả sản phẩm */}
+          <tr>
+            <td><strong>Mô tả</strong></td>
+            {comparisonData.map((product) => <td key={product.productId}>{product.describe?.summary || "Không có"}</td>)}
+          </tr>
+          <tr>
+            <td><strong>Người dùng phù hợp</strong></td>
+            {comparisonData.map((product) => <td key={product.productId}>{product.describe?.suitableUsers || "Không có"}</td>)}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <p>Đang tải dữ liệu sản phẩm...</p>
+  )}
+</Modal>
+
 
         {/* Product Details */}
         <div className="product-details">
@@ -389,7 +617,7 @@ const ProductDetail = () => {
         initialValues={editingFeedback}
       />
     </PageLayOut>
-  );
-};
+    );
+  };
 
 export default ProductDetail;

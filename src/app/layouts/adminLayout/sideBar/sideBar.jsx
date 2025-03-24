@@ -13,9 +13,9 @@ import {
   AppstoreAddOutlined,
   BookOutlined,
   TeamOutlined,
-  SettingOutlined,
   LogoutOutlined,
   GiftOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { APILogOut } from "../../../api/api";
 import { message } from "antd";
@@ -31,9 +31,9 @@ const icons = {
   category: <AppstoreAddOutlined className={styles.icon} />,
   categoryTitle: <BookOutlined className={styles.icon} />,
   team: <TeamOutlined className={styles.icon} />,
-  settings: <SettingOutlined className={styles.icon} />,
   logout: <LogoutOutlined className={styles.icon} />,
   promotion: <GiftOutlined className={styles.icon} />,
+  orders: <ShoppingCartOutlined className={styles.icon} />, // Thêm icon mới
 };
 
 const NavItem = ({ icon, text, path, onClick }) => {
@@ -112,13 +112,13 @@ const Sidebar = () => {
           <NavItem icon="categoryTitle" text="Category Title" path="categoryTitlePage" />
           <NavItem icon="pricing" text="Voucher Management" path="vouchers" />
           <NavItem icon="promotion" text="Promotion Management" path="promotions" /> {/* Sử dụng icon mới */}
+          <NavItem icon="orders" text="Order List" path="orders" />
           <NavItem icon="team" text="Team" path="teamPage" />
         </ul>
       </nav>
 
       {/* Settings & Logout luôn nằm dưới cùng */}
       <div className={styles.bottomNav}>
-        <NavItem icon="settings" text="Settings" path="/admin/settings" />
         <NavItem icon="logout" text="Logout" onClick={handleLogout} />
       </div>
     </aside>

@@ -186,6 +186,20 @@ function ProductsGrid() {
     setPopupOpen(true);
   };
 
+  const deleteProduct = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/products/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Lỗi khi xóa sản phẩm!");
+      message.success("Sản phẩm đã được xóa!");
+    } catch (err) {
+      console.error("Lỗi khi xóa sản phẩm:", err);
+      message.error("Không thể xóa sản phẩm!");
+    }
+  };
+
   const paginatedProducts = products.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
@@ -245,6 +259,7 @@ function ProductsGrid() {
         setPopupOpen={setPopupOpen}
         productId={productId}
         isPopupOpen={isPopupOpen && !isUploadingImages}
+        deleteProduct={deleteProduct} // Truyền hàm deleteProduct
       />
 
       <UploadProductImages
