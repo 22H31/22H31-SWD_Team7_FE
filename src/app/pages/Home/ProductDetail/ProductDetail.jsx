@@ -10,9 +10,9 @@ import {
   APISubmitFeedback,
   APIUpdateFeedback,
 } from "../../../api/api";
+import { cartLenght } from "../../../globalVariable/cart";
 import PageLayOut from "../../../layouts/PageLayOut/PageLayOut";
 import "./ProductDetail.css";
-import { cartLenght } from "../../../globalVariable/cart";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -31,6 +31,7 @@ const ProductDetail = () => {
   // const [productData, setProductData] = useState([]);
   const [comparePopupVisible, setComparePopupVisible] = useState(false);
   const [comparisonData, setComparisonData] = useState([]);
+
 
 
   // Fetch product details
@@ -151,43 +152,83 @@ const ProductDetail = () => {
 
   // Feedback form submission
   const handleSubmitFeedback = async (rating, comment) => {
-    if (!userId) {
-      message.error("Vui lòng đăng nhập để đánh giá sản phẩm.");
-      return;
-    }
+  if (!userId) {
+    message.error("Vui lòng đăng nhập để đánh giá sản phẩm.");
+    return;
+  }
 
-    try {
-      const response = await APISubmitFeedback(
-        userId,
-        productId,
+  try {
+    // Hiển thị loading trong khi gửi đánh giá
+    // const hideLoading = message.loading("Đang gửi đánh giá...", 0);
+    
+    const response = await APISubmitFeedback(
+      userId,
+      productId,
+      rating,
+      comment
+    );
+    
+    // hideLoading(); 
+    
+    if (response.status === 200 || response.status === 201) {
+      message.success("Đánh giá của bạn đã được gửi thành công!");
+
+      // Lấy thông tin người dùng
+      const userName = await fetchUserInfo(userId);
+      
+      // Tạo feedback mới với đầy đủ thông tin
+      const newFeedback = {
+        id: userId,
+        userId: userId, // Thêm cả userId để dễ kiểm tra
+        userName,
         rating,
-        comment
-      );
-      if (response.status === 200) {
-        message.success("Đánh giá của bạn đã được gửi thành công!");
+        comment,
+        productId,
+        feedbackId: response.data.feedbackId,
+        createdAt: new Date().toISOString(), // Thêm thời gian tạo
+        updatedAt: new Date().toISOString() // Thêm thời gian cập nhật
+      };
 
-        // Thêm feedback mới vào state mà không cần gọi lại API
-        const newFeedback = {
-          id: userId, // Giả sử `id` là userId của người dùng
-          userName: await fetchUserInfo(userId), // Lấy tên người dùng
-          rating,
-          comment,
-          productId,
-          feedbackId: response.data.feedbackId, 
-        };
+      // Cập nhật state theo cách không làm mất dữ liệu cũ
+      setFeedbacks(prevFeedbacks => {
+        // Kiểm tra xem feedback đã tồn tại chưa (trường hợp update)
+        const existingIndex = prevFeedbacks.findIndex(
+          fb => fb.feedbackId === newFeedback.feedbackId
+        );
+        
+        if (existingIndex >= 0) {
+          // Nếu đã tồn tại thì cập nhật
+          const updated = [...prevFeedbacks];
+          updated[existingIndex] = newFeedback;
+          return updated;
+        }
+        
+        // Nếu chưa tồn tại thì thêm mới vào đầu mảng
+        return [newFeedback, ...prevFeedbacks];
+      });
 
-        // Cập nhật state feedbacks
-        setFeedbacks((prevFeedbacks) => [...prevFeedbacks, newFeedback]);
-
-        // Đóng modal
-        setFeedbackModalVisible(false); 
+      // Đóng modal và reset trạng thái editing
+      setFeedbackModalVisible(false);
+      setEditingFeedback(null);
+      
+      // Cập nhật rating trung bình nếu cần
+      if (product) {
+        const newAvgRating = calculateNewAverageRating([...feedbacks, newFeedback]);
+        setProduct(prev => ({ ...prev, averageRating: newAvgRating }));
       }
-    } catch (error) {
-      console.error("Error submitting feedback:", error);
-      message.error("Gửi đánh giá thất bại.");
     }
-  };
+  } catch (error) {
+    console.error("Error submitting feedback:", error);
+    message.error("Gửi đánh giá thất bại. Vui lòng thử lại.");
+  }
+};
 
+// Hàm tính rating trung bình mới
+const calculateNewAverageRating = (feedbacks) => {
+  if (feedbacks.length === 0) return 0;
+  const sum = feedbacks.reduce((acc, fb) => acc + fb.rating, 0);
+  return sum / feedbacks.length;
+};
   // Update feedback
   const handleUpdateFeedback = async (feedbackId, rating, comment) => {
     try {

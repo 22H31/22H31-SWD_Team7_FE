@@ -161,5 +161,7 @@ export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
 // =================== BRAND APIs ===================
 
 export const APIGetBrands = () => api.get("brand");
+
+export const APIGetBrandById = (brandId) => api.get(`brand/${brandId}`);
  
 export default api;
