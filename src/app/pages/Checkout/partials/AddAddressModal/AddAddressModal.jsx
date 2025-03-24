@@ -10,7 +10,7 @@ import {
 
 const { TabPane } = Tabs;
 
-export default function AddAddressModal() {
+export default function AddAddressModal({fetchData}) {
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [selectedWard, setSelectedWard] = useState(null);
@@ -70,6 +70,7 @@ export default function AddAddressModal() {
     APICreateShippingInfo(data).then((rs) => {
       message.success("Thêm địa chỉ thành công!");
       console.log(rs, "rs");
+      fetchData()
       // CheckDefaultShippingInfo(rs.data.data.shippingInfoId);
       setIsModalOpenAddAddress(false);
     });

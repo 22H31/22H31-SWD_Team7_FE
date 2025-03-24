@@ -62,7 +62,7 @@ const Profile = () => {
           />
         </Sider>
         <Content className="contentStyle">
-          <h3 style={{ height: "100px" }}>
+          <h3 style={{ height: "50px" }}>
             {" "}
             {items.find((item) => item.key === selectedKey)?.label}
           </h3>
