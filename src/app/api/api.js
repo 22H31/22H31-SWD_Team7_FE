@@ -143,5 +143,14 @@ export const APIGetShippingInfosByShippingInfo = (shippingInfoId) =>
  /// Oder
  export const APIGetOrderUser = (id) =>
   api.get(`order/user/${id} `);
+
+ // =================== BLOG APIs ===================
+
+export const APIGetAllBlogs = () => api.get("blogs");
+export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
+
+// =================== BRAND APIs ===================
+
+export const APIGetBrands = () => api.get("brand");
  
 export default api;
