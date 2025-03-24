@@ -161,6 +161,10 @@ export const APIGetBlogById = (blogId) => api.get(`blogs/${blogId}`);
 
 export const APIGetBrands = () => api.get("brand");
 
+
+export const APIGetBrandById = (brandId) => api.get(`brand/${brandId}`);
+ 
+
 export const APICreateOrder = (data) => api.post("order/create", data);
 
 export const APIOrderOrderId = (orderId) => api.get(`order/${orderId}`);
@@ -172,4 +176,5 @@ export const APIUpdateVoucherPromotion = (orderId, data) =>
   api.put(`order/update-voucher-promotion/${orderId}`, data);
 
 export const APIPayment = (orderId) => api.post(`payment/${orderId}/pay`);
+
 export default api;
