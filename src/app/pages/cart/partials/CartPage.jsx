@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   APICreateOrder,
+  APIDelete,
   APIGetCartItems,
   APIRemoveCartItem,
   APIUpdateCartItem,
@@ -201,22 +202,32 @@ const CartPage = () => {
         quantity,
       })),
     };
-
+    const ItemsID = JSON.parse(localStorage.getItem("selectedItems")) || [];
+    const Item = ItemsID.map((item) => item.cartItemId);
+    console.log(Item, "ItemsID");
     APICreateOrder(orderData)
       .then((rs) => {
         console.log(rs, "check");
         if (rs.status === 200) {
+         
           message.success("Vui lòng làm theo hướng dẫn!");
-          localStorage.removeItem("selectedItems");
+
           setSelectedItems([]);
           localStorage.setItem("orderId", rs.data.orderId);
           navigate("/checkout");
+
           console.log(rs.data.orderId, "rs.data.orderId");
           console.log(rs);
         }
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        APIDelete(Item).then((rs) => {
+          console.log(rs);
+          localStorage.removeItem("selectedItems");
+        });
       });
   };
   return (

@@ -177,4 +177,6 @@ export const APIUpdateVoucherPromotion = (orderId, data) =>
 
 export const APIPayment = (orderId) => api.post(`payment/${orderId}/pay`);
 
+export const APIDelete = (data) => api.delete(`cartitem/bulk-delete`,{data});
+
 export default api;
