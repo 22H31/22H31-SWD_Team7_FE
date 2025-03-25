@@ -69,7 +69,7 @@ const Checkout = () => {
               const Url = rs.data.paymentUrl
               console.log(rs,"rs2");
               window.location.href = Url
-              console.log("oki", Url);
+              // console.log("oki", Url);
             }
           })
           // .finally(() => {

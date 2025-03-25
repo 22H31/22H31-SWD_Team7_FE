@@ -37,13 +37,14 @@ import FullBrands from "../pages/Brand";
 import PaymentCallback from "../pages/PaymentResult/PaymentResult.jsx";
 
 import BrandProduct from "../pages/Brand/BrandProduct/BrandProduct";
-
+import ChatButton from "../pages/UserChat/ChatButton";
 
 export default function MainRoutes() {
   const location = useLocation();
   const hideFooter = ["/login", "/forgotPassword", "/register", "/admin"].some(
     (path) => location.pathname.includes(path)
   );
+  const hideChat = ["/admin"].some((path) => location.pathname.includes(path));
   const ProtectedRoute = ({ children, allowedRoles }) => {
     const Role = localStorage.getItem("Role");
     // const userRole='admin2'
@@ -104,8 +105,9 @@ export default function MainRoutes() {
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 
-      <GeminiChat />
-      <ChatForUser />
+      {!hideChat && <GeminiChat />}
+
+      {!hideChat && <ChatForUser />}
       {!hideFooter && <FooterComponent />}
     </>
   );
