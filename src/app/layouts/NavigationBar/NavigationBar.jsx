@@ -32,21 +32,29 @@ const NavigationComponent = () => {
   const categoryMenu = (
     <Menu>
       {categories.length > 0 ? (
-        categories.map((title) => (
-          <Menu.ItemGroup
-            key={title.categoryTitleId}
-            title={title.categoryTitleName}
-          >
-            {title.categorys.map((cat) => (
-              <Menu.Item
-                key={cat.categoryId}
-                onClick={() => navigate(`/category/${cat.categoryId}`)}
-                className="custom-menu-item"
-              >
-                {cat.categoryName}
-              </Menu.Item>
+        categories.reduce((rows, title, index) => {
+          if (index % 3 === 0) {
+            rows.push([]);
+          }
+          rows[rows.length - 1].push(title);
+          return rows;
+        }, []).map((group, groupIndex) => (
+          <div key={groupIndex} className="dropdown-column">
+            {group.map((title) => (
+              <Menu.ItemGroup key={title.categoryTitleId} title={title.categoryTitleName}>
+                {title.categorys.map((cat) => (
+                  <Menu.Item
+  key={cat.categoryId}
+  onClick={() => navigate(`/productFull?categoryId=${cat.categoryId}`)}
+  className="custom-menu-item"
+>
+  {cat.categoryName}
+</Menu.Item>
+
+                ))}
+              </Menu.ItemGroup>
             ))}
-          </Menu.ItemGroup>
+          </div>
         ))
       ) : (
         <Menu.Item disabled>Đang tải...</Menu.Item>
