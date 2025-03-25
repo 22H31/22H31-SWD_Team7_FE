@@ -46,11 +46,10 @@ export default function MainRoutes() {
   );
   const hideChat = ["/admin"].some((path) => location.pathname.includes(path));
   const ProtectedRoute = ({ children, allowedRoles }) => {
-    const Role = localStorage.getItem("Role");
-    // const userRole='admin2'
+    const Role = localStorage.getItem("Role"); // Lấy role từ localStorage
     console.log(Role);
     if (!allowedRoles.includes(Role)) {
-      return <Navigate to="/401" replace />;
+      return <Navigate to="/401" replace />; // Chuyển hướng đến trang 401 nếu không có quyền
     }
     return children;
   };
@@ -83,16 +82,91 @@ export default function MainRoutes() {
             </ProtectedRoute>
           }
         >
-          <Route path="products" element={<ProductsGrid />} />
-          <Route path="teamPage" element={<TeamManage />} />
-          <Route path="brandPage" element={<Brand />} />
-          <Route path="categoryPage" element={<Category />} />
-          <Route path="categoryTitlePage" element={<CategoryTitle />} />
-          <Route path="blog" element={<BlogManage />} />
-          <Route path="chatAdmin" element={<ChatForAdmin />} />
-          <Route path="vouchers" element={<VoucherManagement />} />
-          <Route path="promotions" element={<PromotionManagement />} />
-          <Route path="orders" element={<OrderList />} />
+          {/* Chỉ Admin có quyền truy cập */}
+          <Route
+            path="teamPage"
+            element={
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <TeamManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="categoryTitlePage"
+            element={
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <CategoryTitle />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="chatAdmin"
+            element={
+              <ProtectedRoute allowedRoles={["Admin"]}>
+                <ChatForAdmin />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Staff và Admin */}
+          <Route
+            path="blog"
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
+                <BlogManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="products"
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "Staff", "StaffSale"]}>
+                <ProductsGrid />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* StaffSale và Admin */}
+          <Route
+            path="brandPage"
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "StaffSale"]}>
+                <Brand />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="categoryPage"
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "StaffSale"]}>
+                <Category />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="orders"
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "StaffSale"]}>
+                <OrderList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="promotions"
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "StaffSale"]}>
+                <PromotionManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="vouchers"
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "StaffSale"]}>
+                <VoucherManagement />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         <Route path="/product/:productId" element={<ProductDetail />} />
