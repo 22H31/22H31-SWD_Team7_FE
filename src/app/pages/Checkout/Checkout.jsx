@@ -44,39 +44,42 @@ const Checkout = () => {
     });
   }, []);
 
-  const promotion = localStorage.getItem("promotion");
-  const shippingFee = localStorage.getItem("shippingFee");
+  const promotion = Number(localStorage.getItem("promotion"));
+  const shippingFee = Number(localStorage.getItem("shippingFee"));
   const orderId = localStorage.getItem("orderId");
-  const total = localStorage.getItem("total");
+  const total = Number(localStorage.getItem("total"));
   const discountCode = localStorage.getItem("discountCode");
   const promotionId = localStorage.getItem("promotionId");
   const handleCheckout = () => {
     const data = {
       promotionId: promotionId,
       voucherId: "",
-      voucherFee: promotion,
-      promotionCode: discountCode,
-      promotionFee: shippingFee,
+      voucherFee: 0,
+      promotionCode: discountCode || "",
+      promotionFee: promotion || 0,
       finalAmount: total,
       shippingFee: shippingFee,
     };
     APIUpdateVoucherPromotion(orderId, data).then((rs) => {
       if (rs.data.success) {
-        console.log(rs);
+        console.log(rs,'1');
         APIPayment(orderId)
           .then((rs) => {
             if (rs.status === 200) {
-              console.log("oki", rs);
+              const Url = rs.data.paymentUrl
+              console.log(rs,"rs2");
+              window.location.href = Url
+              console.log("oki", Url);
             }
           })
-          .finally(() => {
-            localStorage.removeItem("promotion");
-            localStorage.removeItem("shippingFee");
-            localStorage.removeItem("orderId");
-            localStorage.removeItem("total");
-            localStorage.removeItem("discountCode");
-            localStorage.removeItem("promotionId");
-          });
+          // .finally(() => {
+          //   localStorage.removeItem("promotion");
+          //   localStorage.removeItem("shippingFee");
+          //   localStorage.removeItem("orderId");
+          //   localStorage.removeItem("total");
+          //   localStorage.removeItem("discountCode");
+          //   localStorage.removeItem("promotionId");
+          // });
       }
     });
   };
