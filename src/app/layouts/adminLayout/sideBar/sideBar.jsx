@@ -70,15 +70,15 @@ const Sidebar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
+  const role = localStorage.getItem("Role"); // Lấy role từ localStorage
   const navigate = useNavigate();
 
   const handleLogout = () => {
     APILogOut()
       .then((rs) => {
-        console.log(rs.status, "check");
         if (rs.status === 200) {
-          console.log("Đăng xuất thành công");
           localStorage.removeItem("token");
+          localStorage.removeItem("Role");
           setIsAuthenticated(false);
           message.success("Đăng xuất thành công!");
           navigate("/");
@@ -89,6 +89,36 @@ const Sidebar = () => {
         message.error("Đăng xuất thất bại!");
       });
   };
+
+  // Danh sách menu dựa trên role
+  const menuItems = {
+    Staff: [
+      { icon: "products", text: "Products & Stocks", path: "products" },
+      { icon: "blog", text: "Blog", path: "blog" },
+    ],
+    StaffSale: [
+      { icon: "category", text: "Category", path: "categoryPage" },
+      { icon: "brand", text: "Brand", path: "brandPage" },
+      { icon: "orders", text: "Order List", path: "orders" },
+      { icon: "promotion", text: "Promotion Management", path: "promotions" },
+      { icon: "products", text: "Products & Stocks", path: "products" },
+    ],
+    Admin: [
+      { icon: "products", text: "Products & Stocks", path: "products" },
+      { icon: "blog", text: "Blog", path: "blog" },
+      { icon: "inbox", text: "Inbox", path: "chatAdmin" },
+      { icon: "brand", text: "Brand", path: "brandPage" },
+      { icon: "category", text: "Category", path: "categoryPage" },
+      { icon: "categoryTitle", text: "Category Title", path: "categoryTitlePage" },
+      { icon: "pricing", text: "Voucher Management", path: "vouchers" },
+      { icon: "promotion", text: "Promotion Management", path: "promotions" },
+      { icon: "orders", text: "Order List", path: "orders" },
+      { icon: "team", text: "Team", path: "teamPage" },
+    ],
+  };
+
+  // Lấy danh sách menu dựa trên role
+  const navItems = menuItems[role] || [];
 
   return (
     <aside className={styles.sidebar}>
@@ -104,16 +134,14 @@ const Sidebar = () => {
       {/* Navigation Menu */}
       <nav>
         <ul className={styles.navItems}>
-          <NavItem icon="products" text="Products & Stocks" path="products" />
-          <NavItem icon="blog" text="Blog" path="blog" />
-          <NavItem icon="inbox" text="Inbox" path="chatAdmin" />
-          <NavItem icon="brand" text="Brand" path="brandPage" />
-          <NavItem icon="category" text="Category" path="categoryPage" />
-          <NavItem icon="categoryTitle" text="Category Title" path="categoryTitlePage" />
-          <NavItem icon="pricing" text="Voucher Management" path="vouchers" />
-          <NavItem icon="promotion" text="Promotion Management" path="promotions" /> {/* Sử dụng icon mới */}
-          <NavItem icon="orders" text="Order List" path="orders" />
-          <NavItem icon="team" text="Team" path="teamPage" />
+          {navItems.map((item) => (
+            <NavItem
+              key={item.text}
+              icon={item.icon}
+              text={item.text}
+              path={item.path}
+            />
+          ))}
         </ul>
       </nav>
 

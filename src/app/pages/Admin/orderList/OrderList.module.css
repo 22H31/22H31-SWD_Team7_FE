@@ -26,3 +26,11 @@
   border-radius: 8px;
   overflow: hidden;
 }
+
+.custom-modal .ant-modal {
+  max-width: 90%; /* Chiếm 90% chiều rộng màn hình */
+}
+
+.custom-modal .ant-modal-body {
+  padding: 24px; /* Tăng khoảng cách bên trong */
+}

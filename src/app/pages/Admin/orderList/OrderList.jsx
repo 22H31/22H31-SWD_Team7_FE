@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Button, Select, Space, message, Modal, Input } from "antd";
+import { Table, Tag, Button, Select, Space, message, Modal, Input, Descriptions, Divider } from "antd";
 import { FilterOutlined, ReloadOutlined } from "@ant-design/icons";
 import styles from "./OrderList.module.css";
 
@@ -16,6 +16,8 @@ const OrderList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị modal
   const [selectedOrderId, setSelectedOrderId] = useState(null); // ID đơn hàng được chọn
   const [reason, setReason] = useState(""); // Lý do refund
+  const [orderDetails, setOrderDetails] = useState(null); // Chi tiết đơn hàng
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false); // Trạng thái hiển thị modal
 
   // Hàm gọi API để lấy danh sách đơn hàng theo trạng thái
   const fetchOrders = async (status) => {
@@ -125,6 +127,24 @@ const OrderList = () => {
     setData([]); // Xóa dữ liệu đơn hàng
   };
 
+  const fetchOrderDetails = async (status, orderId) => {
+    try {
+      const res = await fetch(`${API_URL}/order/manage/status/${status}`);
+      if (!res.ok) throw new Error("Lỗi khi lấy chi tiết đơn hàng!");
+      const result = await res.json();
+  
+      // Tìm đơn hàng theo orderId
+      const order = result.data.find((item) => item.orderId === orderId);
+      if (!order) throw new Error("Không tìm thấy đơn hàng!");
+  
+      setOrderDetails(order); // Lưu chi tiết đơn hàng vào state
+      setIsDetailModalVisible(true); // Hiển thị modal
+    } catch (err) {
+      console.error(err);
+      message.error("Không thể lấy chi tiết đơn hàng!");
+    }
+  };
+
   const columns = [
     {
       title: "ID",
@@ -203,13 +223,27 @@ const OrderList = () => {
               Confirm Ship
             </Button>
           )}
-          {record.status !== "returning" && ( // Ẩn nút Request Refund nếu trạng thái là returning
+          <Button
+            type="default"
+            onClick={() => fetchOrderDetails(record.status, record.orderId.trim())} // Gọi hàm lấy chi tiết
+          >
+            View Details
+          </Button>
+          {record.status !== "returning" && (
             <Button
-              type="danger"
-              onClick={() => showRefundModal(record.orderId.trim())}
-            >
-              Request Refund
-            </Button>
+            type="danger"
+            style={{
+              backgroundColor: "#ff4d4f",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              padding: "4px 12px",
+              fontWeight: "bold",
+            }}
+            onClick={() => showRefundModal(record.orderId.trim())}
+          >
+            Request Refund
+          </Button>
           )}
         </Space>
       ),
@@ -218,7 +252,7 @@ const OrderList = () => {
 
   return (
     <div className="order-list">
-      <h1 className="order-list__title">Order Manage</h1>
+      <h1 className="order-list__title">Order Management</h1>
 
       {/* Bộ lọc */}
       <div className="order-list__filters">
@@ -273,6 +307,88 @@ const OrderList = () => {
           value={reason}
           onChange={(e) => setReason(e.target.value)}
         />
+      </Modal>
+
+      {/* Modal chi tiết đơn hàng */}
+      <Modal
+        className="custom-modal"
+        title="Order Details"
+        visible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setIsDetailModalVisible(false)}>
+            Close
+          </Button>,
+        ]}
+        width="90%" // Hoặc sử dụng CSS để kiểm soát
+      >
+        {orderDetails ? (
+          <div>
+            <Descriptions title="Order Information" bordered column={2}>
+              <Descriptions.Item label="Order ID">{orderDetails.orderId}</Descriptions.Item>
+              <Descriptions.Item label="Order Date">
+                {new Date(orderDetails.orderDate).toLocaleString()}
+              </Descriptions.Item>
+              <Descriptions.Item label="Payment ID">{orderDetails.paymentId}</Descriptions.Item>
+              <Descriptions.Item label="Shipping Fee">
+                {orderDetails.shippingFee.toLocaleString()} VND
+              </Descriptions.Item>
+              <Descriptions.Item label="Voucher Fee">
+                {orderDetails.voucherFee.toLocaleString()} VND
+              </Descriptions.Item>
+              <Descriptions.Item label="Promotion Fee">
+                {orderDetails.promotionFee.toLocaleString()} VND
+              </Descriptions.Item>
+              <Descriptions.Item label="Total Amount">
+                {orderDetails.totalAmount.toLocaleString()} VND
+              </Descriptions.Item>
+              <Descriptions.Item label="Final Amount">
+                {orderDetails.finalAmount.toLocaleString()} VND
+              </Descriptions.Item>
+            </Descriptions>
+
+            <Divider />
+
+            <Descriptions title="Shipping Information" bordered column={2}>
+              <Descriptions.Item label="Name">
+                {orderDetails.shippingInfo.firstName} {orderDetails.shippingInfo.lastName}
+              </Descriptions.Item>
+              <Descriptions.Item label="Phone">
+                {orderDetails.shippingInfo.shippingPhoneNumber}
+              </Descriptions.Item>
+              <Descriptions.Item label="Address">
+                {orderDetails.shippingInfo.addressDetail}, {orderDetails.shippingInfo.commune},{" "}
+                {orderDetails.shippingInfo.district}, {orderDetails.shippingInfo.province}
+              </Descriptions.Item>
+              <Descriptions.Item label="Address Type">
+                {orderDetails.shippingInfo.addressType}
+              </Descriptions.Item>
+              <Descriptions.Item label="Note">
+                {orderDetails.shippingInfo.shippingNote}
+              </Descriptions.Item>
+            </Descriptions>
+
+            <Divider />
+
+            <Descriptions title="Order Items" bordered column={1}>
+              {orderDetails.manageOrderDetail.map((item) => (
+                <Descriptions.Item key={item.variantId} label={item.productName}>
+                  <div>
+                    <p><strong>Variant ID:</strong> {item.variantId}</p>
+                    <p><strong>Product ID:</strong> {item.productId}</p>
+                    <p><strong>Image URL:</strong> {item.imageUrl}</p>
+                    <p><strong>Volume:</strong> {item.volume} ml</p>
+                    <p><strong>Skin Type:</strong> {item.skinType}</p>
+                    <p><strong>Quantity:</strong> {item.quantity}</p>
+                    <p><strong>Price:</strong> {item.price.toLocaleString()} VND</p>
+                  </div>
+                </Descriptions.Item>
+              ))}
+            </Descriptions>
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
       </Modal>
     </div>
   );
