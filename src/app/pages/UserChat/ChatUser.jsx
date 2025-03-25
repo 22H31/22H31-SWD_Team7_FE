@@ -53,7 +53,13 @@ const ChatUser = () => {
                     renderItem={(item) => (
                         <List.Item style={{ textAlign: item.data.sender === userName ? 'right' : 'left' }}>
                             <List.Item.Meta
-                                title={item.data.sender}
+                                title={
+                                    item.data.sender === userName
+                                        ? 'Tôi' // Đổi "user" thành "Tôi"
+                                        : item.data.sender === 'admin'
+                                        ? 'Tư Vấn Viên' // Đổi "admin" thành "Tư Vấn Viên"
+                                        : item.data.sender
+                                }
                                 description={item.data.text}
                             />
                         </List.Item>
