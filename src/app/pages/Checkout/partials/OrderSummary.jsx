@@ -18,7 +18,8 @@ const OrderSummary = () => {
       .then((rs) => {
         const res = rs.data.data;
         setCart(res.orderDetails || []);
-        setFinalAmount(res.finalAmount || 0);
+        setFinalAmount(res.totalAmount || 0);
+        console.log(res,'res');
       })
       .catch(() => {
         message.error("Lỗi khi lấy dữ liệu đơn hàng!");

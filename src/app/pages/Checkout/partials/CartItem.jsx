@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./CartItem.css";
 import { APIOrderOrderId } from "../../../api/api";
 import { message } from "antd";
+import { finalTotal } from "../../../globalVariable/cart";
 
 const CartItem = () => {
   const [cart, setCart] = useState([]);
@@ -27,6 +28,7 @@ const CartItem = () => {
       });
   }, [orderId]);
   const promotion = Number(localStorage.getItem("promotion")) || 0;
+  finalTotal.set(finalAmount + shippingFee - promotion)
   const total = Number(finalAmount + shippingFee - promotion);
   localStorage.setItem("total", total);
   return (

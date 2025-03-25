@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, Card, Button, Tag } from "antd";
+import { Tabs, Card, Button, Tag, Pagination } from "antd";
 import { APIGetOrderUser } from "../../api/api";
 
 const statusTabs = [
@@ -11,16 +11,18 @@ const statusTabs = [
 ];
 
 export default function Orders() {
-  const [activeTab, setActiveTab] = useState("preparing");
+  const [activeTab, setActiveTab] = useState(statusTabs[0].key); // Tab đầu tiên
   const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5; // Số đơn hàng mỗi trang
+
   const userID = localStorage.getItem("userID");
 
   useEffect(() => {
     APIGetOrderUser(userID).then((rs) => {
-      console.log(rs.data);
-      d;
       if (rs.data?.success) {
         setOrders(rs.data.data);
+        console.log(rs.data, "data");
       }
     });
   }, []);
@@ -29,94 +31,141 @@ export default function Orders() {
     (order) => order.orderStatus === activeTab
   );
 
+  // Lấy danh sách đơn hàng theo trang
+  const paginatedOrders = filteredOrders.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
   return (
     <div
       style={{ padding: "20px", minHeight: "80vh", backgroundColor: "#f8f8f8" }}
     >
       <Tabs
         activeKey={activeTab}
-        onChange={setActiveTab}
+        onChange={(key) => {
+          setActiveTab(key);
+          setCurrentPage(1); // Reset về trang đầu tiên khi đổi tab
+        }}
         tabBarStyle={{ fontWeight: "bold", fontSize: "16px" }}
       >
         {statusTabs.map((tab) => (
           <Tabs.TabPane tab={tab.label} key={tab.key} />
         ))}
       </Tabs>
+
       <div style={{ minHeight: "60vh" }}>
-        {filteredOrders.length > 0 ? (
-          filteredOrders.map((order) => (
+        {paginatedOrders.length > 0 ? (
+          paginatedOrders.map((order) => (
             <Card
-              key={order.orderId}
+            key={order.orderId}
+            style={{
+              marginBottom: "15px",
+              padding: "15px",
+              borderRadius: "10px",
+              border: "1px solid #e0e0e0",
+              backgroundColor: "#fff",
+            }}
+          >
+            {/* Thông tin shop */}
+            <div
               style={{
-                marginBottom: "10px",
-                padding: "15px",
-                borderRadius: "10px",
-                border: "1px solid #e0e0e0",
-                backgroundColor: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                borderBottom: "1px solid #eaeaea",
+                paddingBottom: "10px",
               }}
             >
-              {order.orderDetails.map((product, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "10px 0",
-                    borderBottom: "1px solid #eaeaea",
-                  }}
-                >
-                  <img
-                    src={product.imageUrl}
-                    alt={product.productName}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      marginRight: 15,
-                      borderRadius: "5px",
-                    }}
-                  />
-                  <div>
-                    <h4 style={{ margin: 0, fontSize: "14px", color: "#333" }}>
-                      {product.productName}
-                    </h4>
-                    <p
-                      style={{
-                        margin: "5px 0",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                        color: "#d0021b",
-                      }}
-                    >
-                      {order.finalAmount.toLocaleString()} VND
-                    </p>
-                  </div>
-                </div>
-              ))}
-              <Tag
-                color="blue"
-                style={{
-                  marginTop: "10px",
-                  fontSize: "14px",
-                  padding: "5px 10px",
-                }}
-              >
-                {order.orderStatus}
-              </Tag>
-              <div
-                style={{
-                  marginTop: 15,
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Button type="primary" style={{ flex: 1, marginRight: "5px" }}>
-                  Xem chi tiết
-                </Button>
-                <Button danger style={{ flex: 1 }}>
-                  Hủy đơn
-                </Button>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Tag color="red" style={{ marginRight: "10px" }}>
+                  Yêu thích
+                </Tag>
+                <span style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}>
+                  {order.shopName || "Tên Shop"}
+                </span>
               </div>
-            </Card>
+              <Button type="link" style={{ color: "#ff424e", fontWeight: "bold" }}>
+                Chat
+              </Button>
+            </div>
+          
+            {/* Sản phẩm */}
+            {order.orderDetails.map((product, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "15px 0",
+                  borderBottom: index !== order.orderDetails.length - 1 ? "1px solid #eaeaea" : "none",
+                }}
+              >
+                <img
+                  src={product.imageUrl}
+                  alt={product.productName}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    marginRight: 15,
+                    borderRadius: "5px",
+                    border: "1px solid #e0e0e0",
+                  }}
+                />
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ margin: 0, fontSize: "14px", color: "#333", fontWeight: "bold" }}>
+                    {product.productName}
+                  </h4>
+                  <p style={{ margin: "5px 0", fontSize: "12px", color: "#666" }}>
+                    Phân loại hàng: {product.variant || "Không có"}
+                  </p>
+                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#000" }}>x{product.quantity}</p>
+                </div>
+                <p style={{ fontSize: "16px", fontWeight: "bold", color: "#d0021b" }}>
+                  {product.price.toLocaleString()} VND
+                </p>
+              </div>
+            ))}
+          
+            {/* Tổng tiền */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                padding: "15px 0",
+                borderTop: "1px solid #eaeaea",
+              }}
+            >
+              <span style={{ fontSize: "14px", color: "#666" }}>Thành tiền:</span>
+              <span style={{ fontSize: "18px", fontWeight: "bold", color: "#d0021b", marginLeft: "10px" }}>
+                {order.finalAmount.toLocaleString()} VND
+              </span>
+            </div>
+          
+            {/* Nút hành động */}
+            <div
+              style={{
+                marginTop: 15,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                type="primary"
+                disabled={order.orderStatus !== "delivered"}
+                style={{
+                  backgroundColor: order.orderStatus === "delivered" ? "#ff424e" : "#eaeaea",
+                  borderColor: order.orderStatus === "delivered" ? "#ff424e" : "#eaeaea",
+                  color: order.orderStatus === "delivered" ? "#fff" : "#aaa",
+                  marginRight: "10px",
+                }}
+              >
+                Đã Nhận Hàng
+              </Button>
+              <Button type="default">Liên Hệ Người Bán</Button>
+            </div>
+          </Card>
+          
           ))
         ) : (
           <p style={{ textAlign: "center", fontSize: "16px", color: "#888" }}>
@@ -124,6 +173,17 @@ export default function Orders() {
           </p>
         )}
       </div>
+
+      {/* Phân trang */}
+      {filteredOrders.length > pageSize && (
+        <Pagination
+          current={currentPage}
+          pageSize={pageSize}
+          total={filteredOrders.length}
+          onChange={(page) => setCurrentPage(page)}
+          style={{ textAlign: "center", marginTop: "20px" }}
+        />
+      )}
     </div>
   );
 }

@@ -107,6 +107,7 @@ const CartPage = () => {
         ];
       }
       localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
+
       return updatedItems;
     });
   };
@@ -200,17 +201,17 @@ const CartPage = () => {
         quantity,
       })),
     };
-  
+
     APICreateOrder(orderData)
       .then((rs) => {
-        console.log(rs,'check');
+        console.log(rs, "check");
         if (rs.status === 200) {
           message.success("Vui lòng làm theo hướng dẫn!");
           localStorage.removeItem("selectedItems");
           setSelectedItems([]);
-          localStorage.setItem("orderId", rs.data.orderId)
-          navigate("/checkout")
-          console.log(rs.data.orderId , "rs.data.orderId");
+          localStorage.setItem("orderId", rs.data.orderId);
+          navigate("/checkout");
+          console.log(rs.data.orderId, "rs.data.orderId");
           console.log(rs);
         }
       })
