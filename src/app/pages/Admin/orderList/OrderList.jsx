@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Button, Select, Space, message } from "antd";
+import { Table, Tag, Button, Select, Space, message, Modal, Input } from "antd";
 import { FilterOutlined, ReloadOutlined } from "@ant-design/icons";
 import styles from "./OrderList.module.css";
 
@@ -13,6 +13,9 @@ const OrderList = () => {
   });
   const [data, setData] = useState([]); // Dữ liệu đơn hàng
   const [loading, setLoading] = useState(false); // Trạng thái loading
+  const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị modal
+  const [selectedOrderId, setSelectedOrderId] = useState(null); // ID đơn hàng được chọn
+  const [reason, setReason] = useState(""); // Lý do refund
 
   // Hàm gọi API để lấy danh sách đơn hàng theo trạng thái
   const fetchOrders = async (status) => {
@@ -70,6 +73,40 @@ const OrderList = () => {
       console.error(err);
       message.error("Không thể xác nhận giao hàng!");
     }
+  };
+
+  // Hàm gọi API để yêu cầu refund
+  const handleRequestRefund = async () => {
+    try {
+      const res = await fetch(`${API_URL}/order/manage/${selectedOrderId}/comfirmRefuning`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ reason }),
+      });
+      if (!res.ok) throw new Error("Lỗi khi yêu cầu refund!");
+      const result = await res.json();
+      message.success("Yêu cầu refund thành công!");
+      setIsModalVisible(false); // Đóng modal
+      setReason(""); // Reset lý do
+      fetchOrders(filters.orderStatus); // Cập nhật lại danh sách đơn hàng
+    } catch (err) {
+      console.error(err);
+      message.error("Không thể yêu cầu refund!");
+    }
+  };
+
+  // Hiển thị modal
+  const showRefundModal = (orderId) => {
+    setSelectedOrderId(orderId);
+    setIsModalVisible(true);
+  };
+
+  // Đóng modal
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setReason("");
   };
 
   // Xử lý khi thay đổi trạng thái đơn hàng
@@ -136,6 +173,9 @@ const OrderList = () => {
           case "delivered":
             color = "green";
             break;
+          case "returning": // Thêm trạng thái Returning
+            color = "red";
+            break;
           default:
             color = "gray";
         }
@@ -145,29 +185,34 @@ const OrderList = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (record) => {
-        if (record.status === "preparing") {
-          return (
+      render: (record) => (
+        <Space>
+          {record.status === "preparing" && (
             <Button
               type="primary"
-              onClick={() => handleConfirmPrepare(record.orderId.trim())} // Loại bỏ dấu cách
+              onClick={() => handleConfirmPrepare(record.orderId.trim())}
             >
               Confirm Prepare
             </Button>
-          );
-        } else if (record.status === "shipping") {
-          return (
+          )}
+          {record.status === "shipping" && (
             <Button
               type="primary"
-              onClick={() => handleConfirmShip(record.orderId.trim())} // Loại bỏ dấu cách
+              onClick={() => handleConfirmShip(record.orderId.trim())}
             >
               Confirm Ship
             </Button>
-          );
-        } else {
-          return <Tag color="green">No Actions</Tag>;
-        }
-      },
+          )}
+          {record.status !== "returning" && ( // Ẩn nút Request Refund nếu trạng thái là returning
+            <Button
+              type="danger"
+              onClick={() => showRefundModal(record.orderId.trim())}
+            >
+              Request Refund
+            </Button>
+          )}
+        </Space>
+      ),
     },
   ];
 
@@ -191,6 +236,7 @@ const OrderList = () => {
             <Option value="shipping">Shipping</Option>
             <Option value="paying">Paying</Option>
             <Option value="delivered">Delivered</Option>
+            <Option value="returning">Returning</Option> {/* Thêm trạng thái Returning */}
           </Select>
           <Button
             icon={<ReloadOutlined />}
@@ -211,6 +257,23 @@ const OrderList = () => {
         loading={loading} // Hiển thị trạng thái loading
         className="order-list__table"
       />
+
+      {/* Modal nhập lý do refund */}
+      <Modal
+        title="Request Refund"
+        visible={isModalVisible}
+        onOk={handleRequestRefund}
+        onCancel={handleCancel}
+        okText="Submit"
+        cancelText="Cancel"
+      >
+        <Input.TextArea
+          rows={4}
+          placeholder="Enter refund reason"
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        />
+      </Modal>
     </div>
   );
 };
