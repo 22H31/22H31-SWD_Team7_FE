@@ -29,7 +29,7 @@ export default function ChangePassword() {
 
   return (
     <>
-      <div style={{ margin: "10px" }}>
+      <div style={{ margin: "30px" }}>
         <Form onFinish={onFinish} layout="vertical">
           <Form.Item
             name="currentPassword"

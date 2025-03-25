@@ -20,7 +20,7 @@ const removeMarkdown = (text) => {
 export default function BannerBlog() {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     APIGetAllBlogs()

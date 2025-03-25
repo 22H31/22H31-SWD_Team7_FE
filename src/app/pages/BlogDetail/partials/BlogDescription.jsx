@@ -20,7 +20,7 @@ const { Title, Text } = Typography;
 const BlogDescription = () => {
   const { blogId } = useParams();
   const [blogData, setBlogData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [blogList, setBlogList] = useState([]);
 
   const formatDate = (date) => {

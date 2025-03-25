@@ -1,5 +1,5 @@
+import { Button, Card, Pagination, Tabs, Tag, Modal } from "antd";
 import React, { useEffect, useState } from "react";
-import { Tabs, Card, Button, Tag, Pagination } from "antd";
 import { APIGetOrderUser } from "../../api/api";
 
 const statusTabs = [
@@ -13,6 +13,8 @@ const statusTabs = [
 export default function Orders() {
   const [activeTab, setActiveTab] = useState(statusTabs[0].key); // Tab đầu tiên
   const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5; // Số đơn hàng mỗi trang
 
@@ -58,114 +60,144 @@ export default function Orders() {
         {paginatedOrders.length > 0 ? (
           paginatedOrders.map((order) => (
             <Card
-            key={order.orderId}
-            style={{
-              marginBottom: "15px",
-              padding: "15px",
-              borderRadius: "10px",
-              border: "1px solid #e0e0e0",
-              backgroundColor: "#fff",
-            }}
-          >
-            {/* Thông tin shop */}
-            <div
+              key={order.orderId}
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                borderBottom: "1px solid #eaeaea",
-                paddingBottom: "10px",
+                marginBottom: "15px",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #e0e0e0",
+                backgroundColor: "#fff",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Tag color="red" style={{ marginRight: "10px" }}>
-                  Yêu thích
-                </Tag>
-                <span style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}>
-                  {order.shopName || "Tên Shop"}
-                </span>
-              </div>
-              <Button type="link" style={{ color: "#ff424e", fontWeight: "bold" }}>
-                Chat
-              </Button>
-            </div>
-          
-            {/* Sản phẩm */}
-            {order.orderDetails.map((product, index) => (
+              {/* Thông tin shop */}
               <div
-                key={index}
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  padding: "15px 0",
-                  borderBottom: index !== order.orderDetails.length - 1 ? "1px solid #eaeaea" : "none",
+                  justifyContent: "space-between",
+                  borderBottom: "1px solid #eaeaea",
+                  paddingBottom: "10px",
                 }}
               >
-                <img
-                  src={product.imageUrl}
-                  alt={product.productName}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    marginRight: 15,
-                    borderRadius: "5px",
-                    border: "1px solid #e0e0e0",
-                  }}
-                />
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ margin: 0, fontSize: "14px", color: "#333", fontWeight: "bold" }}>
-                    {product.productName}
-                  </h4>
-                  <p style={{ margin: "5px 0", fontSize: "12px", color: "#666" }}>
-                    Phân loại hàng: {product.variant || "Không có"}
-                  </p>
-                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#000" }}>x{product.quantity}</p>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Tag color="red" style={{ marginRight: "10px" }}>
+                    Yêu thích
+                  </Tag>
+                  <span
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      color: "#333",
+                    }}
+                  >
+                    {order.shopName || "Beauty Love"}
+                  </span>
                 </div>
-                <p style={{ fontSize: "16px", fontWeight: "bold", color: "#d0021b" }}>
-                  {product.price.toLocaleString()} VND
-                </p>
+                <Button
+                  type="link"
+                  style={{ color: "#ff424e", fontWeight: "bold" }}
+                >
+                  {statusTabs.find((tab) => tab.key === activeTab)?.label ||
+                    "Trạng thái"}
+                </Button>
               </div>
-            ))}
-          
-            {/* Tổng tiền */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                padding: "15px 0",
-                borderTop: "1px solid #eaeaea",
-              }}
-            >
-              <span style={{ fontSize: "14px", color: "#666" }}>Thành tiền:</span>
-              <span style={{ fontSize: "18px", fontWeight: "bold", color: "#d0021b", marginLeft: "10px" }}>
-                {order.finalAmount.toLocaleString()} VND
-              </span>
-            </div>
-          
-            {/* Nút hành động */}
-            <div
-              style={{
-                marginTop: 15,
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              <Button
-                type="primary"
-                disabled={order.orderStatus !== "delivered"}
+
+              {/* Sản phẩm */}
+              {order.orderDetails.map((product, index) => (
+                <div
+                  key={index}
+                  style={{
+                    textAlign: "left",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "15px 0",
+                    borderBottom:
+                      index !== order.orderDetails.length - 1
+                        ? "1px solid #eaeaea"
+                        : "none",
+                  }}
+                >
+                  <img
+                    src={product.imageUrl}
+                    alt={product.productName}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      marginRight: 15,
+                      borderRadius: "5px",
+                      border: "1px solid #e0e0e0",
+                    }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <h4
+                      style={{
+                        margin: 0,
+                        fontSize: "14px",
+                        color: "#333",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {product.productName}
+                    </h4>
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        color: "#d0021b",
+                      }}
+                    >
+                      {product.price.toLocaleString()} đ
+                    </p>
+                    <p
+                      style={{
+                        margin: "5px 0",
+                        fontSize: "14px",
+                        color: "#000",
+                      }}
+                    >
+                      x{product.quantity}
+                    </p>
+                  </div>
+                </div>
+              ))}
+
+              {/* Tổng tiền */}
+              <div
                 style={{
-                  backgroundColor: order.orderStatus === "delivered" ? "#ff424e" : "#eaeaea",
-                  borderColor: order.orderStatus === "delivered" ? "#ff424e" : "#eaeaea",
-                  color: order.orderStatus === "delivered" ? "#fff" : "#aaa",
-                  marginRight: "10px",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  padding: "15px 0",
+                  borderTop: "1px solid #eaeaea",
                 }}
               >
-                Đã Nhận Hàng
-              </Button>
-              <Button type="default">Liên Hệ Người Bán</Button>
-            </div>
-          </Card>
-          
+                <span style={{ fontSize: "14px", color: "#666" }}>
+                  Thành tiền:
+                </span>
+                <span
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                    color: "#d0021b",
+                    marginLeft: "10px",
+                  }}
+                >
+                  {order.finalAmount.toLocaleString()} VND
+                </span>
+              </div>
+
+              {/* Nút hành động */}
+              <div
+                style={{
+                  marginTop: 15,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Button type="primary" onClick={() => setSelectedOrder(order)}>
+                  Xem Thông Tin Đơn Hàng
+                </Button>
+              </div>
+            </Card>
           ))
         ) : (
           <p style={{ textAlign: "center", fontSize: "16px", color: "#888" }}>
@@ -184,6 +216,55 @@ export default function Orders() {
           style={{ textAlign: "center", marginTop: "20px" }}
         />
       )}
+      <Modal
+        title="Chi Tiết Đơn Hàng"
+        visible={!!selectedOrder}
+        onCancel={() => setSelectedOrder(null)}
+        footer={null}
+      >
+        {selectedOrder && (
+          <div>
+            <p>
+              <strong>Mã đơn hàng:</strong> {selectedOrder.orderId}
+            </p>
+            <p>
+              <strong>Trạng thái:</strong>{" "}
+              {
+                statusTabs.find((tab) => tab.key === selectedOrder.orderStatus)
+                  ?.label
+              }
+            </p>
+            <p>
+              <strong>Tên cửa hàng:</strong>{" "}
+              {selectedOrder.shopName || "Beauty Love"}
+            </p>
+            <p>
+              <strong>Tổng tiền:</strong>{" "}
+              {selectedOrder.finalAmount.toLocaleString()} VND
+            </p>
+
+            <h3>Sản phẩm:</h3>
+            {selectedOrder.orderDetails.map((product, index) => (
+              <div
+                key={index}
+                style={{
+                  marginBottom: "10px",
+                  borderBottom: "1px solid #eee",
+                  paddingBottom: "10px",
+                }}
+              >
+                <img
+                  src={product.imageUrl}
+                  alt={product.productName}
+                  style={{ width: 50, height: 50, marginRight: 10 }}
+                />
+                <strong>{product.productName}</strong> - {product.quantity} x{" "}
+                {product.price.toLocaleString()} đ
+              </div>
+            ))}
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

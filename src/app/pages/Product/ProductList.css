@@ -106,7 +106,7 @@
 }
 
 .buy:hover {
-    background: #d9363e;
+    background: #c11889;
 }
 
 .pagination {
@@ -126,11 +126,11 @@
 }
 
 .page-number.active {
-    background: #ff0004;
-    color: black;
+    background: #d4138e;
+    color: white;
     border: none;
 }
 
 .page-number:hover {
-    background: #f42b2b;
+    background: #9b0d77;
 }
