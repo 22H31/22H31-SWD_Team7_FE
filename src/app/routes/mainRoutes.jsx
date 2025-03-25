@@ -33,6 +33,9 @@ import PromotionManagement from "../pages/Admin/promotionManage/PromotionManagem
 import OrderList from "../pages/Admin/orderList/OrderList";
 import Page401 from "../layouts/pageNotFound/401";
 import FullBrands from "../pages/Brand";
+
+import PaymentCallback from "../pages/PaymentResult/PaymentResult.jsx";
+
 import BrandProduct from "../pages/Brand/BrandProduct/BrandProduct";
 
 
@@ -66,7 +69,9 @@ export default function MainRoutes() {
         <Route path="/customerSupport" element={<CustomerSupport />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/paymentSuccess" element={<PaymentSuccess />} />
-        <Route path="/fullBrands" element={<FullBrands/>} />
+
+        <Route path="/fullBrands" element={<FullBrands />} />
+        <Route path="/result/payment" element={<PaymentCallback />} />
         <Route path="/brand/:brandId" element={<BrandProduct />} />
 
         <Route
