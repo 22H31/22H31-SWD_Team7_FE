@@ -10,6 +10,7 @@ import PaymentMethod from "./partials/PaymentMethod";
 import ShippingInfo from "./partials/ShippingInfo";
 import CodeDiscount from "./partials/CodeDiscount";
 import { APIPayment, APIUpdateVoucherPromotion } from "../../api/api";
+import { finalTotal } from "../../globalVariable/cart";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -50,6 +51,8 @@ const Checkout = () => {
   const total = Number(localStorage.getItem("total"));
   const discountCode = localStorage.getItem("discountCode");
   const promotionId = localStorage.getItem("promotionId");
+  const totalReal = finalTotal.use()
+  // console.log(totalReal);
   const handleCheckout = () => {
     const data = {
       promotionId: promotionId,
@@ -57,31 +60,25 @@ const Checkout = () => {
       voucherFee: 0,
       promotionCode: discountCode || "",
       promotionFee: promotion || 0,
-      finalAmount: total,
+      finalAmount: totalReal ,
       shippingFee: shippingFee,
     };
-    APIUpdateVoucherPromotion(orderId, data).then((rs) => {
-      if (rs.data.success) {
-        console.log(rs,'1');
-        APIPayment(orderId)
-          .then((rs) => {
+    console.log(data);
+    APIUpdateVoucherPromotion(orderId, data)
+      .then((rs) => {
+        if (rs.data.success) {
+          console.log(rs, "1");
+          APIPayment(orderId).then((rs) => {
             if (rs.status === 200) {
-              const Url = rs.data.paymentUrl
-              console.log(rs,"rs2");
-              window.location.href = Url
-              // console.log("oki", Url);
+              const Url = rs.data.paymentUrl;
+              console.log(rs, "rs2");
+              window.location.href = Url;
+              console.log("oki", Url);
             }
-          })
-          // .finally(() => {
-          //   localStorage.removeItem("promotion");
-          //   localStorage.removeItem("shippingFee");
-          //   localStorage.removeItem("orderId");
-          //   localStorage.removeItem("total");
-          //   localStorage.removeItem("discountCode");
-          //   localStorage.removeItem("promotionId");
-          // });
-      }
-    });
+          });
+        }
+      })
+      
   };
   return (
     <CartLayOut>
