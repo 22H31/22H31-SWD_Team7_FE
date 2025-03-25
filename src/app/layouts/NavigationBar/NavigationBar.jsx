@@ -20,7 +20,7 @@ const NavigationComponent = () => {
       try {
         const res = await APIGetCategories();
         console.log("Categories:", res.data);
-        setCategories(res.data); 
+        setCategories(res.data);
       } catch (err) {
         console.error("Error fetching categories", err);
       }
@@ -32,30 +32,43 @@ const NavigationComponent = () => {
   const categoryMenu = (
     <Menu>
       {categories.length > 0 ? (
-        categories.reduce((rows, title, index) => {
-          if (index % 3 === 0) {
-            rows.push([]);
-          }
-          rows[rows.length - 1].push(title);
-          return rows;
-        }, []).map((group, groupIndex) => (
-          <div key={groupIndex} className="dropdown-column">
-            {group.map((title) => (
-              <Menu.ItemGroup key={title.categoryTitleId} title={title.categoryTitleName}>
-                {title.categorys.map((cat) => (
-                  <Menu.Item
-  key={cat.categoryId}
-  onClick={() => navigate(`/productFull?categoryId=${cat.categoryId}`)}
-  className="custom-menu-item"
->
-  {cat.categoryName}
-</Menu.Item>
-
-                ))}
-              </Menu.ItemGroup>
-            ))}
-          </div>
-        ))
+        categories
+          .reduce((rows, title, index) => {
+            if (index % 2 === 0) {
+              rows.push([]);
+            }
+            rows[rows.length - 1].push(title);
+            return rows;
+          }, [])
+          .map((group, groupIndex) => (
+            <div key={groupIndex} className="dropdown-column">
+              {group.map((title) => (
+                <Menu.ItemGroup
+                  key={title.categoryTitleId}
+                  title={title.categoryTitleName}
+                >
+                  {title.categorys.map((cat) => (
+                    // NavigationComponent.js
+                    <Menu.Item
+                      key={cat.categoryId}
+                      onClick={() =>
+                        navigate(
+                          `/productFull?categoryId=${
+                            cat.categoryId
+                          }&categoryName=${encodeURIComponent(
+                            cat.categoryName
+                          )}`
+                        )
+                      }
+                      className="custom-menu-item"
+                    >
+                      {cat.categoryName}
+                    </Menu.Item>
+                  ))}
+                </Menu.ItemGroup>
+              ))}
+            </div>
+          ))
       ) : (
         <Menu.Item disabled>Đang tải...</Menu.Item>
       )}
@@ -69,7 +82,7 @@ const NavigationComponent = () => {
         overlay={categoryMenu}
         trigger={["hover"]}
         placement="bottomLeft"
-        style={{with:"400"}}
+        style={{ with: "400" }}
       >
         <div className="menu-icon-item">
           <MenuOutlined />

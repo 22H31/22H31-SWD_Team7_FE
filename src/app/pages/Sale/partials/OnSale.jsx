@@ -8,10 +8,10 @@ const CATEGORIES = [
   "Tất cả",
   "DHC",
   "Hada Labo",
-  "Sofina",
+  "Cocoon",
   "Bioré",
-  "Shiseido",
-  "Kose",
+  "Vaseline",
+  "Anessa",
 ];
 const ITEMS_PER_PAGE = 8;
 

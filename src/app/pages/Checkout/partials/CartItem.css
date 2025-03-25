@@ -1,12 +1,12 @@
 .cart-item-checkout {
   /* width: 413px; */
-  margin-top: 10px;
   height: 380px;
   border-radius: 20px;
   background: #FFF;
   padding: 20px;
   font-family: Arial, sans-serif;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px 0px;
 }
 
 .cart-item-checkout h2 {

@@ -15,7 +15,7 @@ const removeMarkdown = (text) => {
 const Bloglist = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 3;
 
