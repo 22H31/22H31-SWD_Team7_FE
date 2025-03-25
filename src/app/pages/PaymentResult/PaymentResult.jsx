@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import PageLayOut from "../../layouts/PageLayOut/PageLayOut";
+import { Alert, Button, Card, Result, Spin, Tag } from "antd";
 
 function PaymentCallback() {
   const location = useLocation();
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const fetchUsers = async () => {
     const params = new URLSearchParams(window.location.search);
     try {
@@ -45,21 +48,48 @@ function PaymentCallback() {
     } else {
       setError("Invalid response from payment gateway.");
     }
+    console.log(paymentInfo, "paymentInfo");
   }, [location]);
 
   return (
-    <div>
-      {paymentInfo ? (
-        <div>
-          <h2>{paymentInfo.status}</h2>
-          {/* <p>Transaction Ref: {paymentInfo.txnRef}</p> */}
-          <p>Message: {paymentInfo.message}</p>
-          {/* <p>Order Info: {paymentInfo.orderInfo}</p> */}
-        </div>
-      ) : (
-        <div>{error ? <p>{error}</p> : <h2>Processing payment...</h2>}</div>
-      )}
-    </div>
+    <PageLayOut>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          // height: "100vh",
+        }}
+      >
+        {paymentInfo ? (
+          <Result
+            status={paymentInfo.status === "success" ? "success" : "warning"}
+            title={
+              paymentInfo.status === "success"
+                ? "Thanh Toán Thành Công!"
+                : "Thanh Toán Thất Bại"
+            }
+            subTitle={paymentInfo.message}
+            extra={[
+              <>
+                {" "}
+                <Button type="primary" onClick={() => navigate("/cart")}>
+                  Quay lại giỏ hàng
+                </Button>
+              </>,
+            ]}
+          />
+        ) : (
+          <div>
+            {error ? (
+              <Alert message={error} type="error" showIcon />
+            ) : (
+              <Spin tip="Processing payment..." size="large" />
+            )}
+          </div>
+        )}
+      </div>
+    </PageLayOut>
   );
 }
 
